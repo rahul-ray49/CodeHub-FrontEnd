@@ -1,7 +1,11 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { loginUser } from '../authSlice';
 const loginSchema = z.object({
   emailId: z.string().email("Invalid Email"),
   password: z.string().min(8, "Password is to weak")
@@ -9,18 +13,27 @@ const loginSchema = z.object({
 
 function Login(){
 
+  const dispatch=useDispatch();
+  const navigate=useNavigate();
+  const {isAuthenticated,loading,error}=useSelector((state)=>state.auth);
+
+
     const {
             register,
             handleSubmit,
             formState: { errors },
           } = useForm({ resolver: zodResolver(loginSchema) });
         
-          const onSubmit = (data) => {
-            console.log(data);
-        
+       useEffect(()=>{
+        if(isAuthenticated){
+          navigate('/');
+        }
+       },[isAuthenticated,navigate]);
+
+        const onSubmit = (data) => {
+            dispatch(loginUser(data));
             // Backend data ko send kar dena chaiye?
           };
-
        
         
           return (
