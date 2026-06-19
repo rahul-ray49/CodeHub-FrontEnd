@@ -1,10 +1,11 @@
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useNavigate } from 'react-router-dom';
-import {registerUser} from '../authSlice'
-import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, NavLink } from 'react-router';
+import { registerUser } from '../authSlice';
+
 
 const signupSchema = z.object({
   firstName: z.string().min(3, "Minimum character should be 3"),
@@ -58,7 +59,7 @@ function Signup() {
               <input
                 type="text"
                 placeholder="John"
-                className={`input input-bordered ${errors.firstName && 'input-error'}`}
+                className={`input input-bordered w-full ${errors.firstName ? 'input-error' : ''}`}
                 {...register('firstName')}
               />
               {errors.firstName && (
@@ -73,7 +74,7 @@ function Signup() {
               <input
                 type="email"
                 placeholder="john@example.com"
-                className={`input input-bordered ${errors.emailId && 'input-error'}`}
+                className={`input input-bordered w-full ${errors.emailId ? 'input-error':''}`}
                 {...register('emailId')}
               />
               {errors.emailId && (
@@ -88,7 +89,7 @@ function Signup() {
               <input
                 type="password"
                 placeholder="••••••••"
-                className={`input input-bordered ${errors.password && 'input-error'}`}
+                className={`input input-bordered w-full ${errors.password ? 'input-error':''}`}
                 {...register('password')}
               />
               {errors.password && (
@@ -96,15 +97,25 @@ function Signup() {
               )}
             </div>
 
-            <div className="form-control mt-6 flex justify-center">
+            <div className="form-control mt-8 flex justify-center">
               <button
                 type="submit"
-                className="btn btn-primary"
+                className={`btn btn-primary ${loading ? 'loading':''}`}
+                disabled={loading}
               >
-                Sign Up
+                {loading ? 'Signing Up...' : 'Sign Up'}
               </button>
             </div>
           </form>
+           {/* Login Redirect */}
+            <div className="text-center mt-6"> {/* Increased mt for spacing */}
+              <span className="text-sm">
+                Already have an account?{' '}
+                <NavLink to="/login" className="link link-primary">
+                  Login
+                </NavLink>
+              </span>
+            </div>
         </div>
       </div>
     </div>
