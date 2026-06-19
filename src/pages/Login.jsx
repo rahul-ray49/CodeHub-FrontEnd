@@ -6,6 +6,9 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { loginUser } from '../authSlice';
+import { NavLink } from 'react-router-dom';
+
+
 const loginSchema = z.object({
   emailId: z.string().email("Invalid Email"),
   password: z.string().min(8, "Password is to weak")
@@ -51,7 +54,7 @@ function Login(){
                       <input
                         type="email"
                         placeholder="john@example.com"
-                        className={`input input-bordered ${errors.emailId && 'input-error'}`}
+                        className={`input input-bordered ${errors.emailId ? 'input-error': ''}`}
                         {...register('emailId')}
                       />
                       {errors.emailId && (
@@ -66,7 +69,7 @@ function Login(){
                       <input
                         type="password"
                         placeholder="••••••••"
-                        className={`input input-bordered ${errors.password && 'input-error'}`}
+                        className={`input input-bordered ${errors.password ? 'input-error':''}`}
                         {...register('password')}
                       />
                       {errors.password && (
@@ -77,12 +80,27 @@ function Login(){
                     <div className="form-control mt-6 flex justify-center">
                       <button
                         type="submit"
-                        className="btn btn-primary"
+                        className={`btn btn-primary ${loading ? 'loading btn-disabled' : ''}`}
+                        disabled={loading}
                       >
-                        Login
+                        {loading ? (
+                            <>
+                              <span className="loading loading-spinner"></span>
+                              Logging in...
+                            </>
+                          ) : 'Login'}
                       </button>
                     </div>
+      
                   </form>
+                  <div className="text-center mt-6">
+                    <span className="text-sm">
+                      Don't have an account?{' '} {/* Adjusted text slightly */}
+                      <NavLink to="/signup" className="link link-primary">
+                        Sign Up
+                      </NavLink>
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
