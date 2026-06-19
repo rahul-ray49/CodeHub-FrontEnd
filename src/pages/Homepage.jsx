@@ -146,7 +146,7 @@ function Homepage(){
                 {solvedProblems.some(
                   (sp) => sp._id === problem._id
                 ) && (
-                  <span className="flex items-center gap-2 bg-green-700 text-white px-3 py-1 rounded-full text-sm font-medium">
+                  <span className="flex items-center gap-2 bg-green-700 text-green-300 px-3 py-1 rounded-full text-sm font-medium">
                     ✓ Solved
                   </span>
                 )}
@@ -161,7 +161,7 @@ function Homepage(){
                   {problem.difficulty}
                 </span>
 
-                <span className="px-3 py-1 rounded-full text-sm font-medium bg-blue-700 text-white">
+                <span className="px-3 py-1 rounded-full text-sm font-medium bg-blue-700 text-blue-200">
                   {problem.tags}
                 </span>
               </div>
