@@ -34,11 +34,7 @@ function Signup() {
     formState: { errors },
   } = useForm({ resolver: zodResolver(signupSchema) });
 
-  useEffect(() => {
-      if (isAuthenticated) {
-        navigate('/');
-      }
-    }, [isAuthenticated,navigate]);
+
 
   const onSubmit = async(data) => {
     const result= await dispatch(registerUser(data));
