@@ -18,7 +18,7 @@ function Login(){
 
   const dispatch=useDispatch();
   const navigate=useNavigate();
-  const {isAuthenticated,loading,error}=useSelector((state)=>state.auth);
+  const {isAuthenticated,loading,error,logincredentialserror}=useSelector((state)=>state.auth);
 
 
     const {
@@ -41,7 +41,12 @@ function Login(){
         
           return (
             <div className="min-h-screen flex items-center justify-center p-4"> {/* Centering container */}
-              <div className="card w-96 bg-base-100 shadow-xl"> {/* Existing card styling through daisyUI */}
+              <div className="card w-96 bg-base-100 shadow-xl">   {/* Existing card styling through daisyUI */}
+                  {logincredentialserror && (
+                  <div className="alert alert-error mb-4">
+                      <span>{error}</span>
+                    </div>
+                   )}
                 <div className="card-body">
                   <h2 className="card-title justify-center text-3xl">CodeHub</h2> {/* Centered title */}
                   <form onSubmit={handleSubmit(onSubmit)}>

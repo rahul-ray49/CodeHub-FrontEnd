@@ -20,9 +20,11 @@ export const loginUser = createAsyncThunk(
     try {
       const response = await axiosClient.post('/user/login', credentials);
       return response.data.user;
-    } catch (error) {
-      return rejectWithValue(error);
-    }
+    }catch(error){
+          return rejectWithValue(
+             error.response?.data
+            );
+        }
   }
 );
 
@@ -58,7 +60,8 @@ const authSlice = createSlice({
     user: null,
     isAuthenticated: false,
     loading: false,
-    error: null
+    error: null,
+    logincredentialserror:null
   },
   reducers: {
   },
@@ -86,6 +89,7 @@ const authSlice = createSlice({
       .addCase(loginUser.pending, (state) => {
         state.loading = true;
         state.error = null;
+        state.logincredentialserror=null;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
@@ -97,6 +101,7 @@ const authSlice = createSlice({
         state.error = action.payload?.message || 'Something went wrong';
         state.isAuthenticated = false;
         state.user = null;
+        state.logincredentialserror=action.paylaod?.message||'Something went wrong';
       })
   
       // Check Auth Cases
