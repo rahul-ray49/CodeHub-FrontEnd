@@ -6,25 +6,46 @@ import { logoutUser } from '../authSlice';
 
 function Homepage(){
 
-     const dispatch = useDispatch();
+
+
+      const dispatch = useDispatch();
       const { user } = useSelector((state) => state.auth);
       const [problems, setProblems] = useState([]);
       const [solvedProblems, setSolvedProblems] = useState([]);
+      const [page, setPage] = useState(1);
+      const [totalPages, setTotalPages] = useState(1);
+      const [Loading,setLoading]=useState(false);
       const [filters, setFilters] = useState({
         difficulty: 'all',
         tag: 'all',
         status: 'all' 
       });
+
+
+
+
        useEffect(() => {
          const fetchProblems = async () => {
            try {
-             const { data } = await axiosClient.get('/problem/getAllProblem');
-             setProblems(data);
+             setLoading(true);
+             const { data } = await axiosClient.get('/problem/getAllProblem',{
+              params:{
+                page,
+                limit:5
+              }
+             });
+             setProblems(data.getProblem);
+             setTotalPages(data.totalPages);
            } catch (error) {
              console.error('Error fetching problems:', error);
+           } finally{
+               setLoading(false);
            }
          };
      
+
+
+
          const fetchSolvedProblems = async () => {
            try {
              const { data } = await axiosClient.get('/problem/problemSolvedByUser');
@@ -36,13 +57,18 @@ function Homepage(){
      
          fetchProblems();
          if (user) fetchSolvedProblems();
-       }, [user]);
+       }, [user,page]);
+
+
+
 
        const handleLogout = () => {
            dispatch(logoutUser());
            setSolvedProblems([]); // Clear solved problems on logout
          };
           
+
+
       const filteredProblems = problems.filter(problem => {
         const difficultyMatch = filters.difficulty === 'all' || problem.difficulty === filters.difficulty;
         const tagMatch = filters.tag === 'all' || problem.tags === filters.tag;
@@ -50,6 +76,11 @@ function Homepage(){
                         solvedProblems.some(sp => sp._id === problem._id);
         return difficultyMatch && tagMatch && statusMatch;
     });
+
+
+
+
+
 
     return(
         <>
@@ -127,7 +158,11 @@ function Homepage(){
 
         {/* Problems List */}
         <div className="space-y-4">
-          {filteredProblems.map((problem) => (
+          {Loading ? 
+      <div className="flex justify-center py-10">
+      <span className="loading loading-spinner loading-lg"></span>
+      </div>:
+          (filteredProblems.map((problem) => (
             <div
               key={problem._id}
               className="bg-gray-700 rounded-xl shadow-md p-5 hover:shadow-lg transition"
@@ -166,9 +201,30 @@ function Homepage(){
                 </span>
               </div>
             </div>
-          ))}
+          )))
+        }
         </div>
+           <div className="flex justify-center items-center gap-4 mt-8">
+                  <button
+                    className="btn"
+                    disabled={page===1}
+                    onClick={() => setPage(prev => prev-1)}
+                  >
+                    Previous
+                  </button>
 
+                  <span>
+                    Page {page} of {totalPages}
+                  </span>
+
+                  <button
+                    className="btn"
+                    disabled={page===totalPages}
+                    onClick={() => setPage(prev => prev+1)}
+                  >
+                    Next
+                  </button>
+          </div>
       </div>
     </div>
         </>
