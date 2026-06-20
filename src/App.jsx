@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { useEffect } from 'react'
 import { checkAuth } from './authSlice'
+import VerifyEmailNotice from './pages/verifyEmailNotice'
 function App() {
 
   const {isAuthenticated,user,loading}=useSelector((state)=>state.auth);
@@ -29,6 +30,7 @@ function App() {
           <Route path="/" element={isAuthenticated?<Homepage></Homepage>:<Navigate to="/signup"/>}></Route>
            <Route path="/login" element={isAuthenticated?<Navigate to="/"/>:<Login></Login>}></Route>
            <Route path="/signup" element={isAuthenticated?<Navigate to="/"/>:<Signup></Signup>}></Route>
+           <Route path="/verify-email" element={<VerifyEmailNotice />}/>
          </Routes>
     </>
   )

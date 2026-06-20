@@ -40,8 +40,11 @@ function Signup() {
       }
     }, [isAuthenticated,navigate]);
 
-  const onSubmit = (data) => {
-    dispatch(registerUser(data));
+  const onSubmit = async(data) => {
+    const result= await dispatch(registerUser(data));
+    if(result.type === "auth/register/fulfilled"){
+   navigate("/verify-email");
+   }
     // Backend data ko send kar dena chaiye?
   };
 
