@@ -40,8 +40,8 @@ function Login(){
        
         
           return (
-            <div className="min-h-screen flex items-center justify-center p-4"> {/* Centering container */}
-              <div className="card w-96 bg-base-100 shadow-xl">   {/* Existing card styling through daisyUI */}
+            <div className="min-h-screen flex items-center justify-center p-4 bg-slate-900/80 "> {/* Centering container */}
+              <div className="card w-96 border border-bg-slate-800/90  bg-slate-900/80 shadow-xl">   {/* Existing card styling through daisyUI */}
                   {logincredentialserror && (
                   <div className="alert alert-error mb-4">
                       <span>{error}</span>
@@ -59,11 +59,11 @@ function Login(){
                       <input
                         type="email"
                         placeholder="john@example.com"
-                        className={`input input-bordered ${errors.emailId ? 'input-error': ''}`}
+                        className={`input input-bordered ${errors?.emailId ? 'input-error': ''}`}
                         {...register('emailId')}
                       />
                       {errors.emailId && (
-                        <span className="text-error">{errors.emailId.message}</span>
+                        <span className="text-error">{errors?.emailId?.message}</span>
                       )}
                     </div>
         
@@ -74,11 +74,11 @@ function Login(){
                       <input
                         type="password"
                         placeholder="••••••••"
-                        className={`input input-bordered ${errors.password ? 'input-error':''}`}
+                        className={`input input-bordered ${errors?.password ? 'input-error':''}`}
                         {...register('password')}
                       />
                       {errors.password && (
-                        <span className="text-error">{errors.password.message}</span>
+                        <span className="text-error">{errors?.password?.message}</span>
                       )}
                     </div>
         

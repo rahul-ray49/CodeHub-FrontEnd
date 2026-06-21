@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux'
 import { useEffect } from 'react'
 import { checkAuth } from './authSlice'
 import VerifyEmailNotice from './pages/verifyEmailNotice'
+import AdminPanel from './pages/AdminPanel'
 function App() {
 
   const {isAuthenticated,user,loading}=useSelector((state)=>state.auth);
@@ -17,6 +18,8 @@ function App() {
   useEffect(()=>{
     dispatch(checkAuth());
   },[dispatch]);
+
+  console.log(user);
 
   if(loading){
     return <div className="min-h-screen flex items-center justify-center">
@@ -31,6 +34,7 @@ function App() {
            <Route path="/login" element={isAuthenticated?<Navigate to="/"/>:<Login></Login>}></Route>
            <Route path="/signup" element={isAuthenticated?<Navigate to="/"/>:<Signup></Signup>}></Route>
            <Route path="/verify-email" element={<VerifyEmailNotice />}/>
+           <Route path="/admin-panel" element={isAuthenticated&&user?.role==="admin"?<AdminPanel></AdminPanel>:<Login></Login>}/>
          </Routes>
     </>
   )

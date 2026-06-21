@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
-import { NavLink } from 'react-router'; // Fixed import
+import { Link, NavLink } from 'react-router'; // Fixed import
 import { useDispatch, useSelector } from 'react-redux';
 import axiosClient from '../utils/axiosClient';
 import { logoutUser } from '../authSlice';
 
 function Homepage(){
-
 
 
       const dispatch = useDispatch();
@@ -78,50 +77,54 @@ function Homepage(){
     });
 
 
-
-
-
-
     return(
         <>
-        <div className="min-h-screen bg-[#1D232A]">
-      
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white">      
       {/* Navbar */}
-      <nav className="bg-gray-700 shadow-md px-6 py-4 flex justify-between items-center">
+      <nav className="bg-slate-900/80 backdrop-blur-md border-b border-slate-800 px-8 py-4 flex justify-between items-center sticky top-0 z-50">
         <NavLink
           to="/"
-          className="text-2xl font-bold text-white hover:text-blue-600 transition"
+          className="text-3xl font-extrabold tracking-wide text-white hover:text-blue-400 transition"
         >
           CodeHub
         </NavLink>
-
-        <div className="relative group">
-          <button className="px-4 py-2 rounded-lg hover:bg-[#1D232A] font-medium">
+         <div className='flex justify-between gap-5'>
+          {
+          user?.role==="admin"&&(
+             <Link to="/admin-panel">
+          <button className="px-5 py-2 bg-blue-600 hover:bg-blue-700 rounded-xl font-medium transition-all duration-300 shadow-lg hover:shadow-blue-500/20">Create Problem Section</button>
+          </Link>
+          )
+          }
+           <div className="relative group">
+          <button className="px-4 py-2 bg-slate-800 border border-slate-700 rounded-xl hover:bg-slate-700 transition font-medium">
             {user?.firstName}
           </button>
 
-          <div className="absolute top-7 right-0 mt-0 w-40 hover:bg-[#1D232A] shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition duration-200">
+          <div className="absolute top-12 right-0 w-40 bg-slate-900 border border-slate-700 shadow-2xl rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition duration-200 z-50">
             <button
               onClick={handleLogout}
-              className="w-full rounded-md text-red-500 text-left px-4 py-3 hover:bg-[#1D232A]"
+              className="w-full text-left px-4 py-3 text-red-400 hover:bg-slate-800 rounded-xl transition"
             >
               Logout
             </button>
           </div>
         </div>
+      </div>
+       
       </nav>
 
       {/* Main Content */}
-      <div className="max-w-6xl mx-auto p-6">
+      <div className="max-w-6xl mx-auto px-6 py-8">
 
         {/* Filters */}
-        <div className="flex flex-wrap gap-4 mb-8">
+        <div className="flex flex-wrap justify-center items-center gap-4 mb-8 bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl">
 
           <select
-            className="border border-gray-300 rounded-lg px-4 py-2 bg-[#1D232A] focus:ring-2 focus:ring-blue-500 outline-none"
+            className="bg-slate-950 border border-slate-700 rounded-xl w-80 px-4 py-2 text-white focus:ring-2 focus:ring-blue-500 outline-none transition"
             value={filters.status}
             onChange={(e) =>
-              setFilters({ ...filters, status: e.target.value })
+              setFilters({...filters, status: e.target.value })
             }
           >
             <option value="all">All Problems</option>
@@ -129,7 +132,7 @@ function Homepage(){
           </select>
 
           <select
-            className="border border-gray-300 rounded-lg px-4 py-2 bg-[#1D232A] focus:ring-2 focus:ring-blue-500 outline-none"
+          className="bg-slate-950 border border-slate-700 rounded-xl w-80 px-4 py-2 text-white focus:ring-2 focus:ring-blue-500 outline-none transition"
             value={filters.difficulty}
             onChange={(e) =>
               setFilters({ ...filters, difficulty: e.target.value })
@@ -142,7 +145,7 @@ function Homepage(){
           </select>
 
           <select
-            className="border border-gray-300 rounded-lg px-4 py-2 bg-[#1D232A] focus:ring-2 focus:ring-blue-500 outline-none"
+          className="bg-slate-950 border border-slate-700 rounded-xl w-80 px-4 py-2 text-white focus:ring-2 focus:ring-blue-500 outline-none transition"
             value={filters.tag}
             onChange={(e) =>
               setFilters({ ...filters, tag: e.target.value })
@@ -157,74 +160,127 @@ function Homepage(){
         </div>
 
         {/* Problems List */}
-        <div className="space-y-4">
+        <div className="space-y-5 bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
           {Loading ? 
       <div className="flex justify-center py-10">
       <span className="loading loading-spinner loading-lg"></span>
       </div>:
           (filteredProblems.map((problem) => (
-            <div
-              key={problem._id}
-              className="bg-gray-700 rounded-xl shadow-md p-5 hover:shadow-lg transition"
-            >
-              <div className="flex justify-between items-center">
+  <div
+    key={problem?._id}
+    className="
+      bg-slate-900
+      border border-slate-800
+      rounded-2xl
+      p-5
+      hover:border-blue-500
+      hover:-translate-y-1
+      hover:shadow-xl
+      hover:shadow-blue-500/10
+      transition-all
+      duration-300
+    "
+  >
+    <div className="flex justify-between items-center">
 
-                <h2 className="text-lg font-semibold">
-                  <NavLink
-                    to={`/problem/${problem._id}`}
-                    className="hover:text-blue-600"
-                  >
-                    {problem.title}
-                  </NavLink>
-                </h2>
+      <h2 className="text-xl font-semibold">
+        <NavLink
+          to={`/problem/${problem?._id}`}
+          className="text-slate-100 hover:text-blue-400 transition"
+        >
+          {problem?.title}
+        </NavLink>
+      </h2>
 
-                {solvedProblems.some(
-                  (sp) => sp._id === problem._id
-                ) && (
-                  <span className="flex items-center gap-2 bg-green-700 text-green-300 px-3 py-1 rounded-full text-sm font-medium">
-                    ✓ Solved
-                  </span>
-                )}
-              </div>
+      {solvedProblems.some(
+        (sp) => sp._id === problem._id
+      ) && (
+        <span
+          className="
+            flex items-center gap-2
+            bg-emerald-500/20
+            text-emerald-400
+            border border-emerald-500/30
+            px-3 py-1
+            rounded-full
+            text-sm
+            font-medium
+          "
+        >
+          ✓ Solved
+        </span>
+      )}
+    </div>
 
-              <div className="flex gap-3 mt-3">
-                <span
-                  className={`px-3 py-1 rounded-full text-sm font-medium ${getDifficultyBadgeColor(
-                    problem.difficulty
-                  )}`}
-                >
-                  {problem.difficulty}
-                </span>
+    <div className="flex gap-3 mt-4">
+      <span
+        className={`px-3 py-1 rounded-full text-sm font-medium ${getDifficultyBadgeColor(
+          problem.difficulty
+        )}`}
+      >
+        {problem.difficulty}
+      </span>
 
-                <span className="px-3 py-1 rounded-full text-sm font-medium bg-blue-700 text-blue-200">
-                  {problem.tags}
-                </span>
-              </div>
-            </div>
-          )))
-        }
-        </div>
-           <div className="flex justify-center items-center gap-4 mt-8">
-                  <button
-                    className="btn"
-                    disabled={page===1}
-                    onClick={() => setPage(prev => prev-1)}
-                  >
-                    Previous
-                  </button>
+      <span
+        className="
+          px-3 py-1
+          rounded-full
+          text-sm
+          font-medium
+          bg-blue-500/20
+          text-blue-400
+          border border-blue-500/30
+        "
+      >
+        {problem.tags}
+      </span>
+    </div>
+  </div>
+)))
+}
+</div>
 
-                  <span>
-                    Page {page} of {totalPages}
-                  </span>
+<div className="flex justify-center items-center gap-4 mt-8">
 
-                  <button
-                    className="btn"
-                    disabled={page===totalPages}
-                    onClick={() => setPage(prev => prev+1)}
-                  >
-                    Next
-                  </button>
-          </div>
+  <button
+    className="
+      px-5 py-2
+      bg-slate-900
+      border border-slate-700
+      rounded-xl
+      hover:bg-slate-800
+      transition
+      disabled:opacity-50
+      disabled:cursor-not-allowed
+    "
+    disabled={page===1}
+    onClick={() => setPage(prev => prev-1)}
+  >
+    Previous
+  </button>
+
+  <span className="text-slate-300 font-medium">
+    Page {page} of {totalPages}
+  </span>
+
+  <button
+    className="
+      px-5 py-2
+      bg-slate-900
+      border border-slate-700
+      rounded-xl
+      hover:bg-slate-800
+      transition
+      disabled:opacity-50
+      disabled:cursor-not-allowed
+    "
+    disabled={page===totalPages}
+    onClick={() => setPage(prev => prev+1)}
+  >
+    Next
+  </button>
+
+</div>
       </div>
     </div>
         </>
@@ -233,13 +289,16 @@ function Homepage(){
 const getDifficultyBadgeColor = (difficulty) => {
   switch (difficulty.toLowerCase()) {
     case "easy":
-      return "bg-green-500 text-white";
+      return "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30";
+
     case "medium":
-      return "bg-yellow-300 text-yellow-900";
+      return "bg-yellow-500/20 text-yellow-400 border border-yellow-500/30";
+
     case "hard":
-      return "bg-red-900 text-red-200";
+      return "bg-red-500/20 text-red-400 border border-red-500/30";
+
     default:
-      return "bg-gray-100 text-gray-700";
+      return "bg-slate-500/20 text-slate-300 border border-slate-500/30";
   }
 };
 
