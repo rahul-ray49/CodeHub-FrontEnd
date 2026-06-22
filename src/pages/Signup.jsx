@@ -46,7 +46,7 @@ function Signup() {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-slate-900/80"> {/* Centering container */}
-      <div className="card w-96 bg-slate-900/80 [0_8px_30px_rgb(0,0,0,0.5)] shadow-xl"> {/* Existing card styling through daisyUI */}
+      <div className="card w-96 bg-slate-900/80 [0_8px_30px_rgb(0,0,0,0.5)] shadow-xl border border-white"> {/* Existing card styling through daisyUI */}
         <div className="card-body">
           <h2 className="card-title justify-center text-3xl">CodeHub</h2> {/* Centered title */}
           <form onSubmit={handleSubmit(onSubmit)}>

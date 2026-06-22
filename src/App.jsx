@@ -22,7 +22,7 @@ function App() {
   console.log(user);
 
   if(loading){
-    return <div className="min-h-screen flex items-center justify-center">
+    return <div className="min-h-screen flex items-center justify-center bg-slate-900/80">
       <span className="loading loading-spinner loading-lg" ></span>
     </div>
   }
