@@ -12,8 +12,12 @@ const ProblemPage = () => {
     const [loading, setLoading] = useState(true);
     const [problem, setProblem] = useState(null);
     const [activeLeftTab, setActiveLeftTab] = useState("description");
+    const [activeRightTab, setActiveRightTab] = useState("code");
+
+    const rightTabs = ["code","testcase","result"];
+               
   
-    const activeColor="px-5 py-2 rounded-xl text-white font-medium bg-gradient-to-r from-purple-600 to-fuchsia-600 transition-all duration-300 ease-out";
+    const activeColor="cursor-pointer px-5 py-2 rounded-xl text-white font-medium bg-gradient-to-r from-blue-600 to-blue-600 transition-all duration-300 ease-out";
 
             useEffect(() => {
 
@@ -88,25 +92,25 @@ const ProblemPage = () => {
 
                                     <div className="bg-slate-900/80 border border-slate-700 rounded-xl p-3 flex justify-between gap-2 mb-4">
 
-                                        <button  className={activeLeftTab==="description"&&(activeColor)}
+                                        <button  className={`cursor-pointer ${activeLeftTab==="description"&&(activeColor)}`}
                                         onClick={() => setActiveLeftTab("description")}
                                         >
                                         Description
                                         </button>
 
-                                        <button  className={activeLeftTab==="editorial"&&(activeColor)}
+                                        <button  className={`cursor-pointer ${activeLeftTab==="editorial"&&(activeColor)}`}
                                         onClick={() => setActiveLeftTab("editorial")}
                                         >
                                         Editorial
                                         </button>
 
-                                        <button   className={activeLeftTab==="solutions"&&(activeColor)}
+                                        <button   className={`cursor-pointer ${activeLeftTab==="solutions"&&(activeColor)}`}
                                         onClick={() => setActiveLeftTab("solutions")}
                                         >
                                         Solutions
                                         </button>
 
-                                        <button   className={activeLeftTab==="submissions"&&(activeColor)}
+                                        <button   className={`cursor-pointer ${activeLeftTab==="submissions"&&(activeColor)}`}
                                         onClick={() => setActiveLeftTab("submissions")}
                                         >
                                         Submissions
@@ -180,35 +184,110 @@ const ProblemPage = () => {
 
                                 {/* RIGHT PANEL */}
 
-                                <div className="w-1/2">
+                                    <div className="w-1/2">
 
-                                <div
-                                    className="
-                                    bg-slate-900/80
-                                    border
-                                    border-slate-700
-                                    rounded-xl
-                                    h-[80vh]
-                                    "
-                                >
+                                        <div className="bg-slate-900/80 border border-slate-700 rounded-xl h-[80vh] flex flex-col">
 
-                                    <div
-                                    className="
-                                    h-full
-                                    flex
-                                    justify-center
-                                    items-center
-                                    text-slate-400
-                                    "
-                                    >
-                                    Code Editor Coming Soon 🚀
+                                            {/* Top Tabs */}
+
+                                             
+
+                                                {/* Buttons */}
+                                                 <div className="bg-slate-900/80 border border-slate-700 rounded-xl py-3 px-5 flex justify-between  mb-4">
+
+                                                        <button  className={`cursor-pointer ${activeRightTab==="code"&&(activeColor)}`}
+                                                        onClick={() => setActiveRightTab("code")}
+                                                        >
+                                                        Code{"</>"}
+                                                        </button>
+
+                                                        <button  className={`cursor-pointer ${activeRightTab==="testcase"&&(activeColor)}`}
+                                                        onClick={() => setActiveRightTab("testcase")}
+                                                        >
+                                                        TestCase
+                                                        </button>
+
+                                                        <button   className={`cursor-pointer ${activeRightTab==="result"&&(activeColor)}`}
+                                                        onClick={() => setActiveRightTab("result")}
+                                                        >
+                                                        Result
+                                                        </button>
+                                               </div>
+
+
+                                             
+
+                                            {/* Content Area */}
+
+                                        <div className="flex-1">
+
+                                            <div className="flex-1 flex justify-center items-center text-slate-400">
+
+                                                        {activeRightTab === "code" && (
+                                                            <p>Monaco Editor Coming Soon 🚀</p>
+                                                        )}
+
+                                                        {activeRightTab === "testcase" && (
+                                                            <p>Run your code to test it</p>
+                                                        )}
+
+                                                        {activeRightTab === "result" && (
+                                                            <p>Submit your solution to see result</p>
+                                                        )}
+
+                                            </div>
+
+                                         </div>
+
+                                            {/* Bottom Action Bar */}
+
+                                            <div className="border-t border-slate-700 p-4">
+
+                                                <div className="border-t border-slate-700 p-4 flex justify-between">
+
+                                                        <button
+                                                        className=" px-4 py-2 rounded-lg bg-slate-800 text-slate-300 cursor-pointer "
+                                                        >
+                                                        Console
+                                                        </button>
+
+                                                         <div className="flex gap-3">
+
+                                                            <button
+                                                            className="
+                                                            px-4 py-2
+                                                            rounded-lg
+                                                            bg-slate-800
+                                                            text-slate-200
+                                                            cursor-pointer
+                                                            "
+                                                            >
+                                                            Run
+                                                            </button>
+
+                                                            <button
+                                                            className="
+                                                            px-4 py-2
+                                                            rounded-lg
+                                                            bg-blue-600
+                                                            text-white
+                                                            cursor-pointer
+                                                            "
+                                                            >
+                                                            Submit
+                                                            </button>
+
+                                                        </div>
+
+                                                    </div>
+                                               
+                                            </div>
+
+                                        </div>
+
                                     </div>
 
-                                </div>
-
-                                </div>
-
-                            </div>
+                              </div>
 
                             </div>
 

@@ -9,17 +9,17 @@ const ExampleCard = ({ example, index }) => {
       <div className="space-y-2 text-sm">
 
         <p>
-          <span className="text-blue-400">Input:</span>{" "}
+          <span className="font-semibold text-blue-400">Input:</span>{" "}
           {example.input}
         </p>
 
         <p>
-          <span className="text-green-400">Output:</span>{" "}
+          <span className="font-semibold text-green-400">Output:</span>{" "}
           {example.output}
         </p>
 
         <p>
-          <span className="text-purple-400">Explanation:</span>{" "}
+          <span className="font-semibold text-purple-400">Explanation:</span>{" "}
           {example.explanation}
         </p>
 
