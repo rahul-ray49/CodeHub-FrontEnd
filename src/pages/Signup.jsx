@@ -58,7 +58,7 @@ function Signup() {
               <input
                 type="text"
                 placeholder="John"
-                className={`input input-bordered w-full ${errors.firstName ? 'input-error' : ''}`}
+                className={`input input-bordered outline-none w-full ${errors.firstName ? 'input-error' : ''}`}
                 {...register('firstName')}
               />
               {errors.firstName && (
@@ -73,7 +73,7 @@ function Signup() {
               <input
                 type="email"
                 placeholder="john@example.com"
-                className={`input input-bordered w-full ${errors.emailId ? 'input-error':''}`}
+                className={`input input-bordered outline-none w-full ${errors.emailId ? 'input-error':''}`}
                 {...register('emailId')}
               />
               {errors.emailId && (
@@ -88,7 +88,7 @@ function Signup() {
               <input
                 type="password"
                 placeholder="••••••••"
-                className={`input input-bordered w-full ${errors.password ? 'input-error':''}`}
+                className={`input input-bordered outline-none w-full ${errors.password ? 'input-error':''}`}
                 {...register('password')}
               />
               {errors.password && (

@@ -201,7 +201,7 @@ function Homepage(){
           to={`/problem/${problem?._id}`}
           className="text-slate-100 hover:text-blue-400 transition"
         >
-          {problem?.title}
+         {problem?.problemNumber.toString()}. {problem?.title}
         </NavLink>
       </h2>
 

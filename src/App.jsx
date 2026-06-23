@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import './App.css'
 import { Routes,Route, Navigate } from 'react-router-dom'
 import Login from "./pages/Login"
 import Signup from './pages/Signup'
@@ -10,6 +9,7 @@ import { useEffect } from 'react'
 import { checkAuth } from './authSlice'
 import VerifyEmailNotice from './pages/verifyEmailNotice'
 import AdminPanel from './pages/AdminPanel'
+import ProblemPage from './pages/ProblemPage'
 function App() {
 
   const {isAuthenticated,user,loading}=useSelector((state)=>state.auth);
@@ -35,6 +35,7 @@ function App() {
            <Route path="/signup" element={isAuthenticated?<Navigate to="/"/>:<Signup></Signup>}></Route>
            <Route path="/verify-email" element={<VerifyEmailNotice />}/>
            <Route path="/admin-panel" element={isAuthenticated&&user?.role==="admin"?<AdminPanel></AdminPanel>:<Login></Login>}/>
+           <Route path="/problem/:problemId" element={isAuthenticated?<ProblemPage></ProblemPage>:<Login/>}/>
          </Routes>
     </>
   )
