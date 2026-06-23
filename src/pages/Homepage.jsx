@@ -19,7 +19,20 @@ function Homepage(){
         tag: 'all',
         status: 'all' 
       });
-
+   async function deleteProblem(problemId){
+          const isConfirmed=window.confirm("Are you sure you want to delete this problem?");
+          if(isConfirmed){
+            try{
+            await axiosClient.delete(`/problem/delete/${problemId}`);
+            alert('your problem is successfully deleted');
+            const newProblemArray=problems.filter((problem)=>problem._id!==problemId);
+            setProblems(newProblemArray);
+            }
+            catch(err){
+                 alert("couldnot delete problem please try again!!");
+            }
+          }
+    }
 
 
 
@@ -97,7 +110,7 @@ function Homepage(){
           )
           }
            <div className="relative group">
-          <button className="px-4 py-2 bg-slate-800 border border-slate-700 rounded-xl hover:bg-slate-700 transition font-medium">
+          <button className="px-4 py-2 bg-slate-800 border border-slate-700 rounded-xl hover:bg-slate-700 transition font-medium"> 
             {user?.firstName}
           </button>
 
@@ -235,6 +248,16 @@ function Homepage(){
         {problem.tags}
       </span>
     </div>
+    <div>
+      {user.role==="admin"&&<div className='mt-2 flex flex-row-reverse'>
+      <button  onClick={()=>deleteProblem(problem._id)}
+  className="px-4 py-1 bg-red-600 text-white font-medium rounded-lg shadow-md hover:bg-red-700 hover:shadow-lg transition-all duration-200"
+>
+  Delete Problem
+</button>
+      </div>
+}
+      </div> 
   </div>
 )))
 }
