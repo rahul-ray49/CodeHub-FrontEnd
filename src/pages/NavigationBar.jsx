@@ -19,9 +19,18 @@ import { Link, NavLink } from 'react-router';
           to="/"
           className="text-3xl font-extrabold tracking-wide text-white hover:text-blue-400 transition"
         >
-          CodeHub
+          <div className='flex items-center gap-3'>
+
+           <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-lg font-bold">
+              ⚡
+            </div>
+          <div>CodeHub</div>
+          </div>
         </NavLink>
          <div className='flex justify-between gap-5'>
+          <Link to="/">
+          <button className="px-5 py-2 bg-blue-600 hover:bg-blue-700 rounded-xl font-medium transition-all duration-300 shadow-lg hover:shadow-blue-500/20">Return to Home</button>
+          </Link>
           {
           user?.role==="admin"&&(
              <Link to="/admin-panel">

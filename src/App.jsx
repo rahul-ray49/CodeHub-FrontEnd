@@ -10,6 +10,7 @@ import { checkAuth } from './authSlice'
 import VerifyEmailNotice from './pages/verifyEmailNotice'
 import AdminPanel from './pages/AdminPanel'
 import ProblemPage from './pages/ProblemPage'
+import LandingPage from './pages/LandingPage'
 function App() {
 
   const {isAuthenticated,user,loading}=useSelector((state)=>state.auth);
@@ -30,10 +31,11 @@ function App() {
   return (
     <>
      <Routes>
-          <Route path="/" element={isAuthenticated?<Homepage></Homepage>:<Navigate to="/signup"/>}></Route>
+          <Route path="/" element={isAuthenticated?<LandingPage/>:<Navigate to="/signup"/>}></Route>
            <Route path="/login" element={isAuthenticated?<Navigate to="/"/>:<Login></Login>}></Route>
            <Route path="/signup" element={isAuthenticated?<Navigate to="/"/>:<Signup></Signup>}></Route>
            <Route path="/verify-email" element={<VerifyEmailNotice />}/>
+           <Route path="/problemSection" element={isAuthenticated?<Homepage/>:<Login></Login>}></Route>
            <Route path="/admin-panel" element={isAuthenticated&&user?.role==="admin"?<AdminPanel></AdminPanel>:<Login></Login>}/>
            <Route path="/problem/:problemId" element={isAuthenticated?<ProblemPage></ProblemPage>:<Login/>}/>
          </Routes>
