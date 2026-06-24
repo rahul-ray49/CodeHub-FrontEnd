@@ -38,8 +38,6 @@ const LandingPage = () => {
                 {user?.firstName?.charAt(0).toUpperCase()}
               </div>
 
-              <span>{user?.firstName}</span>
-
             </div>
 
             <div className="absolute right-0 mt-2 hidden group-hover:block w-44 bg-[#111827] border border-slate-700 rounded-xl overflow-hidden">
