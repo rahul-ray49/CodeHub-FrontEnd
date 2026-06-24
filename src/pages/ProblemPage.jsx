@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import axiosClient from "../utils/axiosClient";
 import Page404 from "./Page404";
+import Editor from "@monaco-editor/react";
 
 const ProblemPage = () => {
     const {problemId}=useParams();
@@ -13,8 +14,34 @@ const ProblemPage = () => {
     const [problem, setProblem] = useState(null);
     const [activeLeftTab, setActiveLeftTab] = useState("description");
     const [activeRightTab, setActiveRightTab] = useState("code");
+    const [selectedLanguage, setSelectedLanguage] = useState("javascript");
+    const [languageCodes, setLanguageCodes] = useState({});
+    const [runResult, setRunResult] = useState(null);
+    const [runLoading, setRunLoading] = useState(false);
+    const [submitLoading,setSubmitLoading] = useState(false);
+    const [submitResult,setSubmitResult] = useState(null);
 
     const rightTabs = ["code","testcase","result"];
+
+
+
+    const getMonacoLanguage = (language) => {
+
+            switch(language){
+
+                case "c++":
+                return "cpp";
+
+                case "javascript":
+                return "javascript";
+
+                case "java":
+                return "java";
+
+                default:
+                return "javascript";
+                }
+    }
                
   
     const activeColor="cursor-pointer px-5 py-2 rounded-xl text-white font-medium bg-gradient-to-r from-blue-600 to-blue-600 transition-all duration-300 ease-out";
@@ -28,8 +55,6 @@ const ProblemPage = () => {
                         const response = await axiosClient.get(
                             `/problem/problemById/${problemId}`
                         );
-
-                        console.log(response.data);
 
                         setProblem(response.data);
 
@@ -47,6 +72,22 @@ const ProblemPage = () => {
                 fetchProblem();
 
          }, [problemId]);
+
+           
+
+               useEffect(() => {
+
+                    if (!problem) return;
+
+                    const initialCodes = {};
+
+                    problem?.startCode?.forEach((item) => {
+                        initialCodes[item.language] = item.initialCode;
+                    });
+
+                    setLanguageCodes(initialCodes);
+
+            }, [problem]);
 
 
 
@@ -69,6 +110,109 @@ const ProblemPage = () => {
                     <Page404></Page404>
                 );
             }
+              
+
+
+
+
+
+
+
+            const handleRun = async () => {
+
+                        try {
+
+                            setRunLoading(true);
+
+                            const response = await axiosClient.post(
+                            `/submission/run/${problemId}`,
+                            {
+                                code: languageCodes[selectedLanguage],
+                                language: selectedLanguage
+                            }
+                            );
+
+                            console.log(response.data);
+
+                            setRunResult(response.data);
+                            setActiveRightTab("testcase");
+
+                        }
+                        catch(err){
+
+                            console.log(err);
+                            setRunResult({
+                                success:false,
+                                error:true,
+                                message:"Please check your code and try again."
+                            });
+                            setActiveRightTab("testcase");
+
+                        }
+                        finally{
+
+                            setRunLoading(false);
+
+                        }
+
+                };
+              
+            
+                const handleSubmit = async()=>{
+
+                        try{
+
+                            setSubmitLoading(true);
+
+                            const response = await axiosClient.post(
+                            `/submission/submit/${problemId}`,
+                            {
+                                code: languageCodes[selectedLanguage],
+                                language: selectedLanguage
+                            }
+                            );
+
+                            setSubmitResult(response.data);
+                            console.log(response.data);
+
+                            setActiveRightTab("result");
+
+                        }
+                        catch(err){
+
+                            console.log(err);
+
+                             setSubmitResult({
+                                success:false,
+                                error:true,
+                                message:"Please check your code and try again."
+                            });
+                            setActiveRightTab("result");
+
+                        }
+                        finally{
+
+                            setSubmitLoading(false);
+
+                        }
+
+                    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -84,7 +228,7 @@ const ProblemPage = () => {
                                 {/* LEFT PANEL */}
                                 
 
-                                <div className="w-1/2 space-y-6 border border-slate-800 p-4 rounded-lg">
+                                <div className="w-1/2 space-y-6 border border-slate-700 border-2 p-4 rounded-lg">
 
                                
 
@@ -127,11 +271,11 @@ const ProblemPage = () => {
                                                 <ProblemHeader problem={problem} />
 
                                                 <ProblemDescription
-                                                description={problem.description}
+                                                description={problem?.description}
                                                 />
 
                                                 <ExampleSection
-                                                examples={problem.visibleTestCases}
+                                                examples={problem?.visibleTestCases}
                                                 />
                                             </>
                                            )}
@@ -139,15 +283,15 @@ const ProblemPage = () => {
                                         {activeLeftTab === "solutions" && (
                                             
                                             <div className="p-2">
-                                                {problem.referenceSolution.map((sol, index) => (
+                                                {problem?.referenceSolution?.map((sol, index) => (
                                                     <>
 
                                                 <div key={index}>
                                                     <h3 className=" inline-block px-3 py-1 mb-4 rounded-lg bg-slate-800 border border-slate-700 text-blue-400 font-semibold text-2xl uppercase tracking-wide">
-                                                    {sol.language}</h3>
+                                                    {sol?.language}</h3>
 
                                                     <pre>
-                                                    {sol.completeCode}
+                                                    {sol?.completeCode}
                                                     </pre>
                                                 </div>
                                                 <br></br>
@@ -186,7 +330,7 @@ const ProblemPage = () => {
 
                                     <div className="w-1/2">
 
-                                        <div className="bg-slate-900/80 border border-slate-700 rounded-xl h-[80vh] flex flex-col">
+                                       <div className="bg-slate-900/80 border border-slate-700 rounded-xl  flex flex-col">
 
                                             {/* Top Tabs */}
 
@@ -221,23 +365,346 @@ const ProblemPage = () => {
 
                                         <div className="flex-1">
 
-                                            <div className="flex-1 flex justify-center items-center text-slate-400">
+                                            <div className="text-slate-400 px-3 ">
 
                                                         {activeRightTab === "code" && (
-                                                            <p>Monaco Editor Coming Soon 🚀</p>
+
+                                                            <div >
+                                                                <select
+                                                                    value={selectedLanguage}
+                                                                    onChange={(e) => setSelectedLanguage(e.target.value)}
+                                                                    className="
+                                                                    bg-slate-800
+                                                                    border border-slate-700
+                                                                    rounded-lg
+                                                                    px-3 py-2
+                                                                    text-slate-200
+                                                                    outline-none
+                                                                    "
+                                                                >
+                                                                    {problem?.startCode?.map((item) => (
+                                                                    <option
+                                                                        key={item?.language}
+                                                                        value={item?.language}
+                                                                    >
+                                                                        {item?.language}
+                                                                    </option>
+                                                                    ))}
+                                                                </select>
+
+                                                                <Editor className="mt-2 p-2 rounded-2xl" height="65vh" 
+                                                                language={getMonacoLanguage(selectedLanguage)} 
+                                                                value={languageCodes[selectedLanguage] || ""}
+                                                                onChange={(value) => {
+                                                                setLanguageCodes((prev) => ({
+                                                                    ...prev,
+                                                                    [selectedLanguage]: value || ""
+                                                                }));
+
+                                                                }}
+                                                                 theme="hc-black"
+                                                                  options={{padding:{
+                                                                    top:20,
+                                                                    bottom:20
+                                                                  }}}
+                                                                    />
+                                                            </div>
                                                         )}
 
-                                                        {activeRightTab === "testcase" && (
-                                                            <p>Run your code to test it</p>
+                                                        {activeRightTab === "testcase" && runResult &&(
+
+                                                            <>
+                                                            {
+                                                                runResult?.error ? (
+
+                                                                    <div
+                                                                        className="
+                                                                        bg-red-500/10
+                                                                        border border-red-500/20
+                                                                        rounded-xl
+                                                                        p-4
+                                                                        "
+                                                                    >
+                                                                        <h3 className="text-red-400 font-semibold">
+                                                                            Error
+                                                                        </h3>
+
+                                                                        <p className="text-slate-300 mt-2">
+                                                                            {runResult.message}
+                                                                        </p>
+
+                                                                    </div>
+
+                                                                    ) :
+                                                            <>
+
+
+                                                        <div className="flex justify-between items-center mb-6"> 
+                                                         <div className="mb-4">
+                                                            <h2 className="text-xl font-semibold text-white">
+                                                                Test Results
+                                                            </h2>
+
+                                                            <p className="text-slate-400 text-sm mt-1">
+                                                                Passed {runResult?.passedCases}/{runResult?.totalCases} test cases
+                                                            </p>
+                                                        </div>
+
+                                                        
+                                                            <span
+                                                                className={`
+                                                                    px-3 py-1 rounded-lg text-sm font-medium
+                                                                    ${
+                                                                    runResult?.success
+                                                                        ? "bg-green-500/20 text-green-400"
+                                                                        : "bg-red-500/20 text-red-400"
+                                                                    }
+                                                                `}
+                                                                >
+                                                                {runResult?.success ? "Accepted" : "Failed"}
+                                                                </span>
+                                                        </div>
+
+                                                            
+                                                       
+                                                            {/* Testcases will come here */}
+
+                                                        <div className="space-y-4">
+                                                            
+
+                                                             {runResult?.testCases?.map((tc,index)=>(
+
+                                                            <div
+                                                                key={index}
+                                                                className="
+                                                                bg-slate-900
+                                                                border border-slate-700
+                                                                rounded-xl
+                                                                overflow-hidden
+                                                                "
+                                                                >
+
+                                                                 <div
+                                                                    className="
+                                                                    flex justify-between items-center
+                                                                    px-4 py-3
+                                                                    border-b border-slate-700
+                                                                    "
+                                                                  >
+
+                                                                     <h3 className="font-medium text-slate-200">
+                                                                    Test Case #{index + 1}
+                                                                     </h3>
+
+                                                                     <span
+                                                                    className={`
+                                                                    px-2 py-1 rounded-md text-xs font-medium
+                                                                    ${
+                                                                        tc.status_id === 3
+                                                                        ? "bg-green-500/20 text-green-400"
+                                                                        : "bg-red-500/20 text-red-400"
+                                                                    }
+                                                                    `}
+                                                                    >
+                                                                    {tc.status}
+                                                                     </span>
+
+                                                                </div>
+
+
+                                                                <div className="p-4 space-y-4">
+
+                                                                    <div>
+                                                                        <p className="text-xs uppercase text-slate-500 mb-2">
+                                                                        Input
+                                                                        </p>
+
+                                                                        <pre
+                                                                        className="
+                                                                        bg-slate-950
+                                                                        rounded-lg
+                                                                        p-3
+                                                                        text-slate-200
+                                                                        "
+                                                                        >
+                                                                        {tc.stdin}
+                                                                        </pre>
+                                                                    </div>
+
+                                                                </div>
+
+
+
+
+                                                                <div className="mt-5">
+                                                                    <p className="text-xs uppercase text-slate-500 mb-2 p-3">
+                                                                        Expected Output
+                                                                    </p>
+                                                                   <div className="py-2 px-3">
+                                                                    <pre className="bg-slate-950 rounded-lg p-3 text-green-400">
+                                                                           {tc.expected_output}
+                                                                    </pre>
+
+                                                                   </div>
+                                                                    
+                                                                </div>
+
+
+                                                                 <div className="p-4 space-y-4">
+
+                                                                    <div>
+                                                                        <p className="text-xs uppercase text-slate-500 mb-2">
+                                                                        Your Output:
+                                                                        </p>
+
+                                                                        <pre
+                                                                         className={`
+                                                                        bg-slate-950
+                                                                        rounded-lg
+                                                                        p-3
+                                                                        ${
+                                                                            tc.status_id === 3
+                                                                            ? "text-green-400"
+                                                                            : "text-red-400"
+                                                                        }
+                                                                        `}
+                                                                        >
+                                                                        {tc.stdout|| "No Output"}
+                                                                        </pre>
+                                                                    </div>
+
+                                                                </div>
+
+                                                                
+
+                                                            </div>
+
+                                                            ))}
+
+                                                       </div>
+
+                                                       </>
+
+                                                    }
+
+                                                    
+
+                                                     </>
+
+                                                           
                                                         )}
 
-                                                        {activeRightTab === "result" && (
-                                                            <p>Submit your solution to see result</p>
-                                                        )}
+                                                    {activeRightTab === "result" && submitResult && (
+
+                                                        
+                
+                                                        <div className="p-5"> 
+                                                            <div className="mb-6">
+
+                                                                <span
+                                                                    className={`
+                                                                    px-4 py-2 rounded-lg text-sm font-medium
+                                                                    ${
+                                                                    submitResult?.status === "accepted"
+                                                                    ? "bg-green-500/20 text-green-400"
+                                                                    : "bg-red-500/20 text-red-400"
+                                                                    }
+                                                                    `}
+                                                                >
+                                                                    {submitResult?.status === "accepted"
+                                                                    ? "Accepted"
+                                                                    : "Wrong Answer"}
+                                                                </span>
+
+                                                            </div>
+
+                                                            <div className="grid grid-cols-3 gap-4">
+
+
+                                                            <div
+                                                                className="
+                                                                bg-slate-900
+                                                                border border-slate-700
+                                                                rounded-xl
+                                                                p-4
+                                                                "
+                                                                >
+
+                                                                <p className="text-slate-400 text-sm">
+                                                                Passed
+                                                                </p>
+
+                                                                <h3 className="text-xl font-semibold text-white">
+                                                                {submitResult?.testCasesPassed}/
+                                                                {submitResult?.testCasesTotal}
+                                                                </h3>
+
+                                                            </div>
+
+
+                                                            <div
+                                                                className="
+                                                                bg-slate-900
+                                                                border border-slate-700
+                                                                rounded-xl
+                                                                p-4
+                                                                "
+                                                                >
+
+                                                                <p className="text-slate-400 text-sm">
+                                                                Runtime
+                                                                </p>
+
+                                                                <h3 className="text-xl font-semibold text-white">
+                                                                    {submitResult?.runtime}s
+                                                                </h3>.
+
+                                                            </div>
+
+                                                            <div
+                                                                className="
+                                                                bg-slate-900
+                                                                border border-slate-700
+                                                                rounded-xl
+                                                                p-4
+                                                                "
+                                                                >
+
+                                                                <p className="text-slate-400 text-sm">
+                                                                Memory
+                                                                </p>
+
+                                                                <h3 className="text-xl font-semibold text-white">
+                                                                    {submitResult?.memory} KB
+                                                                </h3>
+
+                                                            </div>
+
+                                                            {submitResult?.errorMessage && (
+                                                                <div
+                                                                    className="
+                                                                    bg-red-500/10
+                                                                    border border-red-500/20
+                                                                    rounded-xl
+                                                                    p-4
+                                                                    "
+                                                                >
+                                                                    {submitResult?.errorMessage}
+                                                                </div>
+                                                                )}
+
+                                                           </div>
+
+                                                          </div> 
+                                                        )
+
+                                                      
+                                                        
+                                                }
 
                                             </div>
 
-                                         </div>
+                                          </div>
 
                                             {/* Bottom Action Bar */}
 
@@ -261,21 +728,34 @@ const ProblemPage = () => {
                                                             text-slate-200
                                                             cursor-pointer
                                                             "
+                                                            disabled={runLoading}
+                                                            onClick={()=>handleRun()}
                                                             >
-                                                            Run
+                                                            {runLoading && (
+                                                                <span className="loading loading-spinner loading-xs"></span>
+                                                            )}
+                                                             {runLoading ? "Running..." : "Run"}
                                                             </button>
 
-                                                            <button
+                                                         <button
+                                                            onClick={handleSubmit}
+                                                            disabled={submitLoading}
                                                             className="
-                                                            px-4 py-2
-                                                            rounded-lg
-                                                            bg-blue-600
-                                                            text-white
-                                                            cursor-pointer
+                                                                px-4 py-2
+                                                                rounded-lg
+                                                                bg-green-600
+                                                                text-white
+                                                                font-medium
+                                                                flex items-center gap-2
+                                                                cursor-pointer
                                                             "
                                                             >
-                                                            Submit
-                                                            </button>
+                                                            {submitLoading && (
+                                                                <span className="loading loading-spinner loading-xs"></span>
+                                                            )}
+
+                                                            {submitLoading ? "Submitting..." : "Submit"}
+                                                          </button>
 
                                                         </div>
 

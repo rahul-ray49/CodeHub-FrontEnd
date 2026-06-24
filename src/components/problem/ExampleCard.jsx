@@ -3,7 +3,7 @@ const ExampleCard = ({ example, index }) => {
     <div className="bg-slate-800/60 rounded-xl p-4">
 
       <h3 className="font-semibold text-white mb-3">
-        Example {index + 1}
+        Example: {index + 1}
       </h3>
 
       <div className="space-y-2 text-sm">

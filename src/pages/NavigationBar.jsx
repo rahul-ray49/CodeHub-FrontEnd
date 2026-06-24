@@ -9,7 +9,7 @@ import { Link, NavLink } from 'react-router';
             const handleLogout = () => {
                   dispatch(logoutUser());
                   setSolvedProblems([]); // Clear solved problems on logout
-                };
+            };
 
     return (
         <>
