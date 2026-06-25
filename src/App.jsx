@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Routes,Route, Navigate } from 'react-router-dom'
 import Login from "./pages/Login"
 import Signup from './pages/Signup'
-import Homepage from './pages/Homepage'
+import ProblemListPage from './pages/ProblemListPage'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { useEffect } from 'react'
@@ -15,6 +15,7 @@ import Page404 from './pages/Page404'
 import UpdateProblemsSection from './pages/UpdateProblemsSection'
 import UpdateProblem from './pages/UpdateProblem'
 import NotAuthorizedPage from './pages/NotAuthorizedPage'
+import AdminRegisterPage from './pages/AdminRegisterPage'
 
 function App() {
 
@@ -40,12 +41,14 @@ function App() {
            <Route path="/login" element={isAuthenticated?<Navigate to="/"/>:<Login></Login>}></Route>
            <Route path="/signup" element={isAuthenticated?<Navigate to="/"/>:<Signup></Signup>}></Route>
            <Route path="/verify-email" element={<VerifyEmailNotice />}/>
-           <Route path="/problemSection" element={isAuthenticated?<Homepage/>:<Login></Login>}></Route>
+           <Route path="/problemSection" element={isAuthenticated?<ProblemListPage/>:<Login></Login>}></Route>
            <Route path="/admin-panel" element={isAuthenticated&&user?.role==="admin"?<AdminPanel></AdminPanel>:(isAuthenticated&&user.role==="user"?<NotAuthorizedPage/>:<Login/>)}/>
            <Route path="/problem/:problemId" element={isAuthenticated?<ProblemPage></ProblemPage>:<Login/>}/>
            <Route path="*" element={<Page404></Page404>}></Route>
            <Route path="/updateproblems" element={isAuthenticated&&user.role==="admin"?<UpdateProblemsSection></UpdateProblemsSection>:(isAuthenticated&&user.role==="user"?<NotAuthorizedPage/>:<Login/>)}></Route>
            <Route path="/updateproblem/:problemId" element={isAuthenticated&&user.role==="admin"?<UpdateProblem></UpdateProblem>:(isAuthenticated&&user.role==="user"?<NotAuthorizedPage/>:<Login/>)}></Route>
+           <Route path="/admin-register" element={isAuthenticated&&user.role==="admin"?<AdminRegisterPage></AdminRegisterPage>:(isAuthenticated&&user.role==="user"?<NotAuthorizedPage/>:<Login/>)}></Route>
+         
          </Routes>
     </>
   )

@@ -158,6 +158,21 @@ const LandingPage = () => {
               </p>
             </Link>
 
+            <Link
+              to="/admin-register"
+              className="bg-[#111827] border border-slate-800 rounded-3xl p-8 hover:border-emerald-500 transition-all"
+            >
+              <div className="text-5xl mb-4">👤</div>
+
+              <h2 className="text-2xl font-bold text-emerald-400 mb-3">
+                Register Admin
+              </h2>
+
+              <p className="text-slate-400">
+                Create a new administrator account to manage problems, users, and platform settings.
+              </p>
+            </Link>
+
           </div>
         )}
 

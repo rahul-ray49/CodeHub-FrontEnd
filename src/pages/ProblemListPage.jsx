@@ -5,7 +5,7 @@ import axiosClient from '../utils/axiosClient';
 import { logoutUser } from '../authSlice';
 import NavigationBar from './NavigationBar';
 
-function Homepage(){
+function ProblemListPage(){
 
 
       const dispatch = useDispatch();
@@ -20,6 +20,7 @@ function Homepage(){
         tag: 'all',
         status: 'all' 
       });
+      const [search, setSearch] = useState("");
 
    async function deleteProblem(problemId){
           const isConfirmed=window.confirm("Are you sure you want to delete this problem?");
@@ -45,7 +46,8 @@ function Homepage(){
              const { data } = await axiosClient.get('/problem/getAllProblem',{
               params:{
                 page,
-                limit:5
+                limit:5,
+                search
               }
              });
              setProblems(data.getProblem);
@@ -71,7 +73,7 @@ function Homepage(){
      
          fetchProblems();
          if (user) fetchSolvedProblems();
-       }, [user,page]);
+       }, [user,page,search]);
 
 
 
@@ -99,7 +101,7 @@ function Homepage(){
       <div className="max-w-6xl mx-auto px-6 py-8">
 
         {/* Filters */}
-        <div className="flex flex-wrap justify-center items-center gap-4 mb-8 bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl">
+        <div className="grid grid-cols-3 gap-4 mb-8 bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl">
 
           <select
             className="bg-slate-950 border border-slate-700 rounded-xl w-80 px-4 py-2 text-white focus:ring-2 focus:ring-blue-500 outline-none transition"
@@ -138,6 +140,28 @@ function Homepage(){
             <option value="graph">Graph</option>
             <option value="dp">DP</option>
           </select>
+          <input
+            type="text"
+            placeholder="Search problems..."
+            value={search}
+            onChange={(e)=>{
+              setSearch(e.target.value);
+              setPage(1);
+
+            }}
+            className="
+                bg-slate-950
+                border border-slate-700
+                rounded-xl
+                w-80
+                px-4
+                py-2
+                text-white
+                placeholder:text-slate-500
+                focus:ring-2
+                focus:ring-blue-500
+                outline-none"
+           />
         </div>
 
         {/* Problems List */}
@@ -293,4 +317,4 @@ const getDifficultyBadgeColor = (difficulty) => {
   }
 };
 
-export default Homepage;
+export default ProblemListPage;
