@@ -11,6 +11,11 @@ import VerifyEmailNotice from './pages/verifyEmailNotice'
 import AdminPanel from './pages/AdminPanel'
 import ProblemPage from './pages/ProblemPage'
 import LandingPage from './pages/LandingPage'
+import Page404 from './pages/Page404'
+import UpdateProblemsSection from './pages/UpdateProblemsSection'
+import UpdateProblem from './pages/UpdateProblem'
+import NotAuthorizedPage from './pages/NotAuthorizedPage'
+
 function App() {
 
   const {isAuthenticated,user,loading}=useSelector((state)=>state.auth);
@@ -36,8 +41,11 @@ function App() {
            <Route path="/signup" element={isAuthenticated?<Navigate to="/"/>:<Signup></Signup>}></Route>
            <Route path="/verify-email" element={<VerifyEmailNotice />}/>
            <Route path="/problemSection" element={isAuthenticated?<Homepage/>:<Login></Login>}></Route>
-           <Route path="/admin-panel" element={isAuthenticated&&user?.role==="admin"?<AdminPanel></AdminPanel>:<Login></Login>}/>
+           <Route path="/admin-panel" element={isAuthenticated&&user?.role==="admin"?<AdminPanel></AdminPanel>:(isAuthenticated&&user.role==="user"?<NotAuthorizedPage/>:<Login/>)}/>
            <Route path="/problem/:problemId" element={isAuthenticated?<ProblemPage></ProblemPage>:<Login/>}/>
+           <Route path="*" element={<Page404></Page404>}></Route>
+           <Route path="/updateproblems" element={isAuthenticated&&user.role==="admin"?<UpdateProblemsSection></UpdateProblemsSection>:(isAuthenticated&&user.role==="user"?<NotAuthorizedPage/>:<Login/>)}></Route>
+           <Route path="/updateproblem/:problemId" element={isAuthenticated&&user.role==="admin"?<UpdateProblem></UpdateProblem>:(isAuthenticated&&user.role==="user"?<NotAuthorizedPage/>:<Login/>)}></Route>
          </Routes>
     </>
   )

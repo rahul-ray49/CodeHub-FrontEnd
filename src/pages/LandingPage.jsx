@@ -144,7 +144,7 @@ const LandingPage = () => {
             </Link>
 
             <Link
-              to="/admin/problems"
+              to="/updateproblems"
               className="bg-[#111827] border border-slate-800 rounded-3xl p-8 hover:border-yellow-500 transition-all"
             >
               <div className="text-5xl mb-4">✏️</div>

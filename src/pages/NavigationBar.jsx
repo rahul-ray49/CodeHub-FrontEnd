@@ -1,3 +1,4 @@
+import { useDispatch } from 'react-redux';
 import { logoutUser } from '../authSlice';
 import { Link, NavLink } from 'react-router';
 
@@ -5,7 +6,7 @@ import { Link, NavLink } from 'react-router';
  function NavigationBar({user,setSolvedProblems}){
  
    
-
+            const dispatch=useDispatch();
             const handleLogout = () => {
                   dispatch(logoutUser());
                   setSolvedProblems([]); // Clear solved problems on logout
