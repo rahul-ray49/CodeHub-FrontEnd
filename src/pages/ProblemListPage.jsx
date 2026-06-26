@@ -65,7 +65,7 @@ function ProblemListPage(){
          const fetchSolvedProblems = async () => {
            try {
              const { data } = await axiosClient.get('/problem/problemSolvedByUser');
-             setSolvedProblems(data);
+             setSolvedProblems(data.solvedProblems);
            } catch (error) {
              console.error('Error fetching solved problems:', error);
            }
@@ -82,7 +82,7 @@ function ProblemListPage(){
           
 
 
-      const filteredProblems = problems.filter(problem => {
+      const filteredProblems = problems?.filter(problem => {
         const difficultyMatch = filters.difficulty === 'all' || problem.difficulty === filters.difficulty;
         const tagMatch = filters.tag === 'all' || problem.tags === filters.tag;
         const statusMatch = filters.status === 'all' || 
@@ -170,7 +170,7 @@ function ProblemListPage(){
       <div className="flex justify-center py-10">
       <span className="loading loading-spinner loading-lg"></span>
       </div>:
-          (filteredProblems.map((problem) => (
+          (filteredProblems?.map((problem) => (
   <div
     key={problem?._id}
     className="
@@ -220,10 +220,10 @@ function ProblemListPage(){
     <div className="flex gap-3 mt-4">
       <span
         className={`px-3 py-1 rounded-full text-sm font-medium ${getDifficultyBadgeColor(
-          problem.difficulty
+          problem?.difficulty
         )}`}
       >
-        {problem.difficulty}
+        {problem?.difficulty}
       </span>
 
       <span
@@ -237,12 +237,12 @@ function ProblemListPage(){
           border border-blue-500/30
         "
       >
-        {problem.tags}
+        {problem?.tags}
       </span>
     </div>
     <div>
       {user.role==="admin"&&<div className='mt-2 flex flex-row-reverse'>
-      <button  onClick={()=>deleteProblem(problem._id)}
+      <button  onClick={()=>deleteProblem(problem?._id)}
   className="px-4 py-1 bg-red-600 text-white font-medium rounded-lg shadow-md hover:bg-red-700 hover:shadow-lg transition-all duration-200"
 >
   Delete Problem

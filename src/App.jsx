@@ -16,6 +16,7 @@ import UpdateProblemsSection from './pages/UpdateProblemsSection'
 import UpdateProblem from './pages/UpdateProblem'
 import NotAuthorizedPage from './pages/NotAuthorizedPage'
 import AdminRegisterPage from './pages/AdminRegisterPage'
+import ProblemSolvedPage from './pages/ProblemSolvedPage'
 
 function App() {
 
@@ -28,11 +29,23 @@ function App() {
 
   console.log(user);
 
-  if(loading){
-    return <div className="min-h-screen flex items-center justify-center bg-slate-900/80">
-      <span className="loading loading-spinner loading-lg" ></span>
-    </div>
-  }
+        if (loading) {
+                    return (
+                        <div className="min-h-screen bg-[#0B1120] flex items-center justify-center">
+
+                            <div className="flex flex-col items-center gap-4">
+
+                                <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+
+                                <p className="text-gray-400">
+                                    Loading ....
+                                </p>
+
+                            </div>
+
+                        </div>
+                    );
+                }
 
   return (
     <>
@@ -48,7 +61,7 @@ function App() {
            <Route path="/updateproblems" element={isAuthenticated&&user.role==="admin"?<UpdateProblemsSection></UpdateProblemsSection>:(isAuthenticated&&user.role==="user"?<NotAuthorizedPage/>:<Login/>)}></Route>
            <Route path="/updateproblem/:problemId" element={isAuthenticated&&user.role==="admin"?<UpdateProblem></UpdateProblem>:(isAuthenticated&&user.role==="user"?<NotAuthorizedPage/>:<Login/>)}></Route>
            <Route path="/admin-register" element={isAuthenticated&&user.role==="admin"?<AdminRegisterPage></AdminRegisterPage>:(isAuthenticated&&user.role==="user"?<NotAuthorizedPage/>:<Login/>)}></Route>
-         
+           <Route path="/solved" element={isAuthenticated?<ProblemSolvedPage></ProblemSolvedPage>:<Login></Login>}></Route>
          </Routes>
     </>
   )
