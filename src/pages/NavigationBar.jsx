@@ -3,13 +3,14 @@ import { logoutUser } from '../authSlice';
 import { Link, NavLink } from 'react-router';
 
 
- function NavigationBar({user,setSolvedProblems}){
+ function NavigationBar({user,setSolvedProblemsIds}){
  
    
             const dispatch=useDispatch();
             const handleLogout = () => {
                   dispatch(logoutUser());
-                  setSolvedProblems([]); // Clear solved problems on logout
+                  setSolvedProblemsIds([]);
+                  // Clear solved problems on logout
             };
 
     return (

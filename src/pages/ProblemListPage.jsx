@@ -5,302 +5,445 @@ import axiosClient from '../utils/axiosClient';
 import { logoutUser } from '../authSlice';
 import NavigationBar from './NavigationBar';
 
-function ProblemListPage(){
 
 
-      const dispatch = useDispatch();
-      const { user } = useSelector((state) => state.auth);
-      const [problems, setProblems] = useState([]);
-      const [solvedProblems, setSolvedProblems] = useState([]);
-      const [page, setPage] = useState(1);
-      const [totalPages, setTotalPages] = useState(1);
-      const [Loading,setLoading]=useState(false);
-      const [filters, setFilters] = useState({
-        difficulty: 'all',
-        tag: 'all',
-        status: 'all' 
-      });
-      const [search, setSearch] = useState("");
+      function ProblemListPage(){
 
-   async function deleteProblem(problemId){
-          const isConfirmed=window.confirm("Are you sure you want to delete this problem?");
-          if(isConfirmed){
-            try{
-            await axiosClient.delete(`/problem/delete/${problemId}`);
-            alert('your problem is successfully deleted');
-            const newProblemArray=problems.filter((problem)=>problem._id!==problemId);
-            setProblems(newProblemArray);
+        const { user } = useSelector((state) => state.auth);
+
+        const [loading, setLoading] = useState(false);
+        const [problems, setProblems] = useState([]);
+        const [solvedProblemsIds, setSolvedProblemsIds] = useState([]);
+
+        const [page, setPage] = useState(1);
+        const [totalPages, setTotalPages] = useState(1);
+        const [search, setSearch] = useState("");
+
+        const[difficulty,setDifficulty]=useState("all");
+        const[tag,setTag]=useState("all");
+        const limit=5;
+
+
+        useEffect(() => {
+            fetchProblems();
+        }, [page,search,difficulty,tag]);
+
+
+
+        useEffect(() => {
+            if(user){
+                fetchSolvedProblems();
             }
-            catch(err){
-                 alert("couldnot delete problem please try again!!");
-            }
-          }
-    }
+        }, [user]);
 
 
 
-       useEffect(() => {
-         const fetchProblems = async () => {
-           try {
-             setLoading(true);
-             const { data } = await axiosClient.get('/problem/getAllProblem',{
-              params:{
-                page,
-                limit:5,
-                search
+        
+
+            const fetchProblems=async()=>{
+
+              try{
+                setLoading(true);
+                const response=await axiosClient.get("/problem/getAllProblem",{
+                  params:{
+                    page,
+                    limit,
+                    search,
+                    difficulty,
+                    tag
+                  }
+                });
+                setProblems(response.data.getProblem);
+                setTotalPages(response.data.totalPages);
               }
-             });
-             setProblems(data.getProblem);
-             setTotalPages(data.totalPages);
-           } catch (error) {
-             console.error('Error fetching problems:', error);
-           } finally{
-               setLoading(false);
-           }
-         };
-     
-
-
-
-         const fetchSolvedProblems = async () => {
-           try {
-             const { data } = await axiosClient.get('/problem/problemSolvedByUser');
-             setSolvedProblems(data.solvedProblems);
-           } catch (error) {
-             console.error('Error fetching solved problems:', error);
-           }
-         };
-     
-         fetchProblems();
-         if (user) fetchSolvedProblems();
-       }, [user,page,search]);
-
-
-
-
-    
-          
-
-
-      const filteredProblems = problems?.filter(problem => {
-        const difficultyMatch = filters.difficulty === 'all' || problem.difficulty === filters.difficulty;
-        const tagMatch = filters.tag === 'all' || problem.tags === filters.tag;
-        const statusMatch = filters.status === 'all' || 
-                        solvedProblems.some(sp => sp._id === problem._id);
-        return difficultyMatch && tagMatch && statusMatch;
-    });
-
-
-    return(
-        <>
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white">      
-      {/* Navbar */}
-      <NavigationBar user={user} setSolvedProblems={setSolvedProblems}/>
-
-      {/* Main Content */}
-      <div className="max-w-6xl mx-auto px-6 py-8">
-
-        {/* Filters */}
-        <div className="grid grid-cols-3 gap-4 mb-8 bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl">
-
-          <select
-            className="bg-slate-950 border border-slate-700 rounded-xl w-80 px-4 py-2 text-white focus:ring-2 focus:ring-blue-500 outline-none transition"
-            value={filters.status}
-            onChange={(e) =>
-              setFilters({...filters, status: e.target.value })
+              catch(error){
+                console.log(error);
+                alert('problem occured while fetching the problems'+error.message);
+              }
+              finally{
+                setLoading(false);
+              }
             }
-          >
-            <option value="all">All Problems</option>
-            <option value="solved">Solved Problems</option>
-          </select>
 
-          <select
-          className="bg-slate-950 border border-slate-700 rounded-xl w-80 px-4 py-2 text-white focus:ring-2 focus:ring-blue-500 outline-none transition"
-            value={filters.difficulty}
-            onChange={(e) =>
-              setFilters({ ...filters, difficulty: e.target.value })
+
+
+            const fetchSolvedProblems=async()=>{
+
+
+              try{
+                const response=await axiosClient.get("/problem/ProblemSolvedByUser2");
+                setSolvedProblemsIds(response.data.solvedProblemsIds);
+              }
+              catch(error){
+
+             console.log(error);
+             alert("problem fetching solved problems by user"+error.message);
+
+              }
+
             }
-          >
-            <option value="all">All Difficulties</option>
-            <option value="easy">Easy</option>
-            <option value="medium">Medium</option>
-            <option value="hard">Hard</option>
-          </select>
 
-          <select
-          className="bg-slate-950 border border-slate-700 rounded-xl w-80 px-4 py-2 text-white focus:ring-2 focus:ring-blue-500 outline-none transition"
-            value={filters.tag}
-            onChange={(e) =>
-              setFilters({ ...filters, tag: e.target.value })
-            }
-          >
-            <option value="all">All Tags</option>
-            <option value="array">Array</option>
-            <option value="linkedList">Linked List</option>
-            <option value="graph">Graph</option>
-            <option value="dp">DP</option>
-          </select>
-          <input
-            type="text"
-            placeholder="Search problems..."
-            value={search}
-            onChange={(e)=>{
-              setSearch(e.target.value);
-              setPage(1);
 
-            }}
-            className="
-                bg-slate-950
-                border border-slate-700
-                rounded-xl
-                w-80
-                px-4
-                py-2
-                text-white
-                placeholder:text-slate-500
-                focus:ring-2
-                focus:ring-blue-500
-                outline-none"
-           />
-        </div>
 
-        {/* Problems List */}
-        <div className="space-y-5 bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
-          {Loading ? 
-      <div className="flex justify-center py-10">
-      <span className="loading loading-spinner loading-lg"></span>
-      </div>:
-          (filteredProblems?.map((problem) => (
-  <div
-    key={problem?._id}
-    className="
-      bg-slate-900
-      border border-slate-800
-      rounded-2xl
-      p-5
-      hover:border-blue-500
-      hover:-translate-y-1
-      hover:shadow-xl
-      hover:shadow-blue-500/10
-      transition-all
-      duration-300
-    "
-  >
-    <div className="flex justify-between items-center">
+            const deleteProblem = async (problemId) => {
 
-      <h2 className="text-xl font-semibold">
-        <NavLink
-          to={`/problem/${problem?._id}`}
-          className="text-slate-100 hover:text-blue-400 transition"
-        >
-         {problem?.problemNumber.toString()}. {problem?.title}
-        </NavLink>
-      </h2>
+                  const isConfirmed = window.confirm(
+                      "Are you sure you want to delete this problem?"
+                  );
 
-      {solvedProblems.some(
-        (sp) => sp._id === problem._id
-      ) && (
-        <span
-          className="
-            flex items-center gap-2
-            bg-emerald-500/20
-            text-emerald-400
-            border border-emerald-500/30
-            px-3 py-1
-            rounded-full
-            text-sm
-            font-medium
-          "
-        >
-          ✓ Solved
-        </span>
-      )}
-    </div>
+                  if (!isConfirmed) return;
 
-    <div className="flex gap-3 mt-4">
-      <span
-        className={`px-3 py-1 rounded-full text-sm font-medium ${getDifficultyBadgeColor(
-          problem?.difficulty
-        )}`}
-      >
-        {problem?.difficulty}
-      </span>
+                  try {
 
-      <span
-        className="
-          px-3 py-1
-          rounded-full
-          text-sm
-          font-medium
-          bg-blue-500/20
-          text-blue-400
-          border border-blue-500/30
-        "
-      >
-        {problem?.tags}
-      </span>
-    </div>
-    <div>
-      {user.role==="admin"&&<div className='mt-2 flex flex-row-reverse'>
-      <button  onClick={()=>deleteProblem(problem?._id)}
-  className="px-4 py-1 bg-red-600 text-white font-medium rounded-lg shadow-md hover:bg-red-700 hover:shadow-lg transition-all duration-200"
->
-  Delete Problem
-</button>
-      </div>
-}
-      </div> 
-  </div>
-)))
-}
-</div>
+                      await axiosClient.delete(`/problem/delete/${problemId}`);
 
-<div className="flex justify-center items-center gap-4 mt-8">
+                      alert("Problem deleted successfully.");
+                      if (problems.length === 1 && page > 1) {
+                            await fetchSolvedProblems();
+                            setPage((prev) => prev - 1);
+                        } else {
+                            await fetchProblems();
+                            await fetchSolvedProblems();
+                        }
+                     
 
-  <button
-    className="
-      px-5 py-2
-      bg-slate-900
-      border border-slate-700
-      rounded-xl
-      hover:bg-slate-800
-      transition
-      disabled:opacity-50
-      disabled:cursor-not-allowed
-    "
-    disabled={page===1}
-    onClick={() => setPage(prev => prev-1)}
-  >
-    Previous
-  </button>
+                  }
+                  catch (error) {
 
-  <span className="text-slate-300 font-medium">
-    Page {page} of {totalPages}
-  </span>
+                      console.log(error);
 
-  <button
-    className="
-      px-5 py-2
-      bg-slate-900
-      border border-slate-700
-      rounded-xl
-      hover:bg-slate-800
-      transition
-      disabled:opacity-50
-      disabled:cursor-not-allowed
-    "
-    disabled={page===totalPages}
-    onClick={() => setPage(prev => prev+1)}
-  >
-    Next
-  </button>
+                      alert(
+                          "Problem could not be deleted.\n" +
+                          error.message
+                      );
 
-</div>
-      </div>
-    </div>
-        </>
-    );
-}
+                  }
+
+              }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+             return(
+              <>
+                <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white">
+                    <NavigationBar
+                        user={user}
+                        setSolvedProblemsIds={setSolvedProblemsIds}
+                    />
+
+                    <div className="max-w-6xl mx-auto px-6 py-8">
+
+                      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
+
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+                              <input
+                                  type="text"
+                                  placeholder="Search Problems..."
+                                  value={search}
+                                  onChange={(e)=>{
+                                      setSearch(e.target.value);
+                                      setPage(1);
+                                  }}
+                                  className="
+                                      bg-slate-950
+                                      border border-slate-700
+                                      rounded-xl
+                                      px-4
+                                      py-3
+                                      text-white
+                                      placeholder:text-slate-500
+                                      focus:outline-none
+                                      focus:ring-2
+                                      focus:ring-blue-500
+                                  "
+                              />
+
+                              <select
+                                  value={difficulty}
+                                  onChange={(e)=>{
+                                      setDifficulty(e.target.value);
+                                      setPage(1);
+                                  }}
+                                  className="
+                                      bg-slate-950
+                                      border border-slate-700
+                                      rounded-xl
+                                      px-4
+                                      py-3
+                                      text-white
+                                      focus:outline-none
+                                      focus:ring-2
+                                      focus:ring-blue-500
+                                  "
+                              >
+                                  <option value="all">All Difficulties</option>
+                                  <option value="easy">Easy</option>
+                                  <option value="medium">Medium</option>
+                                  <option value="hard">Hard</option>
+                              </select>
+
+                              <select
+                                  value={tag}
+                                  onChange={(e)=>{
+                                      setTag(e.target.value);
+                                      setPage(1);
+                                  }}
+                                  className="
+                                      bg-slate-950
+                                      border border-slate-700
+                                      rounded-xl
+                                      px-4
+                                      py-3
+                                      text-white
+                                      focus:outline-none
+                                      focus:ring-2
+                                      focus:ring-blue-500
+                                  "
+                              >
+                                  <option value="all">All Tags</option>
+                                  <option value="array">Array</option>
+                                  <option value="linkedList">Linked List</option>
+                                  <option value="graph">Graph</option>
+                                  <option value="dp">DP</option>
+                              </select>
+
+                          </div>
+
+                      </div>
+
+                  </div>
+
+
+
+                  <div className="mt-8 bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl max-w-6xl mx-auto">
+
+                              {
+                                loading ?
+
+                                <div className="flex justify-center py-12">
+                                  <span className="loading loading-spinner loading-lg"></span>
+                                </div>
+
+                                :
+
+                                problems.length===0 ?
+
+                                <div className="flex justify-center items-center h-40">
+                                  <h2 className="text-xl text-slate-400 font-semibold">
+                                    No Problems Found
+                                  </h2>
+                                </div>
+
+                                :
+
+                                <div className="space-y-5 max-w-5xl mx-auto">
+
+                                  {
+                                    problems?.map((problem)=>(
+
+                                      <div
+                                        key={problem._id}
+                                        className="
+                                          bg-slate-950
+                                          border border-slate-800
+                                          rounded-2xl
+                                          p-5
+                                          hover:border-blue-500
+                                          hover:-translate-y-1
+                                          hover:shadow-xl
+                                          hover:shadow-blue-500/10
+                                          transition-all
+                                          duration-300
+                                        "
+                                      >
+
+                                        <div className="flex justify-between items-center">
+
+                                          <h2 className="text-xl font-semibold">
+
+                                            <NavLink
+                                              to={`/problem/${problem._id}`}
+                                              className="text-slate-100 hover:text-blue-400 transition"
+                                            >
+                                              {problem.problemNumber}. {problem.title}
+                                            </NavLink>
+
+                                          </h2>
+
+                                          {
+                                            solvedProblemsIds?.includes(problem._id) &&
+
+                                            <span
+                                              className="
+                                                flex items-center gap-2
+                                                bg-emerald-500/20
+                                                text-emerald-400
+                                                border border-emerald-500/30
+                                                px-3
+                                                py-1
+                                                rounded-full
+                                                text-sm
+                                                font-medium
+                                              "
+                                            >
+                                              ✓ Solved
+                                            </span>
+                                          }
+
+                                        </div>
+
+                                        <div className="flex gap-3 mt-5">
+
+                                          <span
+                                            className={`px-3 py-1 rounded-full text-sm font-medium ${getDifficultyBadgeColor(problem.difficulty)}`}
+                                          >
+                                            {problem.difficulty}
+                                          </span>
+
+                                          <span
+                                            className="
+                                              px-3
+                                              py-1
+                                              rounded-full
+                                              text-sm
+                                              font-medium
+                                              bg-blue-500/20
+                                              text-blue-400
+                                              border border-blue-500/30
+                                            "
+                                          >
+                                            {problem.tags}
+                                          </span>
+
+                                        </div>
+
+                                        {
+                                          user?.role==="admin" &&
+
+                                          <div className="mt-5 flex justify-end">
+                                           
+
+                                             <button
+                                             onClick={()=>deleteProblem(problem?._id)}
+                                              className="
+                                                px-4
+                                                py-2
+                                                bg-red-600
+                                                rounded-lg
+                                                hover:bg-red-700
+                                                transition
+                                              "
+                                            >
+                                              Delete Problem
+                                            </button>
+                                            
+                                            
+                                            
+                                            
+
+                                           
+
+                                          </div>
+                                        }
+
+                                      </div>
+
+                                    ))
+                                  }
+
+                                </div>
+                              }
+
+                  </div>
+
+                  <div className="flex justify-center items-center gap-4 mt-8 mb-4 pb-4">
+
+                        <button
+                            onClick={() => setPage((prev) => prev - 1)}
+                            disabled={page === 1}
+                            className="
+                                px-5
+                                py-2
+                                rounded-xl
+                                bg-slate-900
+                                border
+                                border-slate-700
+                                text-white
+                                transition
+                                hover:bg-slate-800
+                                disabled:opacity-50
+                                disabled:cursor-not-allowed
+                            "
+                        >
+                            Previous
+                        </button>
+
+                        <span
+                            className="
+                                px-4
+                                py-2
+                                rounded-lg
+                                bg-blue-600
+                                font-semibold
+                                text-white
+                            "
+                        >
+                            {page} / {totalPages}
+                        </span>
+
+                        <button
+                            onClick={() => setPage((prev) => prev + 1)}
+                            disabled={page === totalPages}
+                            className="
+                                px-5
+                                py-2
+                                rounded-xl
+                                bg-slate-900
+                                border
+                                border-slate-700
+                                text-white
+                                transition
+                                hover:bg-slate-800
+                                disabled:opacity-50
+                                disabled:cursor-not-allowed
+                            "
+                        >
+                            Next
+                        </button>
+
+                    </div>
+
+
+                </div>
+              
+              
+              
+              
+              </>
+
+
+
+             )
+
+
+
+      }
+
+
+
 const getDifficultyBadgeColor = (difficulty) => {
   switch (difficulty.toLowerCase()) {
     case "easy":
