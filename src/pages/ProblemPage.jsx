@@ -141,11 +141,8 @@ const ProblemPage = () => {
                         catch(err){
 
                             console.log(err);
-                            setRunResult({
-                                success:false,
-                                error:true,
-                                message:"Please check your code and try again."
-                            });
+                            alert("Internal server error or You have not wrote any code");
+                            setRunResult(null);
                             setActiveRightTab("testcase");
 
                         }
@@ -185,7 +182,7 @@ const ProblemPage = () => {
                              setSubmitResult({
                                 success:false,
                                 error:true,
-                                message:"Please check your code and try again."
+                                message:"Please check your code and try again.There may be any syntax error ar any unitialised variables present in your code"
                             });
                             setActiveRightTab("result");
 
@@ -411,188 +408,208 @@ const ProblemPage = () => {
                                                             </div>
                                                         )}
 
-                                                        {activeRightTab === "testcase" && runResult &&(
-
-                                                            <>
-                                                            {
-                                                                runResult?.error ? (
-
-                                                                    <div
-                                                                        className="
-                                                                        bg-red-500/10
-                                                                        border border-red-500/20
-                                                                        rounded-xl
-                                                                        p-4
-                                                                        "
-                                                                    >
-                                                                        <h3 className="text-red-400 font-semibold">
-                                                                            Error
-                                                                        </h3>
-
-                                                                        <p className="text-slate-300 mt-2">
-                                                                            {runResult.message}
-                                                                        </p>
-
-                                                                    </div>
-
-                                                                    ) :
-                                                            <>
+                                                {activeRightTab === "testcase" && runResult && (
 
 
-                                                        <div className="flex justify-between items-center mb-6"> 
-                                                         <div className="mb-4">
-                                                            <h2 className="text-xl font-semibold text-white">
-                                                                Test Results
-                                                            </h2>
+                                                        <div className="bg-slate-900 border border-slate-700 rounded-xl overflow-hidden">
 
-                                                            <p className="text-slate-400 text-sm mt-1">
-                                                                Passed {runResult?.passedCases}/{runResult?.totalCases} test cases
-                                                            </p>
-                                                        </div>
+                                                            <div className="flex justify-between items-center px-5 py-4 border-b border-slate-700">
 
-                                                        
-                                                            <span
-                                                                className={`
+                                                                <h2 className="text-lg font-semibold text-white">
+                                                                    Result
+                                                                </h2>
+
+                                                                <span className={`
                                                                     px-3 py-1 rounded-lg text-sm font-medium
                                                                     ${
-                                                                    runResult?.success
+                                                                        runResult.resultType==="Accepted"
                                                                         ? "bg-green-500/20 text-green-400"
                                                                         : "bg-red-500/20 text-red-400"
                                                                     }
-                                                                `}
-                                                                >
-                                                                {runResult?.success ? "Accepted" : "Failed"}
-                                                                </span>
-                                                        </div>
+                                                                `}>
 
-                                                            
-                                                       
-                                                            {/* Testcases will come here */}
+                                                                {runResult.resultType}
 
-                                                        <div className="space-y-4">
-                                                            
-
-                                                             {runResult?.testCases?.map((tc,index)=>(
-
-                                                            <div
-                                                                key={index}
-                                                                className="
-                                                                bg-slate-900
-                                                                border border-slate-700
-                                                                rounded-xl
-                                                                overflow-hidden
-                                                                "
-                                                                >
-
-                                                                 <div
-                                                                    className="
-                                                                    flex justify-between items-center
-                                                                    px-4 py-3
-                                                                    border-b border-slate-700
-                                                                    "
-                                                                  >
-
-                                                                     <h3 className="font-medium text-slate-200">
-                                                                    Test Case #{index + 1}
-                                                                     </h3>
-
-                                                                     <span
-                                                                    className={`
-                                                                    px-2 py-1 rounded-md text-xs font-medium
-                                                                    ${
-                                                                        tc.status_id === 3
-                                                                        ? "bg-green-500/20 text-green-400"
-                                                                        : "bg-red-500/20 text-red-400"
-                                                                    }
-                                                                    `}
-                                                                    >
-                                                                    {tc.status}
-                                                                     </span>
-
-                                                                </div>
-
-
-                                                                <div className="p-4 space-y-4">
-
-                                                                    <div>
-                                                                        <p className="text-xs uppercase text-slate-500 mb-2">
-                                                                        Input
-                                                                        </p>
-
-                                                                        <pre
-                                                                        className="
-                                                                        bg-slate-950
-                                                                        rounded-lg
-                                                                        p-3
-                                                                        text-slate-200
-                                                                        "
-                                                                        >
-                                                                        {tc.stdin}
-                                                                        </pre>
-                                                                    </div>
-
-                                                                </div>
-
-
-
-
-                                                                <div className="mt-5">
-                                                                    <p className="text-xs uppercase text-slate-500 mb-2 p-3">
-                                                                        Expected Output
-                                                                    </p>
-                                                                   <div className="py-2 px-3">
-                                                                    <pre className="bg-slate-950 rounded-lg p-3 text-green-400">
-                                                                           {tc.expected_output}
-                                                                    </pre>
-
-                                                                   </div>
-                                                                    
-                                                                </div>
-
-
-                                                                 <div className="p-4 space-y-4">
-
-                                                                    <div>
-                                                                        <p className="text-xs uppercase text-slate-500 mb-2">
-                                                                        Your Output:
-                                                                        </p>
-
-                                                                        <pre
-                                                                         className={`
-                                                                        bg-slate-950
-                                                                        rounded-lg
-                                                                        p-3
-                                                                        ${
-                                                                            tc.status_id === 3
-                                                                            ? "text-green-400"
-                                                                            : "text-red-400"
-                                                                        }
-                                                                        `}
-                                                                        >
-                                                                        {tc.stdout|| "No Output"}
-                                                                        </pre>
-                                                                    </div>
-
-                                                                </div>
-
-                                                                
+                                                               </span>
 
                                                             </div>
 
-                                                            ))}
+                                                     
 
-                                                       </div>
 
-                                                       </>
+                                                        <div className="p-5">
+                                                             {/* Compilation Error */}
 
-                                                    }
+                                                            {
+                                                                 
 
-                                                    
+                                                                runResult.resultType==="Compilation Error" && (
 
-                                                     </>
+                                                                <div>
 
-                                                           
+                                                                <h3 className="text-red-400 font-semibold mb-3">
+
+                                                                Compilation Error
+
+                                                                </h3>
+
+                                                                <pre
+                                                                className="
+                                                                bg-slate-950
+                                                                rounded-lg
+                                                                p-4
+                                                                text-red-300
+                                                                overflow-x-auto
+                                                                whitespace-pre-wrap
+                                                                "
+                                                                >
+
+                                                                {runResult.compileOutput}
+
+                                                                </pre>
+
+                                                                </div>
+
+                                                                )
+                                                            }
+
+                                                              {/*Runtime Error*/}
+
+
+
+                                                            {
+                                                                runResult.resultType==="Runtime Error" && (
+
+                                                                <div>
+
+                                                                <h3 className="text-red-400 font-semibold mb-3">
+
+                                                                Runtime Error
+
+                                                                </h3>
+
+                                                                <pre
+                                                                className="
+                                                                bg-slate-950
+                                                                rounded-lg
+                                                                p-4
+                                                                text-red-300
+                                                                overflow-x-auto
+                                                                whitespace-pre-wrap
+                                                                "
+                                                                >
+
+                                                                {runResult.runtimeOutput}
+
+                                                                </pre>
+
+                                                                </div>
+
+                                                                )
+                                                            }
+
+                                                            {/* Accepted + Wrong Answer */}
+
+
+                                                            {
+                                                                (runResult.resultType==="Accepted" ||
+                                                                runResult.resultType==="Wrong Answer") && (
+
+                                                                <div className="space-y-4">
+
+
+                                                                     <div className="mb-5">
+
+                                                                            <p className="text-slate-400 text-sm">
+
+                                                                                Passed {runResult.passedCases} / {runResult.totalCases} Test Cases
+
+                                                                            </p>
+
+                                                                      </div>
+
+                                                                      <div className="space-y-5">
+
+                                                                            {runResult.testCases.map((tc, index) => (
+
+                                                                                <div key={index} className="bg-slate-950 border border-slate-700 rounded-xl">
+                                                                                    <div className="flex justify-between items-center px-4 py-3 border-b border-slate-700">
+
+                                                                                        <h3 className="text-white font-medium">
+                                                                                            Test Case #{index + 1}
+                                                                                        </h3>
+
+                                                                                        <span className={`px-3 py-1 rounded-md text-xs font-medium ${tc.status_id === 3 ? "bg-green-500/20 text-green-400" : "bg-red-500/20 text-red-400"}`}>
+
+                                                                                            {tc.status}
+
+                                                                                        </span>
+
+                                                                                    </div>
+
+                                                                                    <div className="p-4">
+
+                                                                                      <div className="mb-4">
+
+                                                                                        <p className="text-xs uppercase text-slate-500 mb-2">
+                                                                                            Input
+                                                                                        </p>
+
+                                                                                        <pre className="bg-slate-900 rounded-lg p-3 text-slate-200 overflow-x-auto">
+                                                                                            {tc.stdin}
+                                                                                        </pre>
+
+                                                                                       </div>
+
+
+                                                                                       <div className="mb-4">
+
+                                                                                            <p className="text-xs uppercase text-slate-500 mb-2">
+                                                                                                Expected Output
+                                                                                            </p>
+
+                                                                                            <pre className="bg-slate-900 rounded-lg p-3 text-green-400 overflow-x-auto">
+                                                                                                {tc.expected_output}
+                                                                                            </pre>
+
+                                                                                       </div>
+
+                                                                                       <div className="mb-4">
+
+                                                                                            <p className="text-xs uppercase text-slate-500 mb-2">
+                                                                                                Your Output
+                                                                                            </p>
+
+                                                                                            <pre className={`bg-slate-900 rounded-lg p-3 overflow-x-auto ${tc.status_id === 3 ? "text-green-400" : "text-red-400"}`}>
+                                                                                                {tc.stdout || "No Output"}
+                                                                                            </pre>
+
+                                                                                    </div>
+
+                                                                                    </div>
+
+
+
+                                                                                </div>
+
+                                                                            ))}
+
+                                                                     </div>
+
+                                                                </div>
+
+                                                                )
+                                                            }
+
+                                                        </div>
+                                                                                                                        
+                                                       
+
+                                                    </div>
+
                                                         )}
+
+
 
                                                     {activeRightTab === "result" && submitResult && (
 
