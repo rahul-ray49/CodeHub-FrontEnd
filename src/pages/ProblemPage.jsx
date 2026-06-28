@@ -7,6 +7,14 @@ import { useEffect } from "react";
 import axiosClient from "../utils/axiosClient";
 import Page404 from "./Page404";
 import Editor from "@monaco-editor/react";
+import AcceptedResult from "../components/resultpages/AcceptedResult";
+import CompilationErrorResult from "../components/resultpages/CompilationErrorResult";
+import RuntimeErrorResult from "../components/resultpages/RuntimeErrorResult";
+import TLEResult from "../components/resultpages/TLEResult";
+import WrongAnswerResult from "../components/resultpages/WrongAnswerResult";
+import CompilationErrorTestcase from "../components/testcasepages/CompilationErrorTestcase";
+import RuntimeErrorTestcase from "../components/testcasepages/RuntimeErrorTestcase";
+import AcceptedORWrongAnswerTestcase from "../components/testcasepages/AcceptedORWrongAnswerTestcase";
 
 const ProblemPage = () => {
     const {problemId}=useParams();
@@ -141,7 +149,8 @@ const ProblemPage = () => {
                         catch(err){
 
                             console.log(err);
-                            alert("Internal server error or You have not wrote any code");
+                            alert("Internal server Error or no code has been provided");
+                            setSubmitResult(null);
                             setRunResult(null);
                             setActiveRightTab("testcase");
 
@@ -179,11 +188,9 @@ const ProblemPage = () => {
 
                             console.log(err);
 
-                             setSubmitResult({
-                                success:false,
-                                error:true,
-                                message:"Please check your code and try again.There may be any syntax error ar any unitialised variables present in your code"
-                            });
+                            alert("Internal server Error or no code has been provided");
+                            setRunResult(null);
+                            setSubmitResult(null);
                             setActiveRightTab("result");
 
                         }
@@ -194,6 +201,59 @@ const ProblemPage = () => {
                         }
 
                     }
+
+
+
+
+                    const getStatusColor = (resultType) => {
+
+                        switch(resultType){
+
+                            case "Accepted":
+                                return "text-green-500";
+
+                            case "Wrong Answer":
+                                return "text-red-500";
+
+                            case "Compilation Error":
+                                return "text-orange-500";
+
+                            case "Runtime Error":
+                                return "text-purple-500";
+
+                            case "Time Limit Exceeded":
+                                return "text-yellow-400";
+
+                            default:
+                                return "text-white";
+                        }
+
+                    }
+
+                    const getStatusIcon = (resultType) => {
+
+                            switch(resultType){
+
+                                case "Accepted":
+                                    return "✅";
+
+                                case "Wrong Answer":
+                                    return "❌";
+
+                                case "Compilation Error":
+                                    return "🟠";
+
+                                case "Runtime Error":
+                                    return "⚠️";
+
+                                case "Time Limit Exceeded":
+                                    return "⏳";
+
+                                default:
+                                    return "";
+                            }
+
+                        }
 
 
 
@@ -445,30 +505,7 @@ const ProblemPage = () => {
 
                                                                 runResult.resultType==="Compilation Error" && (
 
-                                                                <div>
-
-                                                                <h3 className="text-red-400 font-semibold mb-3">
-
-                                                                Compilation Error
-
-                                                                </h3>
-
-                                                                <pre
-                                                                className="
-                                                                bg-slate-950
-                                                                rounded-lg
-                                                                p-4
-                                                                text-red-300
-                                                                overflow-x-auto
-                                                                whitespace-pre-wrap
-                                                                "
-                                                                >
-
-                                                                {runResult.compileOutput}
-
-                                                                </pre>
-
-                                                                </div>
+                                                                    <CompilationErrorTestcase compileOutput={runResult.compileOutput}/>
 
                                                                 )
                                                             }
@@ -480,30 +517,7 @@ const ProblemPage = () => {
                                                             {
                                                                 runResult.resultType==="Runtime Error" && (
 
-                                                                <div>
-
-                                                                <h3 className="text-red-400 font-semibold mb-3">
-
-                                                                Runtime Error
-
-                                                                </h3>
-
-                                                                <pre
-                                                                className="
-                                                                bg-slate-950
-                                                                rounded-lg
-                                                                p-4
-                                                                text-red-300
-                                                                overflow-x-auto
-                                                                whitespace-pre-wrap
-                                                                "
-                                                                >
-
-                                                                {runResult.runtimeOutput}
-
-                                                                </pre>
-
-                                                                </div>
+                                                               <RuntimeErrorTestcase runtimeOutput={runResult.runtimeOutput}/>
 
                                                                 )
                                                             }
@@ -512,91 +526,9 @@ const ProblemPage = () => {
 
 
                                                             {
-                                                                (runResult.resultType==="Accepted" ||
-                                                                runResult.resultType==="Wrong Answer") && (
+                                                                (runResult.resultType==="Accepted" || runResult.resultType==="Wrong Answer")&& (
 
-                                                                <div className="space-y-4">
-
-
-                                                                     <div className="mb-5">
-
-                                                                            <p className="text-slate-400 text-sm">
-
-                                                                                Passed {runResult.passedCases} / {runResult.totalCases} Test Cases
-
-                                                                            </p>
-
-                                                                      </div>
-
-                                                                      <div className="space-y-5">
-
-                                                                            {runResult.testCases.map((tc, index) => (
-
-                                                                                <div key={index} className="bg-slate-950 border border-slate-700 rounded-xl">
-                                                                                    <div className="flex justify-between items-center px-4 py-3 border-b border-slate-700">
-
-                                                                                        <h3 className="text-white font-medium">
-                                                                                            Test Case #{index + 1}
-                                                                                        </h3>
-
-                                                                                        <span className={`px-3 py-1 rounded-md text-xs font-medium ${tc.status_id === 3 ? "bg-green-500/20 text-green-400" : "bg-red-500/20 text-red-400"}`}>
-
-                                                                                            {tc.status}
-
-                                                                                        </span>
-
-                                                                                    </div>
-
-                                                                                    <div className="p-4">
-
-                                                                                      <div className="mb-4">
-
-                                                                                        <p className="text-xs uppercase text-slate-500 mb-2">
-                                                                                            Input
-                                                                                        </p>
-
-                                                                                        <pre className="bg-slate-900 rounded-lg p-3 text-slate-200 overflow-x-auto">
-                                                                                            {tc.stdin}
-                                                                                        </pre>
-
-                                                                                       </div>
-
-
-                                                                                       <div className="mb-4">
-
-                                                                                            <p className="text-xs uppercase text-slate-500 mb-2">
-                                                                                                Expected Output
-                                                                                            </p>
-
-                                                                                            <pre className="bg-slate-900 rounded-lg p-3 text-green-400 overflow-x-auto">
-                                                                                                {tc.expected_output}
-                                                                                            </pre>
-
-                                                                                       </div>
-
-                                                                                       <div className="mb-4">
-
-                                                                                            <p className="text-xs uppercase text-slate-500 mb-2">
-                                                                                                Your Output
-                                                                                            </p>
-
-                                                                                            <pre className={`bg-slate-900 rounded-lg p-3 overflow-x-auto ${tc.status_id === 3 ? "text-green-400" : "text-red-400"}`}>
-                                                                                                {tc.stdout || "No Output"}
-                                                                                            </pre>
-
-                                                                                    </div>
-
-                                                                                    </div>
-
-
-
-                                                                                </div>
-
-                                                                            ))}
-
-                                                                     </div>
-
-                                                                </div>
+                                                                <AcceptedORWrongAnswerTestcase runResult={runResult}/>
 
                                                                 )
                                                             }
@@ -613,107 +545,58 @@ const ProblemPage = () => {
 
                                                     {activeRightTab === "result" && submitResult && (
 
-                                                        
-                
-                                                        <div className="p-5"> 
-                                                            <div className="mb-6">
+                                                       <div className="p-6 text-white">
 
-                                                                <span
-                                                                    className={`
-                                                                    px-4 py-2 rounded-lg text-sm font-medium
-                                                                    ${
-                                                                    submitResult?.status === "accepted"
-                                                                    ? "bg-green-500/20 text-green-400"
-                                                                    : "bg-red-500/20 text-red-400"
-                                                                    }
-                                                                    `}
-                                                                >
-                                                                    {submitResult?.status === "accepted"
-                                                                    ? "Accepted"
-                                                                    : "Wrong Answer"}
-                                                                </span>
+                                                            <div>
 
-                                                            </div>
+                                                                {submitResult.resultType === "Accepted" && (
+                                                                    <AcceptedResult
+                                                                        passedCases={submitResult.passedCases}
+                                                                        totalCases={submitResult.totalCases}
+                                                                        runtime={submitResult.runtime}
+                                                                        memory={submitResult.memory}
+                                                                    />
 
-                                                            <div className="grid grid-cols-3 gap-4">
-
-
-                                                            <div
-                                                                className="
-                                                                bg-slate-900
-                                                                border border-slate-700
-                                                                rounded-xl
-                                                                p-4
-                                                                "
-                                                                >
-
-                                                                <p className="text-slate-400 text-sm">
-                                                                Passed
-                                                                </p>
-
-                                                                <h3 className="text-xl font-semibold text-white">
-                                                                {submitResult?.testCasesPassed}/
-                                                                {submitResult?.testCasesTotal}
-                                                                </h3>
-
-                                                            </div>
-
-
-                                                            <div
-                                                                className="
-                                                                bg-slate-900
-                                                                border border-slate-700
-                                                                rounded-xl
-                                                                p-4
-                                                                "
-                                                                >
-
-                                                                <p className="text-slate-400 text-sm">
-                                                                Runtime
-                                                                </p>
-
-                                                                <h3 className="text-xl font-semibold text-white">
-                                                                    {submitResult?.runtime}s
-                                                                </h3>.
-
-                                                            </div>
-
-                                                            <div
-                                                                className="
-                                                                bg-slate-900
-                                                                border border-slate-700
-                                                                rounded-xl
-                                                                p-4
-                                                                "
-                                                                >
-
-                                                                <p className="text-slate-400 text-sm">
-                                                                Memory
-                                                                </p>
-
-                                                                <h3 className="text-xl font-semibold text-white">
-                                                                    {submitResult?.memory} KB
-                                                                </h3>
-
-                                                            </div>
-
-                                                            {submitResult?.errorMessage && (
-                                                                <div
-                                                                    className="
-                                                                    bg-red-500/10
-                                                                    border border-red-500/20
-                                                                    rounded-xl
-                                                                    p-4
-                                                                    "
-                                                                >
-                                                                    {submitResult?.errorMessage}
-                                                                </div>
                                                                 )}
 
-                                                           </div>
+                                                                {submitResult.resultType === "Wrong Answer" && (
+                                                                    <WrongAnswerResult 
+                                                                        passedCases={submitResult.passedCases}
+                                                                        totalCases={submitResult.totalCases}
+                                                                        runtime={submitResult.runtime}
+                                                                        memory={submitResult.memory}
+                                                                        />
+                                                                )}
 
-                                                          </div> 
-                                                        )
+                                                                {submitResult.resultType === "Compilation Error" && (
+                                                                    <CompilationErrorResult
+                                                                        passedCases={submitResult.passedCases}
+                                                                        totalCases={submitResult.totalCases}
+                                                                        compileOutput={submitResult.compileOutput}
+                                                                    
+                                                                    />
+                                                                )}
+
+                                                                {submitResult.resultType === "Runtime Error" && (
+                                                                   <RuntimeErrorResult
+                                                                        passedCases={submitResult.passedCases}
+                                                                        totalCases={submitResult.totalCases}
+                                                                        runtimeOutput={submitResult.runtimeOutput}
+                                                                   />
+                                                                )}
+
+                                                                {submitResult.resultType === "Time Limit Exceeded" && (
+                                                                    <TLEResult
+                                                                        passedCases={submitResult.passedCases}
+                                                                        totalCases={submitResult.totalCases}
+                                                                    />
+                                                                )}
+
+                                                            </div>
+
+                                                       </div>
+                                                                    
+                                                    )
 
                                                       
                                                         
