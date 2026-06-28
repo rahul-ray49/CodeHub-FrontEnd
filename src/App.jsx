@@ -17,6 +17,9 @@ import UpdateProblem from './pages/UpdateProblem'
 import NotAuthorizedPage from './pages/NotAuthorizedPage'
 import AdminRegisterPage from './pages/AdminRegisterPage'
 import ProblemSolvedPage from './pages/ProblemSolvedPage'
+import SubmissionHistoryPage from './pages/SubmissionHistoryPage';
+
+
 
 function App() {
 
@@ -62,6 +65,7 @@ function App() {
            <Route path="/updateproblem/:problemId" element={isAuthenticated&&user.role==="admin"?<UpdateProblem></UpdateProblem>:(isAuthenticated&&user.role==="user"?<NotAuthorizedPage/>:<Login/>)}></Route>
            <Route path="/admin-register" element={isAuthenticated&&user.role==="admin"?<AdminRegisterPage></AdminRegisterPage>:(isAuthenticated&&user.role==="user"?<NotAuthorizedPage/>:<Login/>)}></Route>
            <Route path="/solved" element={isAuthenticated?<ProblemSolvedPage></ProblemSolvedPage>:<Login></Login>}></Route>
+           <Route path="/submission-history" element={isAuthenticated?<SubmissionHistoryPage></SubmissionHistoryPage>:<Login/>}></Route>
          </Routes>
     </>
   )

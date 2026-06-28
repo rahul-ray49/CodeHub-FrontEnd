@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { logoutUser } from '../authSlice';
+import Footer from "../components/footer/Footer";
 
 
 const LandingPage = () => {
@@ -88,7 +89,7 @@ const LandingPage = () => {
         </div>
 
         {/* Navigation Cards */}
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-3 gap-8">
 
           {/* Problems */}
           <Link
@@ -122,11 +123,33 @@ const LandingPage = () => {
             </p>
           </Link>
 
+
+           <Link
+              to="/submission-history"
+              className="group bg-[#111827] border border-slate-800 rounded-3xl p-8 hover:border-yellow-500 transition-all"
+            >
+              <div className="text-5xl mb-4">📜</div>
+
+              <h2 className="text-2xl font-bold mb-3">
+                Submission History
+              </h2>
+
+              <p className="text-slate-400">
+                View your previous submissions and review your coding journey.
+              </p>
+          </Link>
+
         </div>
+
+
+        
+     
+
+
 
         {/* Admin Cards */}
         {user?.role === "admin" && (
-          <div className="grid md:grid-cols-2 gap-8 mt-8">
+          <div className="grid md:grid-cols-3 gap-8 mt-8">
 
             <Link
               to="/admin-panel"
@@ -177,6 +200,12 @@ const LandingPage = () => {
         )}
 
       </div>
+
+      {/* Footer */}
+ 
+      <Footer/>
+
+
     </div>
   );
 };
