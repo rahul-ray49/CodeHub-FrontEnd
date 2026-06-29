@@ -17,7 +17,7 @@ function NavigationBar2(){
     return (
            <nav className="border-b border-slate-800 bg-[#111827] sticky top-0 z-50">
 
-                <div className="max-w-7xl mx-auto px-6 py-2 flex justify-between items-center">
+                <div className="px-10 mx-auto  py-2 flex justify-between items-center">
                 
                 <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-lg font-bold">

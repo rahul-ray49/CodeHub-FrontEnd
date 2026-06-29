@@ -16,6 +16,7 @@ import CompilationErrorTestcase from "../components/testcasepages/CompilationErr
 import RuntimeErrorTestcase from "../components/testcasepages/RuntimeErrorTestcase";
 import AcceptedORWrongAnswerTestcase from "../components/testcasepages/AcceptedORWrongAnswerTestcase";
 import NavigationBar2 from "./NavigationBar2";
+import SubmissionHistory from "../components/submissions/SubmissionHistory";
 
 const ProblemPage = () => {
     const {problemId}=useParams();
@@ -29,6 +30,8 @@ const ProblemPage = () => {
     const [runLoading, setRunLoading] = useState(false);
     const [submitLoading,setSubmitLoading] = useState(false);
     const [submitResult,setSubmitResult] = useState(null);
+    const [submissions,setSubmissionsData]=useState([]);
+    const [submissionLoading,setSubmissionLoading]=useState(false);
 
     const rightTabs = ["code","testcase","result"];
 
@@ -97,6 +100,14 @@ const ProblemPage = () => {
                     setLanguageCodes(initialCodes);
 
             }, [problem]);
+
+
+              useEffect(()=>{
+                    if(activeLeftTab==='submissions'){
+                        getSubmissions();
+                    }
+
+                },[activeLeftTab])
 
 
 
@@ -258,22 +269,26 @@ const ProblemPage = () => {
 
 
 
+                        const getSubmissions = async () => {
+                                try {
+                                    setSubmissionLoading(true);
+
+                                    const res = await axiosClient.get(`/history/submittedProblem/${problemId}`);
+                                    if(!res.data.success) return;
+
+                                    setSubmissionsData(res.data.submissions);
+
+                                } catch (err) {
+                                    console.log(err);
+                                    alert('Failed to fetch submission history.....');
+                                } finally {
+                                    setSubmissionLoading(false);
+                                }
+                            };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                            
+                          
 
 
                 return (
@@ -317,7 +332,9 @@ const ProblemPage = () => {
                                         </button>
 
                                         <button   className={`cursor-pointer ${activeLeftTab==="submissions"&&(activeColor)}`}
-                                        onClick={() => setActiveLeftTab("submissions")}
+                                        onClick={() => {
+                                            setActiveLeftTab("submissions");
+                                        }}
                                         >
                                         Submissions
                                         </button>
@@ -374,9 +391,10 @@ const ProblemPage = () => {
 
 
                                             {activeLeftTab === "submissions" && (
-                                                <div>
-                                                    No Submissions Yet
-                                                </div>
+                                                <SubmissionHistory
+                                                    submissionLoading={submissionLoading}
+                                                    submissions={submissions}
+                                                />
                                             )}
 
 
