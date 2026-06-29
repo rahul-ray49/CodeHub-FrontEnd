@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { logoutUser } from '../authSlice';
 import Footer from "../components/footer/Footer";
+import NavigationBar2 from "./NavigationBar2";
 
 
 const LandingPage = () => {
@@ -18,50 +19,9 @@ const LandingPage = () => {
     <div className="min-h-screen bg-[#0B1120] text-white">
       
       {/* Navbar */}
-      <nav className="border-b border-slate-800 bg-[#111827] sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-          
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-lg font-bold">
-              ⚡
-            </div>
+      <NavigationBar2/>
 
-            <h1 className="text-3xl font-bold">
-              CodeHub
-            </h1>
-          </div>
-
-          <div className="relative group">
-  
-            <div className="flex items-center gap-3 px-4 py-2 rounded-xl bg-slate-800 border border-slate-700 cursor-pointer">
-              
-              <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center font-bold">
-                {user?.firstName?.charAt(0).toUpperCase()}
-              </div>
-
-            </div>
-
-            <div className="absolute right-0 mt-2 hidden group-hover:block w-44 bg-[#111827] border border-slate-700 rounded-xl overflow-hidden">
-              
-              <button
-                className="w-full text-left px-4 py-3 hover:bg-slate-800"
-              >
-                Profile
-              </button>
-
-              <button
-                onClick={handleLogout}
-                className="w-full text-left px-4 py-3 text-red-400 hover:bg-red-500/10"
-              >
-                Logout
-              </button>
-
-            </div>
-
-          </div>
-
-        </div>
-      </nav>
+      
 
       <div className="max-w-7xl mx-auto px-6 py-12">
 
@@ -89,7 +49,7 @@ const LandingPage = () => {
         </div>
 
         {/* Navigation Cards */}
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-4 gap-8">
 
           {/* Problems */}
           <Link
@@ -139,6 +99,23 @@ const LandingPage = () => {
               </p>
           </Link>
 
+          <Link
+              to="/help-page"
+              className="group bg-[#111827] border border-slate-800 rounded-3xl p-8 hover:border-cyan-500 hover:-translate-y-1 transition-all duration-300"
+            >
+              <div className="text-5xl mb-4">📘</div>
+
+              <h2 className="text-2xl font-bold mb-3 group-hover:text-cyan-400 transition-colors">
+                Help Center
+              </h2>
+
+              <p className="text-slate-400">
+                Learn how to write, format, and submit your solutions correctly on CodeHub before starting your coding journey.
+              </p>
+          </Link>
+
+
+
         </div>
 
 
@@ -149,7 +126,7 @@ const LandingPage = () => {
 
         {/* Admin Cards */}
         {user?.role === "admin" && (
-          <div className="grid md:grid-cols-3 gap-8 mt-8">
+          <div className="grid md:grid-cols-4 gap-8 mt-8">
 
             <Link
               to="/admin-panel"

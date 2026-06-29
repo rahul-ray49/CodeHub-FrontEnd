@@ -15,6 +15,7 @@ import WrongAnswerResult from "../components/resultpages/WrongAnswerResult";
 import CompilationErrorTestcase from "../components/testcasepages/CompilationErrorTestcase";
 import RuntimeErrorTestcase from "../components/testcasepages/RuntimeErrorTestcase";
 import AcceptedORWrongAnswerTestcase from "../components/testcasepages/AcceptedORWrongAnswerTestcase";
+import NavigationBar2 from "./NavigationBar2";
 
 const ProblemPage = () => {
     const {problemId}=useParams();
@@ -276,7 +277,11 @@ const ProblemPage = () => {
 
 
                 return (
-                        <div className="min-h-screen p-6 bg-slate-900/80">
+
+                       
+                        <div className="min-h-screen pb-6 pl-6 pr-6 bg-slate-900/80">
+
+                            <NavigationBar2/>
 
                             <div className="max-w-8xl mx-auto">
 
