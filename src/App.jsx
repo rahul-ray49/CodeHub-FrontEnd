@@ -19,7 +19,7 @@ import AdminRegisterPage from './pages/AdminRegisterPage'
 import ProblemSolvedPage from './pages/ProblemSolvedPage'
 import SubmissionHistoryPage from './pages/SubmissionHistoryPage';
 import HelpPage from './pages/HelpPage'
-
+import SubmissionDetails from './components/submissions/SubmissionDetails'
 
 
 function App() {
@@ -68,6 +68,7 @@ function App() {
            <Route path="/solved" element={isAuthenticated?<ProblemSolvedPage></ProblemSolvedPage>:<Login></Login>}></Route>
            <Route path="/submission-history" element={isAuthenticated?<SubmissionHistoryPage></SubmissionHistoryPage>:<Login/>}></Route>
            <Route path="/help-page" element={isAuthenticated?<HelpPage></HelpPage>:<Login/>}></Route>
+           <Route path="/submission-details/:sid"  element={isAuthenticated?<SubmissionDetails></SubmissionDetails>:<Login/>}></Route>
 
 
          </Routes>

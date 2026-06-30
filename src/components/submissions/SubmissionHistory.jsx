@@ -1,6 +1,9 @@
+import { useNavigate } from "react-router-dom";
 
 
 function SubmissionHistory({submissionLoading,submissions}){
+
+    const navigate=useNavigate();
 
 
 
@@ -173,7 +176,8 @@ function SubmissionHistory({submissionLoading,submissions}){
                                 <td className="px-6 py-4">
 
                                     <button
-                                        className="text-blue-400 hover:text-blue-300 font-medium transition-colors"
+                                        className="text-blue-400 hover:text-blue-300 font-medium transition-colors cursor-pointer"
+                                        onClick={()=>navigate(`/submission-details/${submission?._id}`)}
                                     >
                                         View Code
                                     </button>
