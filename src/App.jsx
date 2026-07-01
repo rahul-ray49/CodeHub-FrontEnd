@@ -20,7 +20,7 @@ import ProblemSolvedPage from './pages/ProblemSolvedPage'
 import SubmissionHistoryPage from './pages/SubmissionHistoryPage';
 import HelpPage from './pages/HelpPage'
 import SubmissionDetails from './components/submissions/SubmissionDetails'
-
+import UserProfile from './pages/UserProfile'
 
 function App() {
 
@@ -69,6 +69,7 @@ function App() {
            <Route path="/submission-history" element={isAuthenticated?<SubmissionHistoryPage></SubmissionHistoryPage>:<Login/>}></Route>
            <Route path="/help-page" element={isAuthenticated?<HelpPage></HelpPage>:<Login/>}></Route>
            <Route path="/submission-details/:sid"  element={isAuthenticated?<SubmissionDetails></SubmissionDetails>:<Login/>}></Route>
+           <Route path="/profile/me" element={isAuthenticated?<UserProfile></UserProfile>:<Login></Login>}></Route>
 
 
          </Routes>

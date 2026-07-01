@@ -41,7 +41,7 @@ function NavigationBar2(){
 
                     <div className="absolute right-0 mt-0 hidden group-hover:block w-44 bg-[#111827] border border-slate-700 rounded-xl overflow-hidden">
                     
-                    <button onClick={()=>navigate("/profile")}
+                    <button onClick={()=>navigate("/profile/me")}
                         className="w-full text-left px-4 py-3 hover:bg-slate-800"
                     >
                         Profile

@@ -103,7 +103,7 @@ function SubmissionDetails(){
                             className="flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors cursor-pointer"
                         >
                             <ArrowLeft size={20} />
-                            Back to Problem
+                            Back
                         </button>
 
                         {/* Heading */}

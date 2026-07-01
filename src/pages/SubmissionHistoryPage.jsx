@@ -188,10 +188,7 @@ function SubmissionHistoryPage(){
                                                 </td>
 
                                                 <td className="px-8 py-6 text-slate-400">
-                                                    {new Date(submission?.createdAt).toLocaleString("en-IN", {
-                                                        dateStyle: "medium",
-                                                        timeStyle: "short",
-                                                    })}
+                                                    {new Date(submission?.createdAt).toLocaleDateString()}
                                                 </td>
 
 
