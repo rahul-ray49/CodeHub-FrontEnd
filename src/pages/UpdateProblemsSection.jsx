@@ -38,6 +38,7 @@ const UpdateProblems = () => {
 
                 } catch (err) {
                     console.log(err);
+                    alert(err?.response?.data?.message || "Error fetching problems");
                 } finally {
                     setLoading(false);
                 }

@@ -73,9 +73,7 @@ const Footer = () => {
                     <div className="text-center md:text-right">
 
                         <p className="text-slate-300">
-                            Made with
-                            <span className="text-red-500 mx-1">❤️</span>
-                            by
+                            Made by
                             <span className="text-blue-400 font-semibold ml-1">
                                Rahul Kumar Ray
                             </span>

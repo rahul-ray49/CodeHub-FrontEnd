@@ -60,7 +60,7 @@ function ProblemSolvedPage(){
 
         }
         catch(err){
-            alert("problem occured while fetching the problems");
+            alert(err?.response?.data?.message || "problem occured while fetching the problems");
             console.log(err);
         }
         finally{
@@ -293,6 +293,58 @@ function ProblemSolvedPage(){
 
                         <>
 
+                          <div className="flex justify-center items-center mt-8 mb-4">
+
+                                <button
+
+                                disabled={currentPage===1}
+
+                                onClick={()=>setCurrentPage(prev=>prev-1)}
+
+                                className="
+                                px-5
+                                py-2
+                                rounded-lg
+                                bg-slate-800
+                                hover:bg-slate-700
+                                disabled:opacity-50
+                                "
+
+                                >
+
+                                Previous
+
+                                </button>
+
+                                <p className="text-gray-400 p-3">
+
+                                Page {currentPage} of {totalPages}
+
+                                </p>
+
+                                <button
+
+                                disabled={currentPage===totalPages}
+
+                                onClick={()=>setCurrentPage(prev=>prev+1)}
+
+                                className="
+                                px-5
+                                py-2
+                                rounded-lg
+                                bg-slate-800
+                                hover:bg-slate-700
+                                disabled:opacity-50
+                                "
+
+                                >
+
+                                Next
+
+                                </button>
+
+                        </div>
+
                         <div className="overflow-x-auto rounded-2xl border border-slate-800">
 
                             <table className="w-full">
@@ -427,57 +479,7 @@ function ProblemSolvedPage(){
                         
                         }
 
-                        <div className="flex justify-between items-center mt-8">
-
-                                <button
-
-                                disabled={currentPage===1}
-
-                                onClick={()=>setCurrentPage(prev=>prev-1)}
-
-                                className="
-                                px-5
-                                py-2
-                                rounded-lg
-                                bg-slate-800
-                                hover:bg-slate-700
-                                disabled:opacity-50
-                                "
-
-                                >
-
-                                Previous
-
-                                </button>
-
-                                <p className="text-gray-400">
-
-                                Page {currentPage} of {totalPages}
-
-                                </p>
-
-                                <button
-
-                                disabled={currentPage===totalPages}
-
-                                onClick={()=>setCurrentPage(prev=>prev+1)}
-
-                                className="
-                                px-5
-                                py-2
-                                rounded-lg
-                                bg-slate-800
-                                hover:bg-slate-700
-                                disabled:opacity-50
-                                "
-
-                                >
-
-                                Next
-
-                                </button>
-
-                        </div>
+                      
 
                     </div>
                 </div>

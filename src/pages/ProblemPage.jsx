@@ -68,11 +68,12 @@ const ProblemPage = () => {
                             `/problem/problemById/${problemId}`
                         );
 
-                        setProblem(response.data);
+                        setProblem(response.data.problem);
 
                     } catch(error) {
 
                         console.log(error);
+                        alert(error?.response?.data?.message || "Error fetching problem data");
 
                     } finally {
 
@@ -161,7 +162,7 @@ const ProblemPage = () => {
                         catch(err){
 
                             console.log(err);
-                            alert("Internal server Error or no code has been provided");
+                            alert(err?.response?.data?.message || "Internal server Error or no code has been provided");
                             setSubmitResult(null);
                             setRunResult(null);
                             setActiveRightTab("testcase");
@@ -199,8 +200,7 @@ const ProblemPage = () => {
                         catch(err){
 
                             console.log(err);
-
-                            alert("Internal server Error or no code has been provided");
+                            alert(err?.response?.data?.message || "Internal server Error or no code has been provided");
                             setRunResult(null);
                             setSubmitResult(null);
                             setActiveRightTab("result");
@@ -280,7 +280,7 @@ const ProblemPage = () => {
 
                                 } catch (err) {
                                     console.log(err);
-                                    alert('Failed to fetch submission history.....');
+                                    alert(err?.response?.data?.message || 'Failed to fetch submission history.....');
                                 } finally {
                                     setSubmissionLoading(false);
                                 }
@@ -363,9 +363,9 @@ const ProblemPage = () => {
                                             
                                             <div className="p-2">
                                                 {problem?.referenceSolution?.map((sol, index) => (
-                                                    <>
+                                                    <React.Fragment key={sol?.language}>
 
-                                                <div key={index}>
+                                                <div>
                                                     <h3 className=" inline-block px-3 py-1 mb-4 rounded-lg bg-slate-800 border border-slate-700 text-blue-400 font-semibold text-2xl uppercase tracking-wide">
                                                     {sol?.language}</h3>
 
@@ -375,7 +375,7 @@ const ProblemPage = () => {
                                                 </div>
                                                 <br></br>
                                                 <br></br>
-                                                </>
+                                                </React.Fragment>
                                                 ))}
                                                
                                             </div>

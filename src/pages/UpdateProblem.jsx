@@ -171,7 +171,7 @@ function UpdateProblem() {
                 } catch (error) {
                   alert(
                     error.response?.data?.message ||
-                      error.message
+                      "Error updating problem"
                   );
                 } finally{
                     setLoading(false);

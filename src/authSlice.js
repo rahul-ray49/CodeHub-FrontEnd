@@ -8,7 +8,7 @@ export const registerUser = createAsyncThunk(
     const response =  await axiosClient.post('/user/register', userData);
     return response.data;
     } catch (error) {
-      return rejectWithValue(error);
+      return rejectWithValue(error?.response?.data.message || 'Something went wrong');
     }
   }
 );
@@ -21,9 +21,7 @@ export const loginUser = createAsyncThunk(
       const response = await axiosClient.post('/user/login', credentials);
       return response.data.user;
     }catch(error){
-          return rejectWithValue(
-             error.response?.data
-            );
+          return rejectWithValue(error?.response?.data.message || 'Something went wrong');
         }
   }
 );
@@ -35,7 +33,7 @@ export const checkAuth = createAsyncThunk(
       const { data } = await axiosClient.get('/user/check');
       return data.user;
     } catch (error) {
-      return rejectWithValue(error);
+      return rejectWithValue(error?.response?.data.message || 'Something went wrong');
     }
   }
 );
@@ -47,7 +45,7 @@ export const logoutUser = createAsyncThunk(
       await axiosClient.post('/user/logout');
       return null;
     } catch (error) {
-      return rejectWithValue(error);
+      return rejectWithValue(error?.response?.data.message || 'Something went wrong');
     }
   }
 );
@@ -80,7 +78,7 @@ const authSlice = createSlice({
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload?.message || 'Something went wrong';
+        state.error = action?.payload || 'Something went wrong';
         state.isAuthenticated = false;
         state.user = null;
       })
@@ -98,10 +96,10 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload?.message || 'Something went wrong';
+        state.error = action?.payload || 'Something went wrong';
         state.isAuthenticated = false;
         state.user = null;
-        state.logincredentialserror=action.paylaod?.message||'Something went wrong';
+        state.logincredentialserror=action?.payload||'Something went wrong';
       })
   
       // Check Auth Cases
@@ -116,7 +114,7 @@ const authSlice = createSlice({
       })
       .addCase(checkAuth.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload?.message || 'Something went wrong';
+        state.error = action?.payload || 'Something went wrong';
         state.isAuthenticated = false;
         state.user = null;
       })
@@ -134,7 +132,7 @@ const authSlice = createSlice({
       })
       .addCase(logoutUser.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload?.message || 'Something went wrong';
+        state.error = action?.payload || 'Something went wrong';
         state.isAuthenticated = false;
         state.user = null;
       });
