@@ -17,7 +17,7 @@ import RuntimeErrorTestcase from "../components/testcasepages/RuntimeErrorTestca
 import AcceptedORWrongAnswerTestcase from "../components/testcasepages/AcceptedORWrongAnswerTestcase";
 import NavigationBar2 from "./NavigationBar2";
 import SubmissionHistory from "../components/submissions/SubmissionHistory";
-
+import React from "react";
 const ProblemPage = () => {
     const {problemId}=useParams();
     const [loading, setLoading] = useState(true);
