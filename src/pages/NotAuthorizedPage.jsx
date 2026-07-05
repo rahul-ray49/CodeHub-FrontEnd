@@ -3,36 +3,36 @@ import { Link } from "react-router-dom";
 
 const NotAuthorizedPage = () => {
     return (
-        <div className="min-h-screen bg-[#0b1120] flex items-center justify-center px-6">
-            <div className="w-full max-w-3xl">
+        <div className="min-h-screen bg-[#0b1120] flex items-center justify-center px-4 sm:px-6 py-6">
+            <div className="w-full max-w-3xl mx-auto">
 
-                <div className="bg-gradient-to-br from-[#162454] to-[#12172d] border border-[#24345f] rounded-3xl p-12 text-center shadow-2xl">
+                <div className="bg-gradient-to-br from-[#162454] to-[#12172d] border border-[#24345f] rounded-3xl p-6 sm:p-8 lg:p-12 text-center shadow-2xl">
 
                     <div className="flex justify-center mb-8">
-                        <div className="w-24 h-24 rounded-full bg-blue-600/20 border border-blue-500/30 flex items-center justify-center">
-                            <ShieldX size={50} className="text-red-400" />
+                        <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-blue-600/20 border border-blue-500/30 flex items-center justify-center">
+                            <ShieldX size={50} className="w-10 h-10 sm:w-12 sm:h-12 text-red-400" />
                         </div>
                     </div>
 
-                    <p className="text-blue-400 font-semibold tracking-widest mb-3">
+                    <p className="text-blue-400 text-sm sm:text-base font-semibold tracking-widest mb-3">
                         ERROR 403
                     </p>
 
-                    <h1 className="text-5xl font-bold text-white mb-5">
+                    <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-5">
                         Access Denied
                     </h1>
 
-                    <p className="text-gray-400 text-lg max-w-xl mx-auto leading-8">
+                    <p className="text-gray-400 text-sm sm:text-base lg:text-lg max-w-xl mx-auto leading-7 sm:leading-8">
                         You are <span className="text-red-400 font-semibold">not authorized</span> to
                         access this page. Please contact an administrator if you
                         believe this is a mistake.
                     </p>
 
-                    <div className="flex justify-center gap-4 mt-10">
+                    <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8 sm:mt-10">
 
                         <Link
                             to="/"
-                            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-xl text-white font-semibold transition"
+                            className="w-full sm:w-auto justify-center flex items-center gap-2 bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-xl text-white font-semibold transition"
                         >
                             <Home size={18} />
                             Go Home
@@ -40,7 +40,7 @@ const NotAuthorizedPage = () => {
 
                         <button
                             onClick={() => window.history.back()}
-                            className="flex items-center gap-2 border border-slate-600 hover:border-blue-500 hover:bg-slate-800 px-6 py-3 rounded-xl text-gray-300 transition"
+                            className="w-full sm:w-auto justify-center flex items-center gap-2 border border-slate-600 hover:border-blue-500 hover:bg-slate-800 px-6 py-3 rounded-xl text-gray-300 transition"
                         >
                             <ArrowLeft size={18} />
                             Go Back
