@@ -58,25 +58,25 @@ function SubmissionHistoryPage(){
         <>
         <div className="min-h-screen bg-slate-900/80">
 
-          <div className="max-w-7xl mx-auto px-6 py-10">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
 
-                <div className="flex items-start justify-between mb-10">
+                <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between mb-10">
 
                     <div>
 
-                        <div className="flex items-center gap-4 mb-3">
+                        <div className="flex items-center gap-3 sm:gap-4 mb-3">
 
-                            <div className="bg-blue-600/20 p-3 rounded-xl">
-                                <FaHistory className="text-2xl text-blue-400" />
+                            <div className="bg-blue-600/20 p-2.5 sm:p-3 rounded-xl">
+                                <FaHistory className="text-xl sm:text-2xl text-blue-400" />
                             </div>
 
-                            <h1 className="text-5xl font-bold text-white">
+                            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white">
                                 Submission History
                             </h1>
 
                         </div>
 
-                        <p className="text-slate-400 text-xl">
+                        <p className="text-slate-400 text-sm sm:text-base lg:text-xl max-w-2xl">
                             Review all your previous submissions and track your coding progress.
                         </p>
 
@@ -84,7 +84,7 @@ function SubmissionHistoryPage(){
 
                     <Link
                         to="/"
-                        className="bg-blue-600 hover:bg-blue-700 px-8 py-4 rounded-2xl font-semibold transition-all"
+                        className="w-full sm:w-fit text-center bg-blue-600 hover:bg-blue-700 px-5 sm:px-8 py-3 sm:py-4 rounded-2xl font-semibold transition-all"
                     >
                         Return to Home
                     </Link>
@@ -94,26 +94,26 @@ function SubmissionHistoryPage(){
 
 
             <div className="bg-[#111827] border border-slate-800 rounded-3xl overflow-hidden">
-
-                <table className="w-full">
+              <div className="overflow-x-auto">
+                <table className="w-full min-w-[700px]">
 
                     <thead className="bg-[#172033]">
 
                         <tr className="text-left">
 
-                            <th className="px-8 py-5 text-slate-400 font-semibold">
+                            <th className="px-4 sm:px-6 lg:px-8 py-4 sm:py-5 text-sm sm:text-base text-slate-400 font-semibold">
                                 Status
                             </th>
 
-                            <th className="px-8 py-5 text-slate-400 font-semibold">
+                            <th className="px-4 sm:px-6 lg:px-8 py-4 sm:py-5 text-sm sm:text-base text-slate-400 font-semibold">
                                 Problem
                             </th>
 
-                            <th className="px-8 py-5 text-slate-400 font-semibold">
+                            <th className="px-4 sm:px-6 lg:px-8 py-4 sm:py-5 text-sm sm:text-base text-slate-400 font-semibold">
                                 Language
                             </th>
 
-                            <th className="px-8 py-5 text-slate-400 font-semibold">
+                            <th className="px-4 sm:px-6 lg:px-8 py-4 sm:py-5 text-sm sm:text-base text-slate-400 font-semibold">
                                 Submitted At
                             </th>
 
@@ -161,7 +161,7 @@ function SubmissionHistoryPage(){
                                             >
 
                                                 <td
-                                                    className={`px-8 py-6 font-medium ${
+                                                    className={`px-4 sm:px-6 lg:px-8 py-4 sm:py-6 text-sm sm:text-base font-medium ${
                                                         submission?.status === "Accepted"
                                                             ? "text-green-400"
                                                             : submission?.status === "Time Limit Exceeded"
@@ -174,20 +174,20 @@ function SubmissionHistoryPage(){
                                                     {submission?.status}
                                                 </td>
 
-                                                <td className="px-8 py-6">
+                                                <td className="px-4 sm:px-6 lg:px-8 py-4 sm:py-6 text-sm sm:text-base">
                                                     <Link
-                                                        to={`/problem/${submission?.problemId._id}`}
+                                                        to={`/problem/${submission?.problemId?._id}`}
                                                         className="text-blue-400 hover:text-blue-300 hover:underline transition-colors"
                                                     >
-                                                        {submission?.problemId.title}
+                                                        {submission?.problemId?.title}
                                                     </Link>
                                                 </td>
 
-                                                <td className="px-8 py-6 text-slate-300">
+                                                <td className="px-4 sm:px-6 lg:px-8 py-4 sm:py-6 text-sm sm:text-base text-slate-300">
                                                     {submission?.language}
                                                 </td>
 
-                                                <td className="px-8 py-6 text-slate-400">
+                                                <td className="px-4 sm:px-6 lg:px-8 py-4 sm:py-6 text-sm sm:text-base text-slate-400">
                                                     {new Date(submission?.createdAt).toLocaleDateString()}
                                                 </td>
 
@@ -206,29 +206,30 @@ function SubmissionHistoryPage(){
                     </tbody>
 
                 </table>
+                </div>
 
             </div>
 
         </div>
 
-        <div className="flex justify-between items-center mt-2 max-w-3xl mx-auto pb-3">
+        <div className="flex flex-col sm:flex-row gap-4 justify-between items-center mt-4 max-w-3xl mx-auto px-4 pb-6">
 
             <button
                 onClick={() => setPage(page - 1)}
                 disabled={!pagination?.hasPrevPage}
-                className="px-5 py-2 rounded-xl bg-[#111827] border border-slate-800 hover:border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition"
+                className="w-full sm:w-auto px-5 py-2 rounded-xl bg-[#111827] border border-slate-800 hover:border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition"
             >
                 ← Previous
             </button>
 
-            <span className="text-slate-400">
+            <span className="text-slate-400 text-sm sm:text-base">
                 Page {page} of {pagination?.totalPages || 1}
             </span>
 
             <button
                 onClick={() => setPage(page + 1)}
                 disabled={!pagination?.hasNextPage}
-                className="px-5 py-2 rounded-xl bg-[#111827] border border-slate-800 hover:border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition"
+                className="w-full sm:w-auto px-5 py-2 rounded-xl bg-[#111827] border border-slate-800 hover:border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition"
             >
                 Next →
             </button>
