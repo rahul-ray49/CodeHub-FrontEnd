@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import { BsCheck2Square } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
-
+import { HiOutlineDocumentSearch } from "react-icons/hi";
 
 function ProblemSolvedPage(){
 
@@ -85,18 +85,18 @@ function ProblemSolvedPage(){
 
 
                  <div className="min-h-screen bg-[#0B1120] text-white">
-                    <div className="max-w-7xl mx-auto px-6 py-8">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
 
 
-                        <div className="flex items-start justify-between mb-8">
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mb-8">
 
                             <div>
 
-                                <h1 className="text-5xl font-bold tracking-tight">
+                                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight">
                                     Solved Problems
                                 </h1>
 
-                                <p className="text-gray-400 mt-2 text-lg">
+                                <p className="text-gray-400 mt-2 text-base sm:text-lg">
                                     View all the problems you have solved.
                                 </p>
 
@@ -105,6 +105,8 @@ function ProblemSolvedPage(){
                             <button
                                 onClick={() => navigate("/")}
                                 className="
+                                    w-full
+                                    sm:w-auto
                                     bg-blue-600
                                     hover:bg-blue-700
                                     transition
@@ -120,11 +122,11 @@ function ProblemSolvedPage(){
                         </div>
 
 
-                        <div className="w-full rounded-2xl border border-slate-800 bg-slate-900/50 p-6 mb-8">
+                        <div className="w-full rounded-2xl border border-slate-800 bg-slate-900/50 p-5 sm:p-6 mb-8">
 
-                                <div className="flex items-center gap-6">
+                                <div className="flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-6">
 
-                                    <div className=" h-16 w-16 rounded-xl bg-blue-600/20 flex items-center justify-center">
+                                    <div className=" h-16 w-16 rounded-xl bg-blue-600/20 flex items-center justify-center self-center sM:self-auto text-3xl">
 
                                         ✅
 
@@ -138,27 +140,27 @@ function ProblemSolvedPage(){
 
                                         </p>
 
-                                        <div className="flex items-end gap-3 mt-1">
+                                        <div className="flex items-end gap-2 sm:gap-3 mt-2">
 
-                                            <span className="text-4xl font-bold text-blue-400">
+                                            <span className="text-3xl sm:text-4xl font-bold text-blue-400">
 
                                                 {netSolvedProblems}
 
                                             </span>
 
-                                            <span className="text-gray-300">
+                                            <span className="text-gray-300 text-sm sm:text-base">
 
                                                 problems out of
 
                                             </span>
 
-                                            <span className="text-4xl font-bold text-blue-400">
+                                            <span className="text-3xl sm:text-4xl font-bold text-blue-400">
 
                                                 {totalProblems}
 
                                             </span>
 
-                                            <span className="text-gray-300">
+                                            <span className="text-gray-300 text-sm sm:text-base">
 
                                                 total problems
 
@@ -174,9 +176,9 @@ function ProblemSolvedPage(){
 
                         {/* filter cards */}
 
-                        <div className="bg-slate-900/50 border border-slate-800 rounded-2xl p-5 mb-8">
+                        <div className="bg-slate-900/50 border border-slate-800 rounded-2xl p-4 sm:p-5 lg:p-6 mb-8">
                           
-                          <div className="grid grid-cols-3 gap-2">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
 
                                 <input
                                     type="text"
@@ -194,8 +196,11 @@ function ProblemSolvedPage(){
                                         rounded-xl
                                         px-4
                                         py-3
+                                        text-sm sm:text-base
                                         outline-none
                                         focus:border-blue-500
+                                        focus:ring-2
+                                        focus:ring-blue-500/20
                                         transition
                                     "
                                     />
@@ -207,14 +212,19 @@ function ProblemSolvedPage(){
                                             setCurrentPage(1);
                                         }}
                                         className="
+                                              w-full
                                             bg-slate-800
                                             border
                                             border-slate-700
                                             rounded-xl
                                             px-4
                                             py-3
+                                            text-sm sm:text-base
                                             outline-none
                                             focus:border-blue-500
+                                            focus:ring-2
+                                            focus:ring-blue-500/20
+                                            transition
                                         "
                                     >
 
@@ -234,14 +244,19 @@ function ProblemSolvedPage(){
                                             setCurrentPage(1);
                                         }}
                                         className="
+                                             w-full
                                             bg-slate-800
                                             border
                                             border-slate-700
                                             rounded-xl
                                             px-4
                                             py-3
+                                            text-sm sm:text-base
                                             outline-none
                                             focus:border-blue-500
+                                            focus:ring-2
+                                            focus:ring-blue-500/20
+                                            transition
                                         "
                                           >
 
@@ -266,6 +281,63 @@ function ProblemSolvedPage(){
                            
 
                           </div>
+
+                        </div>
+                        <div className="flex flex-wrap justify-center items-center gap-3 mt-8 mb-6 px-2">
+
+                                <button
+
+                                disabled={currentPage===1}
+
+                                onClick={()=>setCurrentPage(prev=>prev-1)}
+
+                                className="
+                                px-4 sm:px-5
+                                py-2
+                                text-sm sm:text-base
+                                rounded-lg
+                                bg-slate-800
+                                hover:bg-slate-700
+                                transition
+                                disabled:opacity-50
+                                disabled:cursor-not-allowed
+                                "
+
+                                >
+
+                                Previous
+
+                                </button>
+
+                                <p className="text-gray-400 px-2 py-2 text-sm sm:text-base text-center">
+
+                                Page {currentPage} of {totalPages}
+
+                                </p>
+
+                                <button
+
+                                disabled={currentPage===totalPages}
+
+                                onClick={()=>setCurrentPage(prev=>prev+1)}
+
+                                className="
+                                px-4 sm:px-5
+                                py-2
+                                text-sm sm:text-base
+                                rounded-lg
+                                bg-slate-800
+                                hover:bg-slate-700
+                                transition
+                                disabled:opacity-50
+                                disabled:cursor-not-allowed
+                                "
+
+                                >
+
+                                Next
+
+                                </button>
 
                         </div>
                         {
@@ -293,61 +365,11 @@ function ProblemSolvedPage(){
 
                         <>
 
-                          <div className="flex justify-center items-center mt-8 mb-4">
+                          
 
-                                <button
+                        <div className="overflow-x-auto rounded-2xl border border-slate-800 shadow-lg">
 
-                                disabled={currentPage===1}
-
-                                onClick={()=>setCurrentPage(prev=>prev-1)}
-
-                                className="
-                                px-5
-                                py-2
-                                rounded-lg
-                                bg-slate-800
-                                hover:bg-slate-700
-                                disabled:opacity-50
-                                "
-
-                                >
-
-                                Previous
-
-                                </button>
-
-                                <p className="text-gray-400 p-3">
-
-                                Page {currentPage} of {totalPages}
-
-                                </p>
-
-                                <button
-
-                                disabled={currentPage===totalPages}
-
-                                onClick={()=>setCurrentPage(prev=>prev+1)}
-
-                                className="
-                                px-5
-                                py-2
-                                rounded-lg
-                                bg-slate-800
-                                hover:bg-slate-700
-                                disabled:opacity-50
-                                "
-
-                                >
-
-                                Next
-
-                                </button>
-
-                        </div>
-
-                        <div className="overflow-x-auto rounded-2xl border border-slate-800">
-
-                            <table className="w-full">
+                            <table className="min-w-[700px] w-full">
 
                                 
                                    <thead className="bg-slate-900 border-b border-slate-700">
@@ -360,23 +382,23 @@ function ProblemSolvedPage(){
                                             duration-200
                                             ">
 
-                                        <th className="px-6 py-4 text-left text-slate-400 uppercase text-sm">
+                                        <th className="px-4 sm:px-6 py-4 text-left text-slate-400 uppercase text-xs sm:text-sm">
                                         No.
                                         </th>
 
-                                        <th className="px-6 py-4 text-left text-slate-400 uppercase text-sm">
+                                        <th className="px-4 sm:px-6 py-4 text-left text-slate-400 uppercase text-xs sm:text-sm">
                                         Problem
                                         </th>
 
-                                        <th className="px-6 py-4 text-left text-slate-400 uppercase text-sm">
+                                        <th className="px-4 sm:px-6 py-4 text-left text-slate-400 uppercase text-xs sm:text-sm">
                                         Difficulty
                                         </th>
 
-                                        <th className="px-6 py-4 text-left text-slate-400 uppercase text-sm">
+                                        <th className="px-4 sm:px-6 py-4 text-left text-slate-400 uppercase text-xs sm:text-sm">
                                         Tag
                                         </th>
 
-                                        <th className="px-6 py-4 text-left text-slate-400 uppercase text-sm">
+                                        <th className="px-4 sm:px-6 py-4 text-left text-slate-400 uppercase text-xs sm:text-sm">
                                         Score
                                         </th>
 
@@ -388,9 +410,57 @@ function ProblemSolvedPage(){
 
                                         <tbody>
                                             {
+                                                solvedProblems.length === 0 ? (
+                                                    <tr>
+                                                        <td colSpan={5} className="px-4 py-12 sm:px-6 sm:py-16">
+                                                            <div className="flex flex-col items-center text-center">
+
+                                                            <HiOutlineDocumentSearch
+                                                                className="text-5xl sm:text-6xl lg:text-7xl text-blue-400"
+                                                            />
+
+                                                            <h2 className="mt-4 text-xl sm:text-2xl lg:text-3xl font-bold text-white">
+                                                                No Solved Problems
+                                                            </h2>
+
+                                                            <p className="mt-3 max-w-md px-2 text-sm sm:text-base text-slate-400 leading-relaxed">
+                                                                You haven't solved any problems yet.
+                                                                Start solving problems to track your progress here.
+                                                            </p>
+
+                                                            <button
+                                                                onClick={() => navigate("/problemSection")}
+                                                                className="
+                                                                mt-6
+                                                                w-full
+                                                                max-w-[220px]
+                                                                sm:w-auto
+                                                                px-6
+                                                                py-3
+                                                                rounded-xl
+                                                                bg-blue-600
+                                                                hover:bg-blue-700
+                                                                transition-all
+                                                                duration-300
+                                                                font-semibold
+                                                                "
+                                                            >
+                                                                Solve Problems
+                                                            </button>
+
+                                                            </div>
+                                                        </td>
+                                                        </tr>
+                                                ) 
+                                                :
+
+                                            
+
+
+                                            (
                                                 solvedProblems?.map((problem) => (
 
-                                                    <tr key={problem._id}
+                                                    <tr key={problem?._id}
                                                      className="
                                                         border-b
                                                         border-slate-800
@@ -398,14 +468,14 @@ function ProblemSolvedPage(){
                                                         transition
                                                     ">
 
-                                                        <td className="px-6 py-5">
-                                                            {problem.problemNumber}
+                                                        <td className="px-4 sm:px-6 py-5 text-sm sm:text-base">
+                                                            {problem?.problemNumber}
                                                         </td>
 
-                                                        <td className="px-6 py-5">
+                                                        <td className="px-4 sm:px-6 py-5 text-sm sm:text-base">
 
                                                             <Link
-                                                                to={`/problem/${problem._id}`}
+                                                                to={`/problem/${problem?._id}`}
                                                                 className="
                                                                     text-blue-400
                                                                     hover:text-blue-300
@@ -413,25 +483,25 @@ function ProblemSolvedPage(){
                                                                 "
                                                             >
 
-                                                                {problem.title}
+                                                                {problem?.title}
 
                                                             </Link>
 
                                                         </td>
 
-                                                        <td className="px-6 py-5">
+                                                        <td className="px-4 sm:px-6 py-5 text-sm sm:text-base">
 
                                                             <span className={`
-                                                                px-3 py-1 rounded-full text-sm font-semibold
+                                                                px-3 py-1 rounded-full text-xs sm:text-sm font-semibold
                                                                 ${
-                                                                    problem.difficulty === "easy"
+                                                                    problem?.difficulty === "easy"
                                                                         ? "bg-green-500/20 text-green-400"
-                                                                        : problem.difficulty === "medium"
+                                                                        : problem?.difficulty === "medium"
                                                                         ? "bg-yellow-500/20 text-yellow-400"
                                                                         : "bg-red-500/20 text-red-400"
                                                                 }
                                                             `}>
-                                                                  {problem.difficulty}
+                                                                  {problem?.difficulty}
                                                             </span>
 
 
@@ -439,7 +509,7 @@ function ProblemSolvedPage(){
 
                                                         </td>
 
-                                                        <td className="px-6 py-5">
+                                                        <td className="px-4 sm:px-6 py-5 text-sm sm:text-base">
 
                                                              <span
                                                                 className="
@@ -448,24 +518,26 @@ function ProblemSolvedPage(){
                                                                 px-3
                                                                 py-1
                                                                 rounded-full
-                                                                text-sm
+                                                                text-xs
+                                                                sm:text-sm
                                                                 "
                                                             >
-                                                                {problem.tags}
+                                                                {problem?.tags}
                                                             </span>
 
                                                         </td>
 
                                                         <td className="px-6 py-5 font-semibold text-cyan-400">
 
-                                                            {problem.score}
+                                                            {problem?.score}
 
                                                         </td>
 
                                                     </tr>
 
                                                 ))
-                                            }
+                                            )
+                                        }
 
                                         </tbody>
 
