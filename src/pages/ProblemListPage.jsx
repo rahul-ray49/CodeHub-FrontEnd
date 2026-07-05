@@ -141,9 +141,9 @@ import NavigationBar from './NavigationBar';
                         setSolvedProblemsIds={setSolvedProblemsIds}
                     />
 
-                    <div className="max-w-6xl mx-auto px-6 py-8">
+                    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
 
-                      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
+                      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-6 shadow-xl">
 
                           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 
@@ -156,6 +156,7 @@ import NavigationBar from './NavigationBar';
                                       setPage(1);
                                   }}
                                   className="
+                                      w-full
                                       bg-slate-950
                                       border border-slate-700
                                       rounded-xl
@@ -176,6 +177,7 @@ import NavigationBar from './NavigationBar';
                                       setPage(1);
                                   }}
                                   className="
+                                        w-full
                                       bg-slate-950
                                       border border-slate-700
                                       rounded-xl
@@ -200,6 +202,7 @@ import NavigationBar from './NavigationBar';
                                       setPage(1);
                                   }}
                                   className="
+                                      w-full
                                       bg-slate-950
                                       border border-slate-700
                                       rounded-xl
@@ -224,14 +227,15 @@ import NavigationBar from './NavigationBar';
 
                   </div>
 
-                   <div className="flex justify-center items-center gap-4 mt-4 mb-4 pb-4">
+                   <div className="flex flex-wrap justify-center items-center gap-3 sm:gap-4 mt-4 mb-4 pb-4 px-4">
 
                         <button
                             onClick={() => setPage((prev) => prev - 1)}
                             disabled={page === 1}
                             className="
-                                px-5
+                                px-4 sm:px-5
                                 py-2
+                                text-sm sm:text-base
                                 rounded-xl
                                 bg-slate-900
                                 border
@@ -248,8 +252,9 @@ import NavigationBar from './NavigationBar';
 
                         <span
                             className="
-                                px-4
+                                px-3 sm:px-4
                                 py-2
+                                text-sm sm:text-base
                                 rounded-lg
                                 bg-blue-600
                                 font-semibold
@@ -263,8 +268,9 @@ import NavigationBar from './NavigationBar';
                             onClick={() => setPage((prev) => prev + 1)}
                             disabled={page === totalPages}
                             className="
-                                px-5
+                                px-4 sm:px-5
                                 py-2
+                                text-sm sm:text-base
                                 rounded-xl
                                 bg-slate-900
                                 border
@@ -304,7 +310,7 @@ import NavigationBar from './NavigationBar';
 
                                 :
 
-                                <div className="space-y-5 max-w-5xl mx-auto">
+                                <div className="space-y-5 max-w-5xl mx-auto w-full">
 
                                   {
                                     problems?.map((problem)=>(
@@ -315,7 +321,7 @@ import NavigationBar from './NavigationBar';
                                           bg-slate-950
                                           border border-slate-800
                                           rounded-2xl
-                                          p-5
+                                          p-4 sm:p-5 lg:p-6
                                           hover:border-blue-500
                                           hover:-translate-y-1
                                           hover:shadow-xl
@@ -325,13 +331,13 @@ import NavigationBar from './NavigationBar';
                                         "
                                       >
 
-                                        <div className="flex justify-between items-center">
+                                        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
 
-                                          <h2 className="text-xl font-semibold">
+                                          <h2 className="text-lg sm:text-xl font-semibold break-words">
 
                                             <NavLink
                                               to={`/problem/${problem._id}`}
-                                              className="text-slate-100 hover:text-blue-400 transition"
+                                              className="text-slate-100 hover:text-blue-400 transition break-words"
                                             >
                                               {problem.problemNumber}. {problem.title}
                                             </NavLink>
@@ -343,14 +349,15 @@ import NavigationBar from './NavigationBar';
 
                                             <span
                                               className="
-                                                flex items-center gap-2
+                                                inline-flex items-center justify-center gap-2
+                                                self-start sm:self-auto
                                                 bg-emerald-500/20
                                                 text-emerald-400
                                                 border border-emerald-500/30
                                                 px-3
                                                 py-1
                                                 rounded-full
-                                                text-sm
+                                                text-xs sm:text-sm
                                                 font-medium
                                               "
                                             >
@@ -360,10 +367,10 @@ import NavigationBar from './NavigationBar';
 
                                         </div>
 
-                                        <div className="flex gap-3 mt-5">
+                                        <div className="flex flex-wrap gap-3 mt-5">
 
                                           <span
-                                            className={`px-3 py-1 rounded-full text-sm font-medium ${getDifficultyBadgeColor(problem.difficulty)}`}
+                                            className={`px-3 py-1 rounded-full text-xs sm:text-sm font-medium ${getDifficultyBadgeColor(problem.difficulty)}`}
                                           >
                                             {problem.difficulty}
                                           </span>
@@ -373,7 +380,7 @@ import NavigationBar from './NavigationBar';
                                               px-3
                                               py-1
                                               rounded-full
-                                              text-sm
+                                              text-xs sm:text-sm
                                               font-medium
                                               bg-blue-500/20
                                               text-blue-400
@@ -394,6 +401,8 @@ import NavigationBar from './NavigationBar';
                                              <button
                                              onClick={()=>deleteProblem(problem?._id)}
                                               className="
+                                              w-full
+                                              sm:w-auto
                                                 px-4
                                                 py-2
                                                 bg-red-600
