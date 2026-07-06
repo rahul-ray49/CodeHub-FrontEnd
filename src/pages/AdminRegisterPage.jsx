@@ -90,13 +90,14 @@ function AdminRegisterPage(){
     return (
         <>
       
-                        <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white">
-                            <div className="max-w-xl mx-auto pt-8 px-6">
+                        <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white overflow-x-hidden">
+                            <div className="max-w-2xl mx-auto pt-6 sm:pt-8 px-4 sm:px-6">
                                         <button
                                             onClick={() => navigate("/")}
                                             className="
                                             bg-blue-600
-                                            flex items-center gap-2
+                                            w-full sm:w-fit
+                                            flex items-center justify-center gap-2
                                             cursor-pointer
                                             px-4 py-2
                                             border
@@ -114,21 +115,21 @@ function AdminRegisterPage(){
                             </div>
 
                            <form  onSubmit={handleSubmit(onSubmit)}>
-                            <div className="max-w-2xl mx-auto py-12 px-8">
+                            <div className="max-w-2xl mx-auto py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
 
-                                <div className="bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-xl">
+                                <div className="bg-slate-900 border border-slate-800 rounded-3xl p-5 sm:p-8 shadow-xl">
 
                                    <div className="text-center mb-8">
 
-                                        <div className="text-5xl mb-3">
+                                        <div className="text-4xl sm:text-5xl mb-3">
                                             🛡️
                                         </div>
 
-                                        <h1 className="text-3xl font-bold">
+                                        <h1 className="text-2xl sm:text-3xl font-bold">
                                             Register Administrator
                                         </h1>
 
-                                        <p className="text-slate-400 mt-2">
+                                        <p className="text-slate-400 mt-2 text-sm sm:text-base">
                                             Create a new administrator account.
                                         </p>
 
@@ -136,7 +137,7 @@ function AdminRegisterPage(){
                                     
                                     <div className="mb-5">
 
-                                        <label className="block mb-2 text-sm font-medium p-2">
+                                        <label className="block mb-2 text-sm font-medium">
 
                                         Full Name:
 
@@ -150,14 +151,14 @@ function AdminRegisterPage(){
 
                                         {...register("firstName")}
 
-                                        className="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 sm:py-4 outline-none focus:ring-2 focus:ring-blue-500"
 
                                         />
 
                                         {
                                         errors.firstName &&
 
-                                        <p className="text-red-400 text-sm mt-1">
+                                        <p className="text-red-400 text-xs sm:text-sm mt-1">
                                         {errors.firstName.message}
                                         </p>
 
@@ -179,7 +180,8 @@ function AdminRegisterPage(){
                                             border border-slate-700
                                             rounded-xl
                                             px-4
-                                            py-4
+                                            py-3
+                                            sm:py-4
                                             outline-none
                                             focus:ring-2
                                             focus:ring-blue-500
@@ -189,7 +191,7 @@ function AdminRegisterPage(){
                                         />
 
                                         {errors.emailId && (
-                                            <p className="text-red-400 text-sm mt-2">
+                                            <p className="text-red-400 text-xs sm:text-sm mt-2">
                                             {errors.emailId.message}
                                             </p>
                                         )}
@@ -211,7 +213,8 @@ function AdminRegisterPage(){
                                                 border border-slate-700
                                                 rounded-xl
                                                 px-4
-                                                py-4
+                                                py-3
+                                                sm:py-4
                                                 pr-12
                                                 outline-none
                                                 focus:ring-2
@@ -231,7 +234,7 @@ function AdminRegisterPage(){
                                         </div>
 
                                         {errors.password && (
-                                            <p className="text-red-400 text-sm mt-2">
+                                            <p className="text-red-400 text-xs sm:text-sm mt-2">
                                             {errors.password.message}
                                             </p>
                                         )}
@@ -253,7 +256,8 @@ function AdminRegisterPage(){
                                                 border border-slate-700
                                                 rounded-xl
                                                 px-4
-                                                py-4
+                                                py-3
+                                                sm:py-4
                                                 pr-12
                                                 outline-none
                                                 focus:ring-2
@@ -268,7 +272,7 @@ function AdminRegisterPage(){
                                             onClick={() =>
                                                 setShowConfirmPassword(!showConfirmPassword)
                                             }
-                                            className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white"
+                                            className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white"
                                             >
                                             {showConfirmPassword ? "🙈" : "👁️"}
                                             </button>
@@ -292,7 +296,8 @@ function AdminRegisterPage(){
                                             disabled:cursor-not-allowed
                                             text-white
                                             font-semibold
-                                            py-4
+                                            py-3
+                                            sm:py-4
                                             rounded-xl
                                             transition-all
                                             duration-300
