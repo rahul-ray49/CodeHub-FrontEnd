@@ -71,12 +71,12 @@ const UpdateProblems = () => {
 
     return (
         <div className="min-h-screen bg-[#0B1120] text-white">
-            <div className="max-w-7xl mx-auto px-8 py-8">
-                <div className="flex justify-between">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+                <div className="flex flex-col gap-5 lg:flex-row lg:justify-between lg:items-center mb-5">
 
                 <div className="mb-10">
 
-                    <h1 className="text-4xl font-bold">
+                    <h1 className="text-3xl sm:text-4xl font-bold">
                         Update Problems
                     </h1>
 
@@ -86,7 +86,7 @@ const UpdateProblems = () => {
 
                 </div>
                 <Link to="/">
-                <button className="px-5 py-2 bg-blue-600 hover:bg-blue-700 rounded-xl font-medium transition-all duration-300 shadow-lg hover:shadow-blue-500/20">Return to Home</button>
+                <button className="w-full sm:w-auto px-5 py-3 bg-blue-600 hover:bg-blue-700 rounded-xl font-medium transition-all duration-300 shadow-lg hover:shadow-blue-500/20">Return to Home</button>
                 </Link>
 
                 </div>
@@ -94,7 +94,7 @@ const UpdateProblems = () => {
 
                 <div className="bg-[#111827] rounded-2xl border border-[#263146] p-6">
                  
-                 <div className="grid grid-cols-3 gap-5">
+                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
 
                     <input
                     type="text"
@@ -105,6 +105,7 @@ const UpdateProblems = () => {
                     rounded-xl
                     px-4
                     py-3
+                    text-sm sm:text-base
                     outline-none
                     w-full"
                     value={search}
@@ -123,7 +124,10 @@ const UpdateProblems = () => {
                         border-[#2A3754]
                         rounded-xl
                         px-4
-                        py-3"
+                        py-3
+                        w-full
+                        text-sm sm:text-base
+                        "
                         value={selectedDifficulty}
                         onChange={(e)=>{
                             setSelectedDifficulty(e.target.value);
@@ -146,7 +150,10 @@ const UpdateProblems = () => {
                         border-[#2A3754]
                         rounded-xl
                         px-4
-                        py-3"
+                        py-3
+                        w-full
+                        text-sm sm:text-base
+                        "
                          value={selectedTag}
                          onChange={(e)=>{
                             setSelectedTag(e.target.value);
@@ -195,18 +202,18 @@ const UpdateProblems = () => {
                                         border
                                         border-[#263146]
                                         rounded-2xl
-                                        p-6
+                                        p-5 sm:p-6
                                         hover:border-blue-500
                                         transition-all
                                         duration-200"
                                     >
 
 
-                                        <div className="flex justify-between items-start">
+                                        <div className="flex flex-col sm:flex-row gap-4 justify-between sm:items-start">
 
                                             <div>
 
-                                                <h2 className="text-2xl font-semibold text-white">
+                                                <h2 className="text-xl sm:text-2xl font-semibold text-white">
 
                                                     {problem?.problemNumber}. {problem?.title}
 
@@ -216,6 +223,7 @@ const UpdateProblems = () => {
 
                                             <div
                                                 className="
+                                                self-start
                                                 bg-blue-600/20
                                                 text-blue-400
                                                 px-4
@@ -230,7 +238,7 @@ const UpdateProblems = () => {
 
                                         </div>
 
-                                        <div className="flex items-center gap-3 mt-5">
+                                        <div className="flex flex-wrap items-center gap-3 mt-5">
 
                                             <span
                                                 className={`px-3 py-1 rounded-full text-sm font-semibold
@@ -254,7 +262,7 @@ const UpdateProblems = () => {
                                         </div>
 
 
-                                        <div className="mt-6 flex justify-between items-center">
+                                        <div className="mt-6 flex flex-col sm:flex-row gap-4 justify-between sm:items-center">
 
                                             <p className="text-gray-400 text-sm">
                                                 Problem #{problem?.problemNumber}
@@ -263,6 +271,8 @@ const UpdateProblems = () => {
                                             <button
                                                 onClick={() => navigate(`/updateProblem/${problem?._id}`)}
                                                 className="
+                                                w-full
+                                                sm:w-auto
                                                 bg-blue-600
                                                 hover:bg-blue-700
                                                 px-5
@@ -285,12 +295,14 @@ const UpdateProblems = () => {
 
                 </div>
 
-                <div className="flex justify-between items-center mt-8">
+                <div className="flex flex-col sm:flex-row gap-4 justify-between items-center mt-8">
 
                         <button
                             onClick={handlePrevious}
                             disabled={page === 1}
                             className={`
+                                w-full
+                                sm:w-auto
                             px-5 py-2 rounded-lg font-medium
                             ${
                                 page === 1
@@ -302,7 +314,7 @@ const UpdateProblems = () => {
                             ← Previous
                         </button>
 
-                        <p className="text-gray-300 font-medium">
+                        <p className="text-gray-300 font-medium text-sm sm:text-base">
                             Page {page} of {totalPages}
                         </p>
 
@@ -310,6 +322,7 @@ const UpdateProblems = () => {
                             onClick={handleNext}
                             disabled={page === totalPages}
                             className={`
+                                w-full sm:w-auto
                             px-5 py-2 rounded-lg font-medium
                             ${
                                 page === totalPages
