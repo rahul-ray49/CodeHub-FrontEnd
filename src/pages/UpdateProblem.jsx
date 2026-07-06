@@ -195,11 +195,11 @@ function UpdateProblem() {
                             </div>
                         </div>
 
-                        <h2 className="mt-8 text-3xl font-bold text-white">
+                        <h2 className="mt-8 text-2xl sm:text-3xl font-bold text-white text-center">
                             Updating Problem
                         </h2>
 
-                        <p className="mt-2 text-slate-400">
+                        <p className="mt-2 text-sm sm:text-base text-slate-400 text-center px-4">
                             Validating test cases with Judge0...
                         </p>
 
@@ -221,27 +221,27 @@ function UpdateProblem() {
 
                     
                   : (
-                    <div className="min-h-screen bg-slate-950 text-slate-100">
-                      <div className="max-w-7xl mx-auto p-6 flex justify-between">
+                    <div className="min-h-screen bg-slate-950 text-slate-100 overflow-x-hidden">
+                      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
                       
-                        <h1 className="text-4xl font-bold mb-8">
+                        <h1 className="text-3xl sm:text-4xl font-bold">
                           Update Problem
                         </h1>
 
                         <Link to="/">
-                            <button className="px-5 py-2 bg-blue-600 hover:bg-blue-700 rounded-xl font-medium transition-all duration-300 shadow-lg hover:shadow-blue-500/20">Return to Home</button>
+                            <button className="w-full sm:w-auto px-5 py-3 bg-blue-600 hover:bg-blue-700 rounded-xl font-medium transition-all duration-300 shadow-lg hover:shadow-blue-500/20">Return to Home</button>
                             </Link>
                       </div>
-                      <div className="max-w-7xl mx-auto pb-6 pl-6 pr-6">
+                      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6">
 
                         <form
                           onSubmit={handleSubmit(onSubmit)}
                           className="space-y-8"
                         >
 
-                          <div className="bg-slate-900/80 backdrop-blur-md border border-slate-700 rounded-2xl p-6 shadow-xl">
+                          <div className="bg-slate-900/80 backdrop-blur-md border border-slate-700 rounded-2xl p-4 sm:p-6 shadow-xl">
 
-                            <h2 className="text-2xl font-semibold mb-6">
+                            <h2 className="text-xl sm:text-2xl font-semibold mb-6">
                               Basic Information
                             </h2>
 
@@ -254,11 +254,11 @@ function UpdateProblem() {
 
                                 <input
                                   {...register("title")}
-                                  className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700"
+                                  className="w-full px-4 py-3 text-sm sm:text-base rounded-xl bg-slate-800 border border-slate-700"
                                 />
 
                                 {errors?.title && (
-                                  <p className="text-red-400 mt-2">
+                                  <p className="text-red-400 text-xs sm:text-sm mt-2">
                                     {errors?.title?.message}
                                   </p>
                                 )}
@@ -276,7 +276,7 @@ function UpdateProblem() {
                                 />
 
                                 {errors?.description && (
-                                  <p className="text-red-400 mt-2">
+                                  <p className="text-red-400 text-xs sm:text-sm mt-2">
                                     {
                                       errors?.description
                                         ?.message
@@ -292,11 +292,12 @@ function UpdateProblem() {
                                 <input
                                   type="number"
                                   {...register("score")}
-                                  className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700"
+                                  className="w-full px-4 py-3 text-sm sm:text-base rounded-xl bg-slate-800 border border-slate-700"
                                 />
                               </div>
 
-                              <div className="grid md:grid-cols-2 gap-4">
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
                                   <label className="block mb-2 text-slate-300">
                                       New Difficulty
                                     </label>
@@ -314,6 +315,8 @@ function UpdateProblem() {
                                     Hard
                                   </option>
                                 </select>
+                                </div>
+                                <div>
                               <label className="block mb-2 text-slate-300">
                                              New Tag
                               </label>
@@ -337,6 +340,7 @@ function UpdateProblem() {
                                     DP
                                   </option>
                                 </select>
+                                </div>
 
                               </div>
                             </div>
@@ -354,7 +358,7 @@ function UpdateProblem() {
                       {/* Visible Test Cases */}
                       <div>
 
-                        <div className="flex justify-between items-center mb-4">
+                        <div className="flex flex-col sm:flex-row gap-3 justify-between sm:items-center mb-4">
                           <h3 className="text-lg font-medium">
                            New Visible Test Cases
                           </h3>
@@ -368,7 +372,7 @@ function UpdateProblem() {
                                 explanation: "",
                               })
                             }
-                            className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 transition"
+                            className="w-full sm:w-auto px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 transition"
                           >
                             Add New Cases
                           </button>
@@ -382,7 +386,7 @@ function UpdateProblem() {
                               className="bg-slate-800 border border-slate-700 rounded-xl p-4"
                             >
 
-                              <div className="flex justify-end mb-3">
+                              <div className="flex justify-center sm:justify-end mb-3">
                                 <button
                                   type="button"
                                   onClick={() =>
@@ -401,7 +405,7 @@ function UpdateProblem() {
                                     `visibleTestCases.${index}.input`
                                   )}
                                   placeholder="Input"
-                                  className="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700"
+                                  className="w-full px-4 py-3 text-sm sm:text-base rounded-xl bg-slate-900 border border-slate-700"
                                 />
 
                                 <input
@@ -409,7 +413,7 @@ function UpdateProblem() {
                                     `visibleTestCases.${index}.output`
                                   )}
                                   placeholder="Output"
-                                  className="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700"
+                                  className="w-full px-4 py-3 text-sm sm:text-base rounded-xl bg-slate-900 border border-slate-700"
                                 />
 
                                 <textarea
@@ -477,7 +481,7 @@ function UpdateProblem() {
                                     `hiddenTestCases.${index}.input`
                                   )}
                                   placeholder="Input"
-                                  className="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700"
+                                  className="w-full px-4 py-3 text-sm sm:text-base rounded-xl bg-slate-900 border border-slate-700"
                                 />
 
                                 <input
@@ -485,7 +489,7 @@ function UpdateProblem() {
                                     `hiddenTestCases.${index}.output`
                                   )}
                                   placeholder="Output"
-                                  className="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700"
+                                  className="w-full px-4 py-3 text-sm sm:text-base rounded-xl bg-slate-900 border border-slate-700"
                                 />
 
                               </div>
@@ -506,12 +510,12 @@ function UpdateProblem() {
                       New Code Templates
                     </h2>
 
-                    <div className="grid xl:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
 
                       {[0, 1, 2].map((index) => (
                         <div
                           key={index}
-                          className="bg-slate-800 border border-slate-700 rounded-xl p-5"
+                          className="bg-slate-800 border border-slate-700 rounded-xl p-4 sm:p-5"
                         >
                           <h3 className="text-lg font-semibold text-blue-400 mb-4">
                             {index === 0
@@ -529,19 +533,19 @@ function UpdateProblem() {
                                New Initial Code
                               </label>
 
-                              <div className="bg-slate-950 border border-slate-700 rounded-xl p-4">
+                              <div className="bg-slate-950 border border-slate-700 rounded-xl p-3 sm:p-4 overflow-x-auto">
                                 <textarea
                                   {...register(
                                     `startCode.${index}.initialCode`
                                   )}
                                   rows={10}
-                                  className="w-full bg-transparent outline-none font-mono text-sm resize-none"
+                                  className="w-full bg-transparent outline-none font-mono text-xs sm:text-sm resize-none"
                                 />
                               </div>
 
                               {errors.startCode?.[index]
                                 ?.initialCode && (
-                                <p className="text-red-400 text-sm mt-2">
+                                <p className="text-red-400 text-xs sm:text-sm mt-2">
                                   {
                                     errors.startCode[index]
                                       .initialCode.message
@@ -569,7 +573,7 @@ function UpdateProblem() {
                               {errors.referenceSolution?.[
                                 index
                               ]?.completeCode && (
-                                <p className="text-red-400 text-sm mt-2">
+                                <p className="text-red-400 text-xs sm:text-sm mt-2">
                                   {
                                     errors
                                       .referenceSolution[index]
@@ -592,7 +596,8 @@ function UpdateProblem() {
                     type="submit"
                     className="
                       w-full
-                      py-4
+                      py-3
+                      sm:py-4
                       rounded-2xl
                       bg-gradient-to-r
                       from-blue-600
@@ -601,7 +606,7 @@ function UpdateProblem() {
                       hover:to-indigo-700
                       transition-all
                       duration-300
-                      text-lg
+                      text-base sm:text-lg
                       font-semibold
                       shadow-lg
                     "
