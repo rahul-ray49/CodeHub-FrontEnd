@@ -133,39 +133,39 @@ function UserProfile(){
 
             <NavigationBar2 />
 
-            <div className="flex">
+            <div className="flex flex-col lg:flex-row">
 
                
 
-                <div className="w-64 min-h-[calc(100vh-64px)] bg-slate-800 border-r border-slate-700 p-5">
+                <div className="w-full lg:w-64 lg:min-h-[calc(100vh-64px)] bg-slate-800 border-b lg:border-b-0 lg:border-r border-slate-700 p-5">
 
-                    <h2 className="text-white text-2xl font-bold mb-8">
+                    <h2 className="text-white text-xl sm:text-2xl font-bold mb-8">
                         CodeHub
                     </h2>
 
-                    <nav className="space-y-2">
+                    <nav className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-1 gap-2">
 
-                        <button onClick={()=>navigate("/")} className="flex items-center gap-3 w-full px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700 transition cursor-pointer">
+                        <button onClick={()=>navigate("/")} className="flex items-center justify-center lg:justify-start gap-3 w-full px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700 transition cursor-pointer">
                             <House size={20} />
                             Home
                         </button>
 
-                        <button onClick={()=>navigate("/problemSection")} className="flex items-center gap-3 w-full px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700 transition cursor-pointer">
+                        <button onClick={()=>navigate("/problemSection")} className="flex items-center justify-center lg:justify-start gap-3 w-full px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700 transition cursor-pointer">
                             <BookOpen size={20} />
                             Problems
                         </button>
 
-                        <button onClick={()=>navigate("/profile/me")} className="flex items-center gap-3 w-full px-4 py-3 rounded-lg bg-blue-600 text-white cursor-pointer">
+                        <button onClick={()=>navigate("/profile/me")} className="flex items-center justify-center lg:justify-start gap-3 w-full px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700 transition cursor-pointer">
                             <User size={20} />
                             Profile
                         </button>
 
-                        <button onClick={()=>navigate("/solved")} className="flex items-center gap-3 w-full px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700 transition cursor-pointer">
+                        <button onClick={()=>navigate("/solved")} className="flex items-center justify-center lg:justify-start gap-3 w-full px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700 transition cursor-pointer">
                             <Trophy size={20} />
                             Solved
                         </button>
 
-                          <button onClick={()=>navigate("/submission-history")} className="flex items-center gap-3 w-full px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700 transition cursor-pointer">
+                          <button onClick={()=>navigate("/submission-history")} className="flex items-center justify-center lg:justify-start gap-3 w-full px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700 transition cursor-pointer">
                             <ClipboardList size={20} />
                             Submissions
                         </button>
@@ -176,9 +176,9 @@ function UserProfile(){
 
              
 
-                <div className="flex-1 p-8">
+                <div className="flex-1 p-4 sm:p-6 lg:p-8">
 
-                  <h1 className="text-4xl font-bold text-white">
+                  <h1 className="text-3xl sm:text-4xl font-bold text-white">
                         My Profile
                     </h1>
 
@@ -191,11 +191,11 @@ function UserProfile(){
 
                     <div className="mt-8 rounded-2xl bg-slate-800 border border-slate-700 p-8">
 
-                        <div className="flex items-center gap-6">
+                        <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 text-center sm:text-left">
 
                            
 
-                            <div className="w-24 h-24 rounded-full bg-blue-600 flex items-center justify-center text-4xl font-bold text-white">
+                            <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-blue-600 flex items-center justify-center text-4xl font-bold text-white">
 
                                 {user?.firstName.slice(0,1).toUpperCase()}
 
@@ -203,7 +203,7 @@ function UserProfile(){
 
                             <div>
 
-                                <h2 className="text-3xl font-semibold text-white">
+                                <h2 className="text-2xl sm:text-3xl font-semibold text-white">
 
                                    {user?.firstName} {user?.lastName}
 
@@ -229,7 +229,7 @@ function UserProfile(){
 
 
 
-                    <div className="grid grid-cols-3 gap-6 mt-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
 
                         <div className="bg-slate-800 border border-slate-700 rounded-xl p-6">
 
@@ -270,13 +270,13 @@ function UserProfile(){
                     </div>
 
 
-                    <div className="mt-8 rounded-2xl border border-slate-700 bg-slate-800 p-6">
+                    <div className="mt-8 rounded-2xl border border-slate-700 bg-slate-800 p-4 sm:p-6">
 
                         <h2 className="text-2xl font-semibold text-white mb-6">
                             Problem Solving Statistics
                         </h2>
 
-                        <div className="grid grid-cols-3 gap-6">
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
 
                             <div className="rounded-xl bg-slate-900 border border-slate-700 p-6 text-center">
 
@@ -322,7 +322,7 @@ function UserProfile(){
 
                     <div className="mt-8 rounded-2xl border border-slate-700 bg-slate-800 p-6">
 
-                        <div className="flex justify-between items-center mb-6">
+                        <div className="flex flex-col sm:flex-row gap-4 justify-between sm:items-center mb-6">
 
                             <h2 className="text-2xl font-semibold text-white">
                                 Recent Submissions
@@ -334,7 +334,7 @@ function UserProfile(){
 
                         </div>
 
-                          <div className="flex items-center justify-center gap-3 mt-6 mb-4">
+                          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-6 mb-4">
 
                                     <button
                                         disabled={pagination?.currentPage === 1}
@@ -370,19 +370,19 @@ function UserProfile(){
 
                         <div className="overflow-x-auto">
 
-                            <table className="w-full">
+                            <table className="w-full min-w-[700px]">
 
                                 <thead className="border-b border-slate-700">
 
                                     <tr>
 
-                                        <th className="text-left py-3 text-slate-400">Status</th>
+                                        <th className="text-left px-4 py-3 text-sm sm:text-base text-slate-400">Status</th>
 
-                                        <th className="text-left py-3 text-slate-400">Problem</th>
+                                        <th className="text-left px-4 py-3 text-sm sm:text-base text-slate-400">Problem</th>
 
-                                        <th className="text-left py-3 text-slate-400">Language</th>
+                                        <th className="text-left px-4 py-3 text-sm sm:text-base text-slate-400">Language</th>
 
-                                        <th className="text-left py-3 text-slate-400">Submitted</th>
+                                        <th className="text-left px-4 py-3 text-sm sm:text-base text-slate-400">Submitted</th>
 
                                     </tr>
 
@@ -418,10 +418,10 @@ function UserProfile(){
                                         >
 
 
-                                            <td className="px-4 py-4">
+                                            <td className="px-4 py-4 text-sm sm:text-base">
 
                                                 <span
-                                                    className={`px-3 py-1 rounded-full text-sm font-medium
+                                                    className={`px-3 py-1 rounded-full text-xs sm:text-sm font-medium
                                                     ${
                                                         submission?.status === "Accepted"
                                                             ? "bg-green-500/20 text-green-400"
@@ -442,28 +442,28 @@ function UserProfile(){
                                             </td>
 
 
-                                            <td className="px-4 py-4 text-white font-medium">
+                                            <td className="px-4 py-4 text-sm sm:text-base text-white font-medium">
 
                                                 {submission?.problemId?.title}
 
                                             </td>
 
 
-                                            <td className="px-4 py-4 text-slate-300 capitalize">
+                                            <td className="px-4 py-4 text-sm sm:text-base text-slate-300 capitalize">
 
                                                 {submission?.language}
 
                                             </td>
 
 
-                                            <td className="px-4 py-4 text-slate-400">
+                                            <td className="px-4 py-4 text-sm sm:text-base text-slate-400">
 
                                                 {new Date(submission?.createdAt).toLocaleDateString()}
 
                                             </td>
 
 
-                                            <td className="px-4 py-4">
+                                            <td className="px-4 py-4 text-sm sm:text-base">
 
                                                 <button onClick={()=>navigate(`/submission-details/${submission?._id}`)}
                                                     className="text-blue-400 hover:text-blue-300 font-medium transition cursor-pointer"
