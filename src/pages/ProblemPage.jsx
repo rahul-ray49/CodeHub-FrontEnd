@@ -18,6 +18,7 @@ import AcceptedORWrongAnswerTestcase from "../components/testcasepages/AcceptedO
 import NavigationBar2 from "./NavigationBar2";
 import SubmissionHistory from "../components/submissions/SubmissionHistory";
 import React from "react";
+import ChatAI from "../components/AI/ChatAI";
 
 
 const ProblemPage = () => {
@@ -58,7 +59,7 @@ const ProblemPage = () => {
     }
                
   
-    const activeColor="cursor-pointer px-5 py-2 rounded-xl text-white font-medium bg-gradient-to-r from-blue-600 to-blue-600 transition-all duration-300 ease-out";
+    const activeColor="cursor-pointer px-4 sm:px-5 py-2 rounded-xl text-white font-medium bg-gradient-to-r from-blue-600 to-blue-600 transition-colors duration-300 ease-out";
 
             useEffect(() => {
 
@@ -296,44 +297,44 @@ const ProblemPage = () => {
                 return (
 
                        
-                        <div className="min-h-screen pb-6 pl-6 pr-6 bg-slate-900/80">
+                        <div className="min-h-screen  overflow-x-hidden px-3 sm:px-4 lg:px-6 pb-6 bg-slate-900/80">
 
                             <NavigationBar2/>
 
                             <div className="max-w-8xl mx-auto">
 
-                            <div className="flex gap-6">
+                            <div className="flex flex-col xl:flex-row gap-6 min-h-[calc(100vh-80px)]">
 
                                 {/* LEFT PANEL */}
                                 
 
-                                <div className="w-1/2 space-y-6 border border-slate-700 border-2 p-4 rounded-lg">
+                                <div className="w-full xl:w-1/2 h-full border-2 border border-slate-700 rounded-lg p-4 flex flex-col">
 
                                
 
                                     {/* Tabs */}
 
-                                    <div className="bg-slate-900/80 border border-slate-700 rounded-xl p-3 flex justify-between gap-2 mb-4">
+                                    <div className="bg-slate-900/80 border border-slate-700 rounded-xl p-3 flex items-center gap-2 overflow-x-auto whitespace-nowrap scrollbar-hide mb-4">
 
-                                        <button  className={`cursor-pointer ${activeLeftTab==="description"&&(activeColor)}`}
+                                        <button  className={`px-5 py-2.5 rounded-xl font-medium transition-all duration-200 cursor-pointer flex-shrink-0 ${activeLeftTab==="description"&&(activeColor)}`}
                                         onClick={() => setActiveLeftTab("description")}
                                         >
                                         Description
                                         </button>
 
-                                        <button  className={`cursor-pointer ${activeLeftTab==="editorial"&&(activeColor)}`}
+                                        <button  className={`px-5 py-2.5 rounded-xl font-medium transition-all duration-200 cursor-pointer flex-shrink-0 ${activeLeftTab==="editorial"&&(activeColor)}`}
                                         onClick={() => setActiveLeftTab("editorial")}
                                         >
                                         Editorial
                                         </button>
 
-                                        <button   className={`cursor-pointer ${activeLeftTab==="solutions"&&(activeColor)}`}
+                                        <button   className={`px-5 py-2.5 rounded-xl font-medium transition-all duration-200 cursor-pointer flex-shrink-0 ${activeLeftTab==="solutions"&&(activeColor)}`}
                                         onClick={() => setActiveLeftTab("solutions")}
                                         >
                                         Solutions
                                         </button>
 
-                                        <button   className={`cursor-pointer ${activeLeftTab==="submissions"&&(activeColor)}`}
+                                        <button   className={`px-5 py-2.5 rounded-xl font-medium transition-all duration-200 cursor-pointer flex-shrink-0 ${activeLeftTab==="submissions"&&(activeColor)}`}
                                         onClick={() => {
                                             setActiveLeftTab("submissions");
                                         }}
@@ -341,9 +342,20 @@ const ProblemPage = () => {
                                         Submissions
                                         </button>
 
+                                        <button   className={`px-5 py-2.5 rounded-xl font-medium transition-all duration-200 cursor-pointer flex-shrink-0 ${activeLeftTab==="chatAI"&&(activeColor)}`}
+                                        onClick={() => {
+                                            setActiveLeftTab("chatAI");
+                                        }}
+                                        >
+                                        ChatAI
+                                        </button>
+
                                     </div>
 
                                     {/* Content */}
+
+
+                                    <div className="flex-1 min-h-0 overflow-y-auto pr-2">
 
 
 
@@ -371,7 +383,7 @@ const ProblemPage = () => {
                                                     <h3 className=" inline-block px-3 py-1 mb-4 rounded-lg bg-slate-800 border border-slate-700 text-blue-400 font-semibold text-2xl uppercase tracking-wide">
                                                     {sol?.language}</h3>
 
-                                                    <pre>
+                                                    <pre className="overflow-x-auto whitespace-pre">
                                                     {sol?.completeCode}
                                                     </pre>
                                                 </div>
@@ -393,11 +405,18 @@ const ProblemPage = () => {
 
 
                                             {activeLeftTab === "submissions" && (
+                                                <div className="overflow-x-auto">
                                                 <SubmissionHistory
                                                     submissionLoading={submissionLoading}
                                                     submissions={submissions}
                                                 />
+                                                </div>
                                             )}
+                                            {activeLeftTab === "chatAI" && (
+                                               <ChatAI problem={problem}></ChatAI>
+                                            )}
+
+                                        </div>
 
 
                                     </div>
@@ -410,30 +429,30 @@ const ProblemPage = () => {
 
                                 {/* RIGHT PANEL */}
 
-                                    <div className="w-1/2">
+                                    <div className="w-full xl:w-1/2 xl:h-full min-h-[600px]">
 
-                                       <div className="bg-slate-900/80 border border-slate-700 rounded-xl  flex flex-col">
+                                       <div className="h-full bg-slate-900/80 border border-slate-700 rounded-xl  flex flex-col">
 
                                             {/* Top Tabs */}
 
                                              
 
                                                 {/* Buttons */}
-                                                 <div className="bg-slate-900/80 border border-slate-700 rounded-xl py-3 px-5 flex justify-between  mb-4">
+                                                 <div className="bg-slate-900/80 border border-slate-700 rounded-xl py-3 px-5 flex items-center gap-2 overflow-x-auto whitespace-nowrap gap-2 scrollbar-hide mb-4">
 
-                                                        <button  className={`cursor-pointer ${activeRightTab==="code"&&(activeColor)}`}
+                                                        <button  className={`px-5 py-2.5 rounded-xl font-medium transition-all duration-200 cursor-pointer flex-shrink-0 ${activeRightTab==="code"&&(activeColor)}`}
                                                         onClick={() => setActiveRightTab("code")}
                                                         >
                                                         Code{"</>"}
                                                         </button>
 
-                                                        <button  className={`cursor-pointer ${activeRightTab==="testcase"&&(activeColor)}`}
+                                                        <button  className={`px-5 py-2.5 rounded-xl font-medium transition-all duration-200 cursor-pointer flex-shrink-0 ${activeRightTab==="testcase"&&(activeColor)}`}
                                                         onClick={() => setActiveRightTab("testcase")}
                                                         >
                                                         TestCase
                                                         </button>
 
-                                                        <button   className={`cursor-pointer ${activeRightTab==="result"&&(activeColor)}`}
+                                                        <button   className={`px-5 py-2.5 rounded-xl font-medium transition-all duration-200 cursor-pointer flex-shrink-0 ${activeRightTab==="result"&&(activeColor)}`}
                                                         onClick={() => setActiveRightTab("result")}
                                                         >
                                                         Result
@@ -451,11 +470,13 @@ const ProblemPage = () => {
 
                                                         {activeRightTab === "code" && (
 
-                                                            <div >
+                                                            <div>
+
                                                                 <select
                                                                     value={selectedLanguage}
                                                                     onChange={(e) => setSelectedLanguage(e.target.value)}
                                                                     className="
+                                                                    w-full sm:w-auto
                                                                     bg-slate-800
                                                                     border border-slate-700
                                                                     rounded-lg
@@ -473,8 +494,9 @@ const ProblemPage = () => {
                                                                     </option>
                                                                     ))}
                                                                 </select>
+                                                                <div className="flex-1 mt-2">
 
-                                                                <Editor className="mt-2 p-2 rounded-2xl" height="65vh" 
+                                                                <Editor className="mt-2 p-2 rounded-2xl" height={window.innerWidth < 768 ? "50vh" : "65vh"}
                                                                 language={getMonacoLanguage(selectedLanguage)} 
                                                                 value={languageCodes[selectedLanguage] || ""}
                                                                 onChange={(value) => {
@@ -490,13 +512,14 @@ const ProblemPage = () => {
                                                                     bottom:20
                                                                   }}}
                                                                     />
+                                                                  </div>  
                                                             </div>
                                                         )}
 
                                                 {activeRightTab === "testcase" && runResult && (
 
 
-                                                        <div className="bg-slate-900 border border-slate-700 rounded-xl overflow-hidden">
+                                                        <div className="bg-slate-900 border border-slate-700 rounded-xl overflow-y-auto">
 
                                                             <div className="flex justify-between items-center px-5 py-4 border-b border-slate-700">
 
@@ -570,7 +593,7 @@ const ProblemPage = () => {
 
                                                     {activeRightTab === "result" && submitResult && (
 
-                                                       <div className="p-6 text-white">
+                                                       <div className="p-4 sm:p-6 text-white overflow-y-auto">
 
                                                             <div>
 
@@ -635,18 +658,19 @@ const ProblemPage = () => {
 
                                             <div className="border-t border-slate-700 p-4">
 
-                                                <div className="border-t border-slate-700 p-4 flex justify-between">
+                                                <div className="flex flex-col sm:flex-row gap-4 justify-between">
 
                                                         <button
-                                                        className=" px-4 py-2 rounded-lg bg-slate-800 text-slate-300 cursor-pointer "
+                                                        className="w-full sm:w-auto px-4 py-2 rounded-lg bg-slate-800 text-slate-300 cursor-pointer "
                                                         >
                                                         Console
                                                         </button>
 
-                                                         <div className="flex gap-3">
+                                                         <div className="flex flex-col sm:flex-row gap-3">
 
                                                             <button
                                                             className="
+                                                            w-full sm:w-auto
                                                             px-4 py-2
                                                             rounded-lg
                                                             bg-slate-800
@@ -666,11 +690,13 @@ const ProblemPage = () => {
                                                             onClick={handleSubmit}
                                                             disabled={submitLoading}
                                                             className="
+                                                                w-full sm:w-auto
                                                                 px-4 py-2
                                                                 rounded-lg
                                                                 bg-green-600
                                                                 text-white
                                                                 font-medium
+                                                                text-center
                                                                 flex items-center gap-2
                                                                 cursor-pointer
                                                             "
