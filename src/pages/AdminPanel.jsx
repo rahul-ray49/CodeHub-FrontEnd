@@ -171,27 +171,27 @@ import { Link } from "react-router-dom";
               };
 
              return (
-                    <div className="min-h-screen bg-slate-950 text-slate-100">
-                      <div className="max-w-7xl mx-auto p-6 flex justify-between">
+                    <div className="min-h-screen bg-slate-950 text-slate-100 overflow-x-hidden">
+                      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
                       
-                        <h1 className="text-4xl font-bold mb-8">
+                        <h1 className="text-3xl sm:text-4xl font-bold">
                           Create New Problem
                         </h1>
 
                         <Link to="/">
-                            <button className="px-5 py-2 bg-blue-600 hover:bg-blue-700 rounded-xl font-medium transition-all duration-300 shadow-lg hover:shadow-blue-500/20">Return to Home</button>
+                            <button className="w-full sm:w-auto px-5 py-2 bg-blue-600 hover:bg-blue-700 rounded-xl font-medium transition-all duration-300 shadow-lg hover:shadow-blue-500/20">Return to Home</button>
                             </Link>
                       </div>
-                      <div className="max-w-7xl mx-auto pb-6 pl-6 pr-6">
+                      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6">
 
                         <form
                           onSubmit={handleSubmit(onSubmit)}
                           className="space-y-8"
                         >
 
-                          <div className="bg-slate-900/80 backdrop-blur-md border border-slate-700 rounded-2xl p-6 shadow-xl">
+                          <div className="bg-slate-900/80 backdrop-blur-md border border-slate-700 rounded-2xl p-4 sm:p-6 shadow-xl">
 
-                            <h2 className="text-2xl font-semibold mb-6">
+                            <h2 className="text-xl sm:text-2xl font-semibold mb-6 border-b border-slate-700 pb-3">
                               Basic Information
                             </h2>
 
@@ -204,11 +204,11 @@ import { Link } from "react-router-dom";
 
                                 <input
                                   {...register("title")}
-                                  className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700"
+                                  className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-sm sm:text-base"
                                 />
 
                                 {errors.title && (
-                                  <p className="text-red-400 mt-2">
+                                  <p className="text-red-400 mt-2 text-xs sm:text-sm">
                                     {errors.title.message}
                                   </p>
                                 )}
@@ -226,7 +226,7 @@ import { Link } from "react-router-dom";
                                 />
 
                                 {errors.description && (
-                                  <p className="text-red-400 mt-2">
+                                  <p className="text-red-400 mt-2 text-xs sm:text-sm">
                                     {
                                       errors.description
                                         .message
@@ -242,11 +242,12 @@ import { Link } from "react-router-dom";
                                 <input
                                   type="number"
                                   {...register("score")}
-                                  className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700"
+                                  className="w-full text-sm sm:text-base px-4 py-3 rounded-xl bg-slate-800 border border-slate-700"
                                 />
                               </div>
 
                               <div className="grid md:grid-cols-2 gap-4">
+                                <div>
                                   <label className="block mb-2 text-slate-300">
                                       Difficulty
                                     </label>
@@ -264,6 +265,8 @@ import { Link } from "react-router-dom";
                                     Hard
                                   </option>
                                 </select>
+                                </div>
+                                <div>
                               <label className="block mb-2 text-slate-300">
                                               Tag
                               </label>
@@ -287,6 +290,7 @@ import { Link } from "react-router-dom";
                                     DP
                                   </option>
                                 </select>
+                                </div>
 
                               </div>
                             </div>
@@ -295,7 +299,7 @@ import { Link } from "react-router-dom";
                           {/* Test Cases */}
                   <div className="bg-slate-900/80 backdrop-blur-md border border-slate-700 rounded-2xl p-6 shadow-xl">
 
-                    <h2 className="text-2xl font-semibold mb-6">
+                    <h2 className="text-2xl font-semibold mb-6 border-b border-slate-700 pb-3">
                       Test Cases
                     </h2>
 
@@ -304,7 +308,7 @@ import { Link } from "react-router-dom";
                       {/* Visible Test Cases */}
                       <div>
 
-                        <div className="flex justify-between items-center mb-4">
+                        <div className="flex flex-col sm:flex-row gap-3 justify-between sm:items-center mb-4">
                           <h3 className="text-lg font-medium">
                             Visible Test Cases
                           </h3>
@@ -318,7 +322,7 @@ import { Link } from "react-router-dom";
                                 explanation: "",
                               })
                             }
-                            className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 transition"
+                            className="w-full sm:w-auto px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 transition"
                           >
                             Add Case
                           </button>
@@ -332,7 +336,7 @@ import { Link } from "react-router-dom";
                               className="bg-slate-800 border border-slate-700 rounded-xl p-4"
                             >
 
-                              <div className="flex justify-end mb-3">
+                              <div className="flex justify-center sm:justify-end mb-3">
                                 <button
                                   type="button"
                                   onClick={() =>
@@ -351,7 +355,7 @@ import { Link } from "react-router-dom";
                                     `visibleTestCases.${index}.input`
                                   )}
                                   placeholder="Input"
-                                  className="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700"
+                                  className="w-full text-sm sm:text-base px-4 py-3 rounded-xl bg-slate-900 border border-slate-700"
                                 />
 
                                 <input
@@ -359,7 +363,7 @@ import { Link } from "react-router-dom";
                                     `visibleTestCases.${index}.output`
                                   )}
                                   placeholder="Output"
-                                  className="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700"
+                                  className="w-full text-sm sm:text-base px-4 py-3 rounded-xl bg-slate-900 border border-slate-700"
                                 />
 
                                 <textarea
@@ -427,7 +431,7 @@ import { Link } from "react-router-dom";
                                     `hiddenTestCases.${index}.input`
                                   )}
                                   placeholder="Input"
-                                  className="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700"
+                                  className="w-full text-sm sm:text-base px-4 py-3 rounded-xl bg-slate-900 border border-slate-700"
                                 />
 
                                 <input
@@ -435,7 +439,7 @@ import { Link } from "react-router-dom";
                                     `hiddenTestCases.${index}.output`
                                   )}
                                   placeholder="Output"
-                                  className="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700"
+                                  className="w-full text-sm sm:text-base px-4 py-3 rounded-xl bg-slate-900 border border-slate-700"
                                 />
 
                               </div>
@@ -452,16 +456,16 @@ import { Link } from "react-router-dom";
                   {/* Code Templates */}
                   <div className="bg-slate-900/80 backdrop-blur-md border border-slate-700 rounded-2xl p-6 shadow-xl">
 
-                    <h2 className="text-2xl font-semibold mb-6">
+                    <h2 className="text-2xl font-semibold mb-6 border-b border-slate-700 pb-3">
                       Code Templates
                     </h2>
 
-                    <div className="grid xl:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
 
                       {[0, 1, 2].map((index) => (
                         <div
                           key={index}
-                          className="bg-slate-800 border border-slate-700 rounded-xl p-5"
+                          className="bg-slate-800 border border-slate-700 rounded-xl p-4 sm:p-5"
                         >
                           <h3 className="text-lg font-semibold text-blue-400 mb-4">
                             {index === 0
@@ -479,19 +483,19 @@ import { Link } from "react-router-dom";
                                 Initial Code
                               </label>
 
-                              <div className="bg-slate-950 border border-slate-700 rounded-xl p-4">
+                              <div className="bg-slate-950 border border-slate-700 rounded-xl p-3 sm:p-4 overflow-x-auto">
                                 <textarea
                                   {...register(
                                     `startCode.${index}.initialCode`
                                   )}
                                   rows={10}
-                                  className="w-full bg-transparent outline-none font-mono text-sm resize-none"
+                                  className="w-full bg-transparent outline-none font-mono text-xs sm:text-sm resize-none"
                                 />
                               </div>
 
                               {errors.startCode?.[index]
                                 ?.initialCode && (
-                                <p className="text-red-400 text-sm mt-2">
+                                <p className="text-red-400 text-xs sm:text-sm mt-2">
                                   {
                                     errors.startCode[index]
                                       .initialCode.message
@@ -506,7 +510,7 @@ import { Link } from "react-router-dom";
                                 Reference Solution
                               </label>
 
-                              <div className="bg-slate-950 border border-slate-700 rounded-xl p-4">
+                              <div className="bg-slate-950 border border-slate-700 rounded-xl p-3 sm:p-4 overflow-x-auto">
                                 <textarea
                                   {...register(
                                     `referenceSolution.${index}.completeCode`
@@ -519,7 +523,7 @@ import { Link } from "react-router-dom";
                               {errors.referenceSolution?.[
                                 index
                               ]?.completeCode && (
-                                <p className="text-red-400 text-sm mt-2">
+                                <p className="text-red-400 text-xs sm:text-sm mt-2">
                                   {
                                     errors
                                       .referenceSolution[index]
@@ -541,7 +545,8 @@ import { Link } from "react-router-dom";
                     type="submit"
                     className="
                       w-full
-                      py-4
+                      py-3
+                      sm:py-4
                       rounded-2xl
                       bg-gradient-to-r
                       from-blue-600
@@ -550,7 +555,8 @@ import { Link } from "react-router-dom";
                       hover:to-indigo-700
                       transition-all
                       duration-300
-                      text-lg
+                      text-base
+                      sm:text-lg
                       font-semibold
                       shadow-lg
                     "
