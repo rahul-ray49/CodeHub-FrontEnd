@@ -116,18 +116,23 @@ const LandingPage = () => {
 
 
 
-        </div>
+          <Link
+            to="/chat/ai"
+            className="group bg-[#111827] border border-slate-800 rounded-3xl p-6 sm:p-8 hover:border-blue-500 transition-all duration-300 hover:-translate-y-1"
+          >
+            <div className="text-4xl sm:text-5xl mb-4">🤖</div>
 
+            <h2 className="text-xl sm:text-2xl font-bold mb-3">
+              AI Assistant
+            </h2>
 
-        
-     
-
-
-
-        {/* Admin Cards */}
-        {user?.role === "admin" && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mt-6 sm:mt-8">
-
+            <p className="text-slate-400 text-sm sm:text-base leading-relaxed">
+              Chat with CodeHub AI to learn programming concepts, solve coding doubts, debug code, and prepare for technical interviews.
+            </p>
+          </Link>
+          {user?.role === "admin" && (
+         
+            <>
             <Link
               to="/admin-panel"
               className="group bg-[#111827] border border-slate-800 rounded-3xl p-6 sm:p-8 hover:border-blue-500 transition-all duration-300 hover:-translate-y-1"
@@ -172,9 +177,22 @@ const LandingPage = () => {
                 Create a new administrator account to manage problems, users, and platform settings.
               </p>
             </Link>
+            </>
 
-          </div>
         )}
+
+
+
+        </div>
+
+
+        
+     
+
+
+
+        {/* Admin Cards */}
+        
 
       </div>
 

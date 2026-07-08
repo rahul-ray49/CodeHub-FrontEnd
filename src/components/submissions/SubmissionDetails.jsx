@@ -95,12 +95,12 @@ function SubmissionDetails(){
 
                     <NavigationBar2 />
 
-                    <div className="max-w-7xl mx-auto px-6 py-8">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
 
                         {/* Back Button */}
 
                         <button onClick={()=>window.history.back()}
-                            className="flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors cursor-pointer"
+                            className="inline-flex items-center gap-2 text-sm sm:text-base text-blue-400 hover:text-blue-300 transition-colors cursor-pointer"
                         >
                             <ArrowLeft size={20} />
                             Back
@@ -108,15 +108,15 @@ function SubmissionDetails(){
 
                         {/* Heading */}
 
-                        <h1 className="text-3xl font-bold text-white mt-8">
+                        <h1 className="mt-6 sm:mt-8 text-2xl sm:text-3xl font-bold text-white break-words">
                             Submission Details
                         </h1>
 
                         {/* Information Card */}
 
-                        <div className="mt-8 rounded-xl border border-slate-700 bg-slate-800 p-6">
+                        <div className="mt-6 sm:mt-8 rounded-xl border border-slate-700 bg-slate-800 p-4 sm:p-6">
 
-                            <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
 
                                 <div>
                                     <p className="text-slate-400 text-sm">
@@ -133,8 +133,8 @@ function SubmissionDetails(){
                                         Language
                                     </p>
 
-                                    <p className="text-white mt-1">
-                                        {submission?.status}
+                                    <p className="text-white mt-1 break-words">
+                                        {submission?.language}
                                     </p>
                                 </div>
 
@@ -143,7 +143,7 @@ function SubmissionDetails(){
                                         Runtime
                                     </p>
 
-                                    <p className="text-white mt-1">
+                                    <p className="text-white mt-1 break-words">
                                         {submission?.runtime?submission.runtime:"--"}
                                     </p>
                                 </div>
@@ -153,7 +153,7 @@ function SubmissionDetails(){
                                         Memory
                                     </p>
 
-                                    <p className="text-white mt-1">
+                                    <p className="text-white mt-1 break-words">
                                          {submission?.memory?submission.memory:"--"} KB
                                     </p>
                                 </div>
@@ -163,7 +163,7 @@ function SubmissionDetails(){
                                         Passed
                                     </p>
 
-                                    <p className="text-white mt-1">
+                                    <p className="text-white mt-1 break-words">
                                         {submission?.testCasesPassed} / {submission?.testCasesTotal}
                                     </p>
                                 </div>
@@ -173,7 +173,7 @@ function SubmissionDetails(){
                                         Submitted At
                                     </p>
 
-                                    <p className="text-white mt-1">
+                                    <p className="text-white mt-1 text-sm sm:text-base break-words">
                                      {new Date(submission?.createdAt).toLocaleString()}
                                     </p>
                                 </div>
@@ -186,13 +186,13 @@ function SubmissionDetails(){
 
                         <div className="mt-8">
 
-                            <h2 className="text-2xl font-semibold text-white mb-4">
+                            <h2 className="text-xl sm:text-2xl font-semibold text-white mb-4">
                                 Submitted Code
                             </h2>
 
-                            <div className="rounded-xl border border-slate-700 bg-[#0d1117] overflow-auto">
+                            <div className="rounded-xl border border-slate-700 bg-[#0d1117] overflow-x-auto">
 
-                                <pre className="p-6 text-sm text-gray-300 whitespace-pre-wrap">
+                                <pre className="p-4 sm:p-6 text-xs sm:text-sm text-gray-300 whitespace-pre-wrap break-words font-mono min-w-max">
                                         {submission?.code}
                                 </pre>
 

@@ -22,17 +22,17 @@ function SubmissionHistory({submissionLoading,submissions}){
      if (submissions.length === 0) {
         return (
             <div className="flex items-center justify-center py-16">
-                <div className="w-full max-w-2xl rounded-2xl border border-slate-700 bg-[#141B2D] p-10 text-center">
+                <div className="w-full max-w-2xl rounded-2xl border border-slate-700 bg-[#141B2D] p-6 sm:p-10 text-center">
 
-                    <div className="text-6xl mb-5">
+                    <div className="text-5xl sm:text-6xl mb-5">
                         📄
                     </div>
 
-                    <h2 className="text-2xl font-bold text-white">
+                    <h2 className="text-xl sm:text-2xl font-bold text-white">
                         No Submissions Yet
                     </h2>
 
-                    <p className="mt-3 text-gray-400 leading-7">
+                    <p className="mt-3 text-sm sm:text-base text-gray-400 leading-6 sm:leading-7">
                         Looks like you haven't submitted this problem yet.
                         Once you submit your solution, your complete submission
                         history will appear here.
@@ -46,39 +46,39 @@ function SubmissionHistory({submissionLoading,submissions}){
 
     return (
 
-         <div className="overflow-x-auto rounded-xl border border-slate-700">
+         <div className="overflow-x-auto rounded-xl border border-slate-700 shadow-lg">
 
-            <table className="w-full">
+            <table className="w-full min-w-[900px]">
 
                 <thead className="bg-[#18223B]">
 
                     <tr>
 
-                        <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">
+                        <th className="px-4 sm:px-6 py-3 sm:py-4 text-left text-sm font-semibold text-gray-300">
                             Status
                         </th>
 
-                        <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">
+                        <th className="px-4 sm:px-6 py-3 sm:py-4 text-left text-sm font-semibold text-gray-300">
                             Language
                         </th>
 
-                        <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">
+                        <th className="px-4 sm:px-6 py-3 sm:py-4 text-left text-sm font-semibold text-gray-300">
                             Runtime
                         </th>
 
-                        <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">
+                        <th className="px-4 sm:px-6 py-3 sm:py-4 text-left text-sm font-semibold text-gray-300">
                             Memory
                         </th>
 
-                        <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">
+                        <th className="px-4 sm:px-6 py-3 sm:py-4 text-left text-sm font-semibold text-gray-300">
                             Test Cases
                         </th>
 
-                        <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">
+                        <th className="px-4 sm:px-6 py-3 sm:py-4 text-left text-sm font-semibold text-gray-300">
                             Submitted
                         </th>
 
-                        <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">
+                        <th className="px-4 sm:px-6 py-3 sm:py-4 text-left text-sm font-semibold text-gray-300">
                             Action
                         </th>
 
@@ -99,10 +99,10 @@ function SubmissionHistory({submissionLoading,submissions}){
 
                                 {/* Status */}
 
-                                <td className="px-6 py-4">
+                                <td className="px-4 sm:px-6 py-3 sm:py-4">
 
                                     <span
-                                        className={`px-3 py-1 text-center rounded-full text-sm font-medium
+                                        className={`px-3 py-1 text-center rounded-full text-xs sm:text-sm font-medium whitespace-nowrap
                                         ${
                                             submission?.status === "Accepted"
                                                 ? " text-green-400"
@@ -129,7 +129,7 @@ function SubmissionHistory({submissionLoading,submissions}){
 
                                 {/* Language */}
 
-                                <td className="px-6 py-4 text-gray-300">
+                                <td className="px-4 sm:px-6 py-3 sm:py-4 text-gray-300 whitespace-nowrap">
 
                                     {submission?.language}
 
@@ -137,7 +137,7 @@ function SubmissionHistory({submissionLoading,submissions}){
 
                                 {/* Runtime */}
 
-                                <td className="px-6 py-4 text-gray-300">
+                                <td className="px-4 sm:px-6 py-3 sm:py-4 text-gray-300 whitespace-nowrap">
 
                                     {submission?.runtime > 0
                                         ? `${submission?.runtime} ms`
@@ -147,7 +147,7 @@ function SubmissionHistory({submissionLoading,submissions}){
 
                                 {/* Memory */}
 
-                                <td className="px-6 py-4 text-gray-300">
+                                <td className="px-4 sm:px-6 py-3 sm:py-4 text-gray-300 whitespace-nowrap">
 
                                     {submission?.memory > 0
                                         ? `${submission?.memory} KB`
@@ -157,7 +157,7 @@ function SubmissionHistory({submissionLoading,submissions}){
 
                                 {/* Test Cases */}
 
-                                <td className="px-6 py-4 text-gray-300">
+                                <td className="px-4 sm:px-6 py-3 sm:py-4 text-gray-300">
 
                                     {submission?.testCasesPassed} / {submission?.testCasesTotal}
 
@@ -165,7 +165,7 @@ function SubmissionHistory({submissionLoading,submissions}){
 
                                 {/* Submitted At */}
 
-                                <td className="px-6 py-4 text-gray-300">
+                                <td className="px-4 sm:px-6 py-3 sm:py-4 text-gray-300 whitespace-nowrap">
 
                                     {new Date(submission?.createdAt).toLocaleString()}
 
@@ -173,10 +173,10 @@ function SubmissionHistory({submissionLoading,submissions}){
 
                                 {/* Action */}
 
-                                <td className="px-6 py-4">
+                                <td className="px-4 sm:px-6 py-3 sm:py-4">
 
                                     <button
-                                        className="text-blue-400 hover:text-blue-300 font-medium transition-colors cursor-pointer"
+                                        className="text-blue-400 hover:text-blue-300 font-medium transition-colors cursor-pointer whitespace-nowrap"
                                         onClick={()=>navigate(`/submission-details/${submission?._id}`)}
                                     >
                                         View Code

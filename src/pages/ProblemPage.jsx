@@ -18,10 +18,16 @@ import AcceptedORWrongAnswerTestcase from "../components/testcasepages/AcceptedO
 import NavigationBar2 from "./NavigationBar2";
 import SubmissionHistory from "../components/submissions/SubmissionHistory";
 import React from "react";
-import ChatAI from "../components/AI/ChatAI";
-
+import EmptyResult from "../components/emptyResult/EmptyResult";
+import { useSelector } from "react-redux";
 
 const ProblemPage = () => {
+
+   const user=useSelector((state)=>state.auth.user);
+   const userId=user._id;
+
+
+
     const {problemId}=useParams();
     const [loading, setLoading] = useState(true);
     const [problem, setProblem] = useState(null);
@@ -35,6 +41,11 @@ const ProblemPage = () => {
     const [submitResult,setSubmitResult] = useState(null);
     const [submissions,setSubmissionsData]=useState([]);
     const [submissionLoading,setSubmissionLoading]=useState(false);
+    const [runClicked, setRunClicked] = useState(false);
+    const [submitClicked, setSubmitClicked] = useState(false);
+    const getStorageKey = (userId,problemId, language) => {
+            return `code-${userId}-${problemId}-${language}`;
+        };
 
     const rightTabs = ["code","testcase","result"];
 
@@ -98,7 +109,12 @@ const ProblemPage = () => {
                     const initialCodes = {};
 
                     problem?.startCode?.forEach((item) => {
-                        initialCodes[item.language] = item.initialCode;
+
+                         const savedCode = localStorage.getItem(
+                            getStorageKey(userId,problemId, item.language)
+                        );
+                        
+                        initialCodes[item.language] = savedCode||item.initialCode;
                     });
 
                     setLanguageCodes(initialCodes);
@@ -157,7 +173,7 @@ const ProblemPage = () => {
                             );
 
                             console.log(response.data);
-
+                            setRunClicked(true);
                             setRunResult(response.data);
                             setActiveRightTab("testcase");
 
@@ -196,7 +212,7 @@ const ProblemPage = () => {
 
                             setSubmitResult(response.data);
                             console.log(response.data);
-
+                            setSubmitClicked(true);
                             setActiveRightTab("result");
 
                         }
@@ -342,13 +358,6 @@ const ProblemPage = () => {
                                         Submissions
                                         </button>
 
-                                        <button   className={`px-5 py-2.5 rounded-xl font-medium transition-all duration-200 cursor-pointer flex-shrink-0 ${activeLeftTab==="chatAI"&&(activeColor)}`}
-                                        onClick={() => {
-                                            setActiveLeftTab("chatAI");
-                                        }}
-                                        >
-                                        ChatAI
-                                        </button>
 
                                     </div>
 
@@ -412,9 +421,7 @@ const ProblemPage = () => {
                                                 />
                                                 </div>
                                             )}
-                                            {activeLeftTab === "chatAI" && (
-                                               <ChatAI problem={problem}></ChatAI>
-                                            )}
+                                            
 
                                         </div>
 
@@ -500,10 +507,18 @@ const ProblemPage = () => {
                                                                 language={getMonacoLanguage(selectedLanguage)} 
                                                                 value={languageCodes[selectedLanguage] || ""}
                                                                 onChange={(value) => {
+
+                                                                    const updatedCode = value || "";
+
                                                                 setLanguageCodes((prev) => ({
                                                                     ...prev,
-                                                                    [selectedLanguage]: value || ""
+                                                                    [selectedLanguage]: updatedCode
                                                                 }));
+
+                                                                localStorage.setItem(
+                                                                    getStorageKey(userId,problemId, selectedLanguage),
+                                                                    updatedCode
+                                                                );
 
                                                                 }}
                                                                  theme="hc-black"
@@ -515,6 +530,13 @@ const ProblemPage = () => {
                                                                   </div>  
                                                             </div>
                                                         )}
+
+
+                                                        {activeRightTab === "testcase" &&
+                                                            !runClicked &&(
+                                                                <EmptyResult />
+                                                            )}
+
 
                                                 {activeRightTab === "testcase" && runResult && (
 
@@ -588,6 +610,11 @@ const ProblemPage = () => {
                                                     </div>
 
                                                         )}
+
+                                                        {activeRightTab === "result" &&
+                                                            !submitClicked && (
+                                                                <EmptyResult />
+                                                            )}
 
 
 

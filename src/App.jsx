@@ -21,6 +21,7 @@ import SubmissionHistoryPage from './pages/SubmissionHistoryPage';
 import HelpPage from './pages/HelpPage'
 import SubmissionDetails from './components/submissions/SubmissionDetails'
 import UserProfile from './pages/UserProfile'
+import AiAssistant from './pages/AiAssistant'
 
 function App() {
 
@@ -70,6 +71,8 @@ function App() {
            <Route path="/help-page" element={isAuthenticated?<HelpPage></HelpPage>:<Login/>}></Route>
            <Route path="/submission-details/:sid"  element={isAuthenticated?<SubmissionDetails></SubmissionDetails>:<Login/>}></Route>
            <Route path="/profile/me" element={isAuthenticated?<UserProfile></UserProfile>:<Login></Login>}></Route>
+           <Route path="/chat/ai" element={isAuthenticated?<AiAssistant></AiAssistant>:<Login></Login>}></Route>
+           <Route path="/not-authorized" element={<NotAuthorizedPage/>}></Route>
 
 
          </Routes>
