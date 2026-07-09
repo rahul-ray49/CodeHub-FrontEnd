@@ -324,7 +324,7 @@ const ProblemPage = () => {
                                 {/* LEFT PANEL */}
                                 
 
-                                <div className="w-full xl:w-1/2 h-full border-2 border border-slate-700 rounded-lg p-4 flex flex-col">
+                                <div className="w-full xl:w-1/2 h-[calc(100vh-50px)] border-2 border border-slate-700 rounded-lg p-4 flex flex-col">
 
                                
 

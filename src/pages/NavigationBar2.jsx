@@ -72,6 +72,20 @@ function NavigationBar2() {
               Logout
             </button>
 
+             <button
+              onClick={()=>navigate("/problemSection")}
+              className="w-full px-4 py-3 text-left  hover:bg-slate-800 transition"
+            >
+              Problems
+            </button>
+
+             <button
+              onClick={()=>navigate("/submission-history")}
+              className="w-full px-4 py-3 text-left  hover:bg-slate-800 transition"
+            >
+              submissions
+            </button>
+
           </div>
 
         </div>
