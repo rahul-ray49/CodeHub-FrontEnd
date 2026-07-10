@@ -262,19 +262,19 @@ function ProblemSolvedPage(){
 
                                         <option value="all">All Tags</option>
 
-                                        <option value="Array">Array</option>
+                                        <option value="array">Array</option>
 
-                                        <option value="DP">DP</option>
+                                        <option value="dp">DP</option>
 
-                                        <option value="Graph">Graph</option>
+                                        <option value="graph">Graph</option>
 
-                                        <option value="Linked List">Linked List</option>
+                                        <option value="linkedList">Linked List</option>
 
-                                        <option value="Tree">Tree</option>
+                                        <option value="tree">Tree</option>
 
-                                        <option value="Greedy">Greedy</option>
+                                        <option value="greedy">Greedy</option>
 
-                                        <option value="Binary Search">Binary Search</option>
+                                        <option value="binarySearch">Binary Search</option>
 
                                     </select>
 

@@ -73,8 +73,7 @@ function App() {
            <Route path="/profile/me" element={isAuthenticated?<UserProfile></UserProfile>:<Login></Login>}></Route>
            <Route path="/chat/ai" element={isAuthenticated?<AiAssistant></AiAssistant>:<Login></Login>}></Route>
            <Route path="/not-authorized" element={<NotAuthorizedPage/>}></Route>
-
-
+           
          </Routes>
     </>
   )

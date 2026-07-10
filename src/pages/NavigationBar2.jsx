@@ -20,7 +20,7 @@ function NavigationBar2() {
   return (
     <nav className="sticky top-0 z-50 border-b border-slate-800 bg-[#111827] relative">
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-1.5 flex items-center justify-between">
 
         {/* Logo */}
 

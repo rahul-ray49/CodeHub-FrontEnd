@@ -20,6 +20,7 @@ import SubmissionHistory from "../components/submissions/SubmissionHistory";
 import React from "react";
 import EmptyResult from "../components/emptyResult/EmptyResult";
 import { useSelector } from "react-redux";
+import SolutionWarning from "../components/solution/SolutionWarning";
 
 const ProblemPage = () => {
 
@@ -43,6 +44,7 @@ const ProblemPage = () => {
     const [submissionLoading,setSubmissionLoading]=useState(false);
     const [runClicked, setRunClicked] = useState(false);
     const [submitClicked, setSubmitClicked] = useState(false);
+    const [showSolution, setShowSolution] = useState(false);
     const getStorageKey = (userId,problemId, language) => {
             return `code-${userId}-${problemId}-${language}`;
         };
@@ -383,6 +385,13 @@ const ProblemPage = () => {
                                            )}
 
                                         {activeLeftTab === "solutions" && (
+                                            !showSolution ?(
+
+                                                 <SolutionWarning
+                                                        onReveal={() => setShowSolution(true)}
+                                                    />
+
+                                            ) : (
                                             
                                             <div className="p-2">
                                                 {problem?.referenceSolution?.map((sol, index) => (
@@ -402,6 +411,7 @@ const ProblemPage = () => {
                                                 ))}
                                                
                                             </div>
+                                            )
                                             
                                             )}
                                          
@@ -436,9 +446,9 @@ const ProblemPage = () => {
 
                                 {/* RIGHT PANEL */}
 
-                                    <div className="w-full xl:w-1/2 xl:h-full min-h-[600px]">
+                                    <div className="w-full xl:w-1/2 h-[calc(100vh-50px)] min-h-0">
 
-                                       <div className="h-full bg-slate-900/80 border border-slate-700 rounded-xl  flex flex-col">
+                                       <div className="h-full bg-slate-900/80 border border-slate-700 rounded-xl  flex flex-col overflow-hidden">
 
                                             {/* Top Tabs */}
 
@@ -471,7 +481,7 @@ const ProblemPage = () => {
 
                                             {/* Content Area */}
 
-                                        <div className="flex-1">
+                                        <div className="flex-1 min-h-0 overflow-y-auto ">
 
                                             <div className="text-slate-400 px-3 ">
 
@@ -541,7 +551,7 @@ const ProblemPage = () => {
                                                 {activeRightTab === "testcase" && runResult && (
 
 
-                                                        <div className="bg-slate-900 border border-slate-700 rounded-xl overflow-y-auto">
+                                                        <div className="bg-slate-900 border border-slate-700 rounded-xl">
 
                                                             <div className="flex justify-between items-center px-5 py-4 border-b border-slate-700">
 
@@ -620,7 +630,7 @@ const ProblemPage = () => {
 
                                                     {activeRightTab === "result" && submitResult && (
 
-                                                       <div className="p-4 sm:p-6 text-white overflow-y-auto">
+                                                       <div className="h-full p-4 sm:p-6 text-white overflow-y-auto">
 
                                                             <div>
 
