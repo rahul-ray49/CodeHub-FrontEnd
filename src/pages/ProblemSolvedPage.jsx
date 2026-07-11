@@ -311,13 +311,13 @@ function ProblemSolvedPage(){
 
                                 <p className="text-gray-400 px-2 py-2 text-sm sm:text-base text-center">
 
-                                Page {currentPage} of {totalPages}
+                                Page {currentPage} of {totalPages===0?"1":totalPages}
 
                                 </p>
 
                                 <button
 
-                                disabled={currentPage===totalPages}
+                                disabled={totalPages===0||currentPage>=totalPages}
 
                                 onClick={()=>setCurrentPage(prev=>prev+1)}
 

@@ -261,12 +261,12 @@ import NavigationBar from './NavigationBar';
                                 text-white
                             "
                         >
-                            {page} / {totalPages}
+                            {page} / {totalPages===0?"1":totalPages}
                         </span>
 
                         <button
                             onClick={() => setPage((prev) => prev + 1)}
-                            disabled={page === totalPages}
+                            disabled={totalPages === 0 || page >= totalPages}
                             className="
                                 px-4 sm:px-5
                                 py-2

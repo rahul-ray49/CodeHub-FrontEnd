@@ -350,11 +350,11 @@ function UserProfile(){
                                     </button>
 
                                     <span className="text-slate-300 font-medium">
-                                        Page {pagination?.currentPage} of {pagination?.totalPages}
+                                        Page {pagination?.currentPage} of {pagination?.totalPages===0?"1":pagination?.totalPages}
                                     </span>
 
                                     <button
-                                        disabled={pagination?.currentPage === pagination?.totalPages}
+                                        disabled={pagination?.totalPages===0||pagination?.currentPage >= pagination?.totalPages}
                                         onClick={() => setPage((prev) => prev + 1)}
                                         className={`px-4 py-2 rounded-lg border transition
                                         ${
