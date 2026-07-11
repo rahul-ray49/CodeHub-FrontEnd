@@ -21,6 +21,7 @@ import React from "react";
 import EmptyResult from "../components/emptyResult/EmptyResult";
 import { useSelector } from "react-redux";
 import SolutionWarning from "../components/solution/SolutionWarning";
+import AiAnalysisPanel from "../components/AI/AiAnalysisPanel";
 
 const ProblemPage = () => {
 
@@ -45,6 +46,9 @@ const ProblemPage = () => {
     const [runClicked, setRunClicked] = useState(false);
     const [submitClicked, setSubmitClicked] = useState(false);
     const [showSolution, setShowSolution] = useState(false);
+    const [analysis, setAnalysis] = useState(null);
+    const [analysisLoading, setAnalysisLoading] = useState(false);
+
     const getStorageKey = (userId,problemId, language) => {
             return `code-${userId}-${problemId}-${language}`;
         };
@@ -308,6 +312,52 @@ const ProblemPage = () => {
                             };
 
 
+                            const handleAnalyzeBug = async () => {
+
+                                       if (analysisLoading) return;
+
+                                       if (!languageCodes[selectedLanguage]?.trim()) {
+                                            alert("Please write some code before analyzing.");
+                                            return;
+                                        }
+
+                                        try {
+
+                                            setAnalysisLoading(true);
+
+                                            const response = await axiosClient.post(
+                                                `/ai/analyze/${problemId}`,
+                                                {
+                                                    code: languageCodes[selectedLanguage],
+                                                    language: selectedLanguage,
+                                                    runResult
+                                                }
+                                            );
+
+                                            console.log(response.data);
+
+                                            setAnalysis(response.data.analysis);
+
+                                            setActiveRightTab("ai");
+
+                                        } catch (err) {
+
+                                            console.log(err);
+
+                                            alert(
+                                                err?.response?.data?.message ||
+                                                "Failed to analyze code."
+                                            );
+
+                                        } finally {
+
+                                            setAnalysisLoading(false);
+
+                                        }
+
+                                    };
+
+
                             
                           
 
@@ -393,23 +443,28 @@ const ProblemPage = () => {
 
                                             ) : (
                                             
-                                            <div className="p-2">
-                                                {problem?.referenceSolution?.map((sol, index) => (
-                                                    <React.Fragment key={sol?.language}>
+                                           <div className="p-2 space-y-8">
 
-                                                <div>
-                                                    <h3 className=" inline-block px-3 py-1 mb-4 rounded-lg bg-slate-800 border border-slate-700 text-blue-400 font-semibold text-2xl uppercase tracking-wide">
-                                                    {sol?.language}</h3>
+                                                {problem?.referenceSolution?.map((sol) => (
 
-                                                    <pre className="overflow-x-auto whitespace-pre">
-                                                    {sol?.completeCode}
-                                                    </pre>
-                                                </div>
-                                                <br></br>
-                                                <br></br>
-                                                </React.Fragment>
+                                                    <div key={sol?.language}>
+
+                                                        <h3 className="inline-block px-3 py-1 mb-4 rounded-lg bg-slate-800 border border-slate-700 text-blue-400 font-semibold text-2xl uppercase tracking-wide">
+                                                            {sol?.language}
+                                                        </h3>
+
+                                                        <div className="overflow-x-auto hide-scrollbar rounded-lg">
+
+                                                            <pre className="whitespace-pre p-4 text-sm">
+                                                                {sol?.completeCode}
+                                                            </pre>
+
+                                                        </div>
+
+                                                    </div>
+
                                                 ))}
-                                               
+
                                             </div>
                                             )
                                             
@@ -474,6 +529,16 @@ const ProblemPage = () => {
                                                         >
                                                         Result
                                                         </button>
+
+                                                        <button
+                                                        className={`px-5 py-2.5 rounded-xl font-medium transition-all duration-200 cursor-pointer flex-shrink-0 ${
+                                                            activeRightTab === "ai" && activeColor
+                                                        }`}
+                                                        onClick={() => setActiveRightTab("ai")}
+                                                    >
+                                                        AI Analysis
+                                                    </button>
+
                                                </div>
 
 
@@ -687,6 +752,15 @@ const ProblemPage = () => {
                                                         
                                                 }
 
+                                                {activeRightTab === "ai" && (
+
+                                                       <AiAnalysisPanel
+                                                        analysis={analysis}
+                                                        loading={analysisLoading}
+                                                    />
+
+                                                    )}
+
                                             </div>
 
                                           </div>
@@ -734,7 +808,8 @@ const ProblemPage = () => {
                                                                 text-white
                                                                 font-medium
                                                                 text-center
-                                                                flex items-center gap-2
+                                                                flex
+                                                                justify-center items-center gap-2
                                                                 cursor-pointer
                                                             "
                                                             >
@@ -744,6 +819,37 @@ const ProblemPage = () => {
 
                                                             {submitLoading ? "Submitting..." : "Submit"}
                                                           </button>
+
+                                                          <button
+                                                               onClick={handleAnalyzeBug}
+                                                               disabled={analysisLoading}
+                                                               className="
+                                                                    w-full sm:w-auto
+                                                                    px-4 py-2
+                                                                    rounded-lg
+                                                                    bg-blue-600
+                                                                    hover:bg-blue-700
+                                                                    text-white
+                                                                    font-medium
+                                                                    flex items-center
+                                                                    justify-center
+                                                                    gap-2
+                                                                    disabled:opacity-50
+                                                                    cursor-pointer
+                                                                "
+                                                            >
+                                                                
+                                                            {analysisLoading && (
+                                                                <span className="loading loading-spinner loading-xs"></span>
+                                                            )}
+
+                                                            {
+                                                                analysisLoading
+                                                                    ? "Analyzing..."
+                                                                    : "Analyze Bug"
+                                                            }
+
+                                                            </button>
 
                                                         </div>
 
