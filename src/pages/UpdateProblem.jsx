@@ -167,7 +167,7 @@ function UpdateProblem() {
                     "Problem updated successfully!"
                   );
 
-                  navigate("/");
+                  // navigate("/");
                 } catch (error) {
                   alert(
                     error.response?.data?.message ||
@@ -599,19 +599,19 @@ function UpdateProblem() {
                       py-3
                       sm:py-4
                       rounded-2xl
-                      bg-gradient-to-r
-                      from-blue-600
-                      to-indigo-600
-                      hover:from-blue-700
-                      hover:to-indigo-700
+                      bg-indigo-600
+                      cursor-pointer
+                      hover:bg-indigo-700
                       transition-all
                       duration-300
                       text-base sm:text-lg
                       font-semibold
                       shadow-lg
+                      disabled:bg-blue-400
+                      disabled:cursor-not-allowed
                     "
                   >
-                    Update Problem
+                    {loading ? "Updating Problem...":"Update Problem"}
                   </button>
 
                         </form>

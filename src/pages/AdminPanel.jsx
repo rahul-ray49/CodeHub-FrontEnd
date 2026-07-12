@@ -4,6 +4,7 @@ import { z } from "zod";
 import axiosClient from "../utils/axiosClient";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
       const problemSchema = z.object({
         title: z.string().min(1, "Title is required"),
@@ -75,6 +76,7 @@ import { Link } from "react-router-dom";
            
             function AdminPanel() {
               const navigate = useNavigate();
+              const[loading,setLoading]=useState(false);
 
               const {
                 register,
@@ -152,6 +154,7 @@ import { Link } from "react-router-dom";
 
               const onSubmit = async (data) => {
                 try {
+                  setLoading(true);
                   await axiosClient.post(
                     "/problem/create",
                     data
@@ -165,8 +168,10 @@ import { Link } from "react-router-dom";
                 } catch (error) {
                   alert(
                     error.response?.data?.message ||
-                      error.message
+                      "Problem not Created"
                   );
+                } finally{
+                  setLoading(false);
                 }
               };
 
@@ -543,25 +548,27 @@ import { Link } from "react-router-dom";
                   {/* Submit Button */}
                   <button
                     type="submit"
+                    disabled={loading}
                     className="
+                    
                       w-full
                       py-3
                       sm:py-4
                       rounded-2xl
-                      bg-gradient-to-r
-                      from-blue-600
-                      to-indigo-600
-                      hover:from-blue-700
-                      hover:to-indigo-700
+                      bg-indigo-600
+                      cursor-pointer
+                      hover:bg-indigo-700
                       transition-all
                       duration-300
                       text-base
                       sm:text-lg
                       font-semibold
                       shadow-lg
+                      disabled:cursor-not-allowed
+                      disabled:bg-blue-400
                     "
                   >
-                    Create Problem
+                   {loading? "Creating Problem...":"Create Problem"}
                   </button>
 
                         </form>
