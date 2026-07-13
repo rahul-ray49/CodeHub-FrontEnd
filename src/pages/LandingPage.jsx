@@ -153,23 +153,10 @@ const LandingPage = () => {
             </>
 
         )}
-
-
-
         </div>
-
-
-        
-     
-
-
-
-        {/* Admin Cards */}
         
 
       </div>
-
-      {/* Footer */}
  
       <Footer/>
 
