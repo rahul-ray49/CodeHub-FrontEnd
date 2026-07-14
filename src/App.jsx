@@ -22,6 +22,7 @@ import HelpPage from './pages/HelpPage'
 import SubmissionDetails from './components/submissions/SubmissionDetails'
 import UserProfile from './pages/UserProfile'
 import AiAssistant from './pages/AiAssistant'
+import ProblemOfTheDayPage from './pages/ProblemOfTheDay'
 
 function App() {
 
@@ -73,7 +74,7 @@ function App() {
            <Route path="/profile/me" element={isAuthenticated?<UserProfile></UserProfile>:<Login></Login>}></Route>
            <Route path="/chat/ai" element={isAuthenticated?<AiAssistant></AiAssistant>:<Login></Login>}></Route>
            <Route path="/not-authorized" element={<NotAuthorizedPage/>}></Route>
-           
+           <Route path="/problem-of-the-day" element={isAuthenticated?<ProblemOfTheDayPage/>:<Login></Login>}></Route>
          </Routes>
     </>
   )

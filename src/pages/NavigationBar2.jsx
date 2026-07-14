@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { logoutUser } from "../authSlice";
-
+import { FaUser, FaHouse, FaCode, FaClockRotateLeft,FaCircleCheck } from "react-icons/fa6";
+import { MdLogout } from "react-icons/md";
 function NavigationBar2() {
   const { user } = useSelector((state) => state.auth);
 
@@ -49,44 +50,58 @@ function NavigationBar2() {
 
           </div>
 
-          <div className="absolute right-0 top-full mt-2 hidden group-hover:block w-48 rounded-xl overflow-hidden border border-slate-700 bg-[#111827] shadow-xl">
+          <div className="absolute right-0 top-12 mt-2 hidden group-hover:block w-48 rounded-xl overflow-hidden border border-slate-700 bg-[#111827] shadow-xl">
 
-            <button
-              onClick={() => navigate("/profile/me")}
-              className="w-full px-4 py-3 text-left hover:bg-slate-800 transition"
-            >
-              Profile
-            </button>
+                         <button
+                            onClick={() => navigate("/profile/me")}
+                            className="w-full flex items-center gap-3 text-left px-4 py-3 text-white hover:bg-slate-800 rounded-xl transition"
+                          >
+                            <FaUser className="text-lg" />
+                            <span>Profile</span>
+                          </button>
+            
+                          <button
+                            onClick={() => navigate("/")}
+                            className="w-full flex items-center gap-3 text-left px-4 py-3 text-white hover:bg-slate-800 rounded-xl transition"
+                          >
+                            <FaHouse className="text-lg" />
+                            <span>Home</span>
+                          </button>
+            
+                          <button
+                            onClick={() => navigate("/problemSection")}
+                            className="w-full flex items-center gap-3 text-left px-4 py-3 text-white hover:bg-slate-800 rounded-xl transition"
+                          >
+                            <FaCode className="text-lg" />
+                            <span>Problems</span>
+                          </button>
+            
+                          <button
+                            onClick={() => navigate("/solved")}
+                            className="w-full flex items-center gap-3 text-left px-4 py-3 text-white hover:bg-slate-800 rounded-xl transition"
+                          >
+                            <FaCircleCheck className="text-lg text-white" />
+                            <span>Solved</span>
+                          </button>
+            
+                          <button
+                            onClick={() => navigate("/submission-history")}
+                            className="w-full flex items-center gap-3 text-left px-4 py-3 text-white hover:bg-slate-800 rounded-xl transition"
+                          >
+                            <FaClockRotateLeft className="text-lg" />
+                            <span>Submissions</span>
+                          </button>
+            
+                          <button
+                            onClick={handleLogout}
+                            className="w-full flex items-center gap-3 text-left px-4 py-3 text-red-400 hover:bg-red-500/20 rounded-xl transition"
+                          >
+                            <MdLogout className="text-xl" />
+                            <span>Logout</span>
+                          </button>
+            
 
-            <button
-              onClick={() => navigate("/")}
-              className="w-full px-4 py-3 text-left hover:bg-slate-800 transition"
-            >
-              Home
-            </button>
-
-            <button
-              onClick={handleLogout}
-              className="w-full px-4 py-3 text-left text-red-400 hover:bg-red-500/10 transition"
-            >
-              Logout
-            </button>
-
-             <button
-              onClick={()=>navigate("/problemSection")}
-              className="w-full px-4 py-3 text-left  hover:bg-slate-800 transition"
-            >
-              Problems
-            </button>
-
-             <button
-              onClick={()=>navigate("/submission-history")}
-              className="w-full px-4 py-3 text-left  hover:bg-slate-800 transition"
-            >
-              submissions
-            </button>
-
-          </div>
+            </div>
 
         </div>
 
@@ -132,6 +147,36 @@ function NavigationBar2() {
             className="w-full px-4 py-3 text-left hover:bg-slate-800 transition"
           >
             Profile
+          </button>
+
+          <button
+            onClick={() => {
+              navigate("/");
+              setMobileMenuOpen(false);
+            }}
+            className="w-full px-4 py-3 text-left hover:bg-slate-800 transition"
+          >
+            Home
+          </button>
+
+          <button
+            onClick={() => {
+              navigate("/submission-history");
+              setMobileMenuOpen(false);
+            }}
+            className="w-full px-4 py-3 text-left hover:bg-slate-800 transition"
+          >
+            submissions
+          </button>
+
+          <button
+            onClick={() => {
+              navigate("/solved");
+              setMobileMenuOpen(false);
+            }}
+            className="w-full px-4 py-3 text-left hover:bg-slate-800 transition"
+          >
+            solved
           </button>
 
           <button

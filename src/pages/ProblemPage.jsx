@@ -846,7 +846,7 @@ const ProblemPage = () => {
                                                             {
                                                                 analysisLoading
                                                                     ? "Analyzing..."
-                                                                    : "Analyze Bug"
+                                                                    : "Analyze Code"
                                                             }
 
                                                             </button>

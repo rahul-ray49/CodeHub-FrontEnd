@@ -4,8 +4,8 @@ import { logoutUser } from '../authSlice';
 import Footer from "../components/footer/Footer";
 import NavigationBar2 from "./NavigationBar2";
 import {BookOpen,BadgeCheck,History,CircleHelp,Bot} from "lucide-react";
-import {SquarePlus,FilePenLine,UserPlus} from "lucide-react";
-
+import {SquarePlus,FilePenLine,UserPlus,Flame} from "lucide-react";
+import { FaVideo } from "react-icons/fa";
 const LandingPage = () => {
 
     const {user}=useSelector((state)=>state.auth);
@@ -22,6 +22,12 @@ const LandingPage = () => {
         routeTo:"/problemSection",
         heading:"Problem Section",
         description:" Browse coding challenges and test your skills with curated problems."
+      },
+      {
+        icon:<Flame className="w-10 h-10 text-amber-400"/>,
+        routeTo:"/problem-of-the-day",
+        heading:"POTD",
+        description:"Challenge yourself with today's featured coding problem. Solve it to improve your problem-solving skills and stay consistent every day."
       },
       {
         icon:<BadgeCheck className="w-10 h-10 text-emerald-400 mb-2"/>,
@@ -46,7 +52,7 @@ const LandingPage = () => {
         routeTo:"/chat/ai",
         heading:"AI Assistant",
         description:"Chat with CodeHub AI to learn programming concepts, solve coding doubts, debug code, and prepare for technical interviews."
-      },
+      }
     ]
 
    const adminOptions = [
@@ -70,6 +76,12 @@ const LandingPage = () => {
     heading: "Register Admin",
     description:
       "Create a new administrator account to manage problems, users, and platform settings.",
+  },
+  {
+  icon:<FaVideo className="w-10 h-10 text-cyan-400 mb-2"/>,
+  routeTo:"/upload/video",
+  heading:"Video Solution",
+  description:"Upload detailed video explanations for coding problems to help users understand the logic, approach, and implementation step by step."
   },
 ];
 

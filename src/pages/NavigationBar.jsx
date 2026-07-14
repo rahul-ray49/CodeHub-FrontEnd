@@ -2,6 +2,9 @@ import { useDispatch } from 'react-redux';
 import { logoutUser } from '../authSlice';
 import { Link, NavLink } from 'react-router';
 import { useState } from "react";
+import { useNavigate } from 'react-router';
+import { FaUser, FaHouse, FaCode, FaClockRotateLeft,FaCircleCheck } from "react-icons/fa6";
+import { MdLogout } from "react-icons/md";
 import {
   HiOutlineMenu,
   HiOutlineHome,
@@ -16,6 +19,8 @@ import {
  
             const [menuOpen, setMenuOpen] = useState(false);
             const dispatch=useDispatch();
+            const navigate=useNavigate();
+            
             const handleLogout = () => {
                   dispatch(logoutUser());
                   setSolvedProblemsIds([]);
@@ -52,17 +57,59 @@ import {
           )
           }
            <div className="relative group">
-          <button className="px-4 py-2 bg-slate-800 border border-slate-700 rounded-xl hover:bg-slate-700 transition font-medium"> 
-            {user?.firstName}
-          </button>
+            <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center font-bold text-white">
+              {user?.firstName?.charAt(0).toUpperCase()}
+            </div>
 
-          <div className="absolute top-12 right-0 w-40 bg-slate-900 border border-slate-700 shadow-2xl rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition duration-200 z-50">
+          <div className="absolute top-10 right-0 w-40 bg-slate-900 border border-slate-700 shadow-2xl rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition duration-200 z-50">
+            
             <button
-              onClick={handleLogout}
-              className="w-full text-left px-4 py-3 text-red-400 hover:bg-slate-800 rounded-xl transition"
-            >
-              Logout
-            </button>
+                onClick={() => navigate("/profile")}
+                className="w-full flex items-center gap-3 text-left px-4 py-3 text-white hover:bg-slate-800 rounded-xl transition"
+              >
+                <FaUser className="text-lg" />
+                <span>Profile</span>
+              </button>
+
+              <button
+                onClick={() => navigate("/")}
+                className="w-full flex items-center gap-3 text-left px-4 py-3 text-white hover:bg-slate-800 rounded-xl transition"
+              >
+                <FaHouse className="text-lg" />
+                <span>Home</span>
+              </button>
+
+              <button
+                onClick={() => navigate("/problemSection")}
+                className="w-full flex items-center gap-3 text-left px-4 py-3 text-white hover:bg-slate-800 rounded-xl transition"
+              >
+                <FaCode className="text-lg" />
+                <span>Problems</span>
+              </button>
+
+              <button
+                onClick={() => navigate("/solved-problems")}
+                className="w-full flex items-center gap-3 text-left px-4 py-3 text-white hover:bg-slate-800 rounded-xl transition"
+              >
+                <FaCircleCheck className="text-lg text-white" />
+                <span>Solved</span>
+              </button>
+
+              <button
+                onClick={() => navigate("/submission-history")}
+                className="w-full flex items-center gap-3 text-left px-4 py-3 text-white hover:bg-slate-800 rounded-xl transition"
+              >
+                <FaClockRotateLeft className="text-lg" />
+                <span>Submissions</span>
+              </button>
+
+              <button
+                onClick={handleLogout}
+                className="w-full flex items-center gap-3 text-left px-4 py-3 text-red-400 hover:bg-red-500/20 rounded-xl transition"
+              >
+                <MdLogout className="text-xl" />
+                <span>Logout</span>
+              </button>
           </div>
         </div>
       </div>
