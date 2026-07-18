@@ -400,11 +400,12 @@ function UpdateProblem() {
 
                               <div className="space-y-3">
 
-                                <input
+                                <textarea
                                   {...register(
                                     `visibleTestCases.${index}.input`
                                   )}
                                   placeholder="Input"
+                                  rows={2}
                                   className="w-full px-4 py-3 text-sm sm:text-base rounded-xl bg-slate-900 border border-slate-700"
                                 />
 
@@ -476,11 +477,12 @@ function UpdateProblem() {
 
                               <div className="space-y-3">
 
-                                <input
+                                <textarea
                                   {...register(
                                     `hiddenTestCases.${index}.input`
                                   )}
                                   placeholder="Input"
+                                  rows={2}
                                   className="w-full px-4 py-3 text-sm sm:text-base rounded-xl bg-slate-900 border border-slate-700"
                                 />
 
@@ -624,4 +626,3 @@ function UpdateProblem() {
 }
 
 export default UpdateProblem;
-

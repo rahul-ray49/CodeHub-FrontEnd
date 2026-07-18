@@ -59,7 +59,8 @@ const authSlice = createSlice({
     isAuthenticated: false,
     loading: false,
     error: null,
-    logincredentialserror:null
+    logincredentialserror:null,
+    signupcredentialserror:null
   },
   reducers: {
   },
@@ -69,18 +70,21 @@ const authSlice = createSlice({
       .addCase(registerUser.pending, (state) => {
         state.loading = true;
         state.error = null;
+        state.signupcredentialserror=null;
       })
       .addCase(registerUser.fulfilled, (state, action) => {
         state.loading = false;
         state.isAuthenticated = false;
         state.user = null;
         state.error=null;
+        state.signupcredentialserror=null;
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action?.payload || 'Something went wrong';
         state.isAuthenticated = false;
         state.user = null;
+        state.signupcredentialserror=action?.payload||'Something went wrong';
       })
   
       // Login User Cases

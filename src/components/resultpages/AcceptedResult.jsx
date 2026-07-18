@@ -1,101 +1,54 @@
+import { CheckCircle2, Clock, Database, Award } from "lucide-react";
 
+function AcceptedResult({ passedCases, totalCases, runtime, memory }) {
+  return (
+    <div className="space-y-6">
+      {/* Success Header */}
+      <div className="bg-[#0f172a] border border-emerald-500/20 rounded-2xl p-6">
+        <div className="flex items-center gap-4">
+          <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 flex items-center justify-center">
+            <CheckCircle2 size={32} className="text-emerald-400" />
+          </div>
+          <div>
+            <h2 className="text-2xl font-bold text-white">Accepted</h2>
+            <p className="text-slate-400 text-sm mt-1">
+              Your solution passed all test cases successfully.
+            </p>
+          </div>
+        </div>
+      </div>
 
-function AcceptedResult({ passedCases,totalCases,runtime,memory}){
-
-
-    return(
-       <div>
-        <div className="bg-slate-900/80 rounded-xl border border-slate-900/80 p-4 sm:p-5 lg:p-6">
-
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-
-                <div className="text-4xl sm:text-5xl">
-                    🎉
-                </div>
-
-                <div>
-
-                    <h2 className="text-2xl sm:text-3xl font-bold text-green-500">
-                        Accepted
-                    </h2>
-
-                    <p className="text-sm sm:text-base text-gray-400 mt-2 leading-6">
-                        Congratulations! Your solution passed all hidden test cases.
-                    </p>
-
-                </div>
-
+      {/* Metrics Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {[
+          { label: "Passed", value: `${passedCases}/${totalCases}`, icon: CheckCircle2 },
+          { label: "Runtime", value: runtime ? `${Number(runtime).toFixed(3)}ms` : "--", icon: Clock },
+          { label: "Memory", value: memory ? `${memory}KB` : "--", icon: Database },
+        ].map((item, idx) => (
+          <div key={idx} className="bg-[#0f172a] border border-slate-800 rounded-2xl p-5">
+            <div className="flex items-center gap-2 text-slate-500 mb-2">
+              <item.icon size={16} />
+              <span className="text-[10px] font-bold uppercase tracking-wider">{item?.label}</span>
             </div>
+            <h3 className="text-xl font-bold text-white">{item?.value}</h3>
+          </div>
+        ))}
+      </div>
 
+      {/* Motivational Section */}
+      <div className="bg-emerald-500/5 border border-emerald-500/10 rounded-2xl p-6 flex gap-4">
+        <div className="text-emerald-400 mt-1">
+          <Award size={24} />
         </div>
-
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
-
-                <div className="bg-[#1B2436] border border-slate-700 rounded-xl p-4 sm:p-5 text-center">
-
-                    <p className="text-gray-400 text-sm">
-                        Passed
-                    </p>                                    
-
-                    <h2 className="text-xl sm:text-2xl  font-bold text-white mt-2 break-words">
-                        {passedCases}/{totalCases}
-                    </h2>
-
-                </div>
-
-                <div className="bg-[#1B2436] border border-slate-700 rounded-xl p-4 sm:p-5 text-center">
-
-                    <p className="text-gray-400 text-sm">
-                        Runtime                                                
-                    </p>
-
-                    <h2 className="text-xl sm:text-2xl font-bold text-white mt-2 break-words">
-                        {runtime ?? "--"} ms
-                    </h2>                                      
-
-                </div>
-
-                <div className="bg-[#1B2436] border border-slate-700 rounded-xl p-4 sm:p-5 text-center">
-
-                    <p className="text-gray-400 text-sm">
-                        Memory
-                    </p>
-
-                    <h2 className="text-xl sm:text-2xl  font-bold text-white mt-2 break-words">
-                        {memory ?? "--"} KB
-                    </h2>
-
-                </div>
-
+        <div>
+          <h3 className="text-emerald-400 font-semibold text-lg">Excellent Work!</h3>
+          <p className="text-slate-400 text-sm leading-relaxed mt-1">
+            Your solution is efficient and correct. Keep pushing your boundaries and tackle the next challenge!
+          </p>
         </div>
-
-
-        <div className="mt-6 bg-green-500/10 border border-green-500/20 rounded-xl p-4 sm:p-5">
-
-            <div className="flex items-start gap-3">
-
-                <div className="text-2xl flex-shrink-0">
-                    ✅
-                </div>
-
-                <div>
-
-                    <h3 className="text-green-400 text-lg sm:text-xl font-semibold">
-                        Excellent Work!
-                    </h3>
-
-                    <p className="text-gray-300 mt-2 leading-7 text-sm sm:text-base text-gray-300 mt-2 leading-6 sm:leading-7">
-                        Your solution passed all hidden test cases successfully.
-                        You can now move on to solve more challenging problems.
-                    </p>
-
-                </div>
-
-            </div>
-
-        </div>
+      </div>
     </div>
-    )
+  );
 }
+
 export default AcceptedResult;

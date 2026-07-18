@@ -15,7 +15,7 @@ const ExampleCard = ({ example, index }) => {
 
                 <div className="mt-1 overflow-x-auto rounded-md bg-slate-900/60 p-2">
                   <pre className="whitespace-pre-wrap break-words font-mono text-sm">
-                    {example.input}
+                    {example?.input}
                   </pre>
                 </div>
               </div>
@@ -27,18 +27,18 @@ const ExampleCard = ({ example, index }) => {
 
                 <div className="mt-1 overflow-x-auto rounded-md bg-slate-900/60 p-2">
                   <pre className="whitespace-pre-wrap break-words font-mono text-sm">
-                    {example.output}
+                    {example?.output}
                   </pre>
                 </div>
               </div>
 
               <div className="break-words">
-                <span className="font-semibold text-purple-400">
+                <span className="font-semibold text-white">
                   Explanation:
                 </span>
 
                 <p className="mt-1 whitespace-pre-wrap break-words">
-                  {example.explanation}
+                  {example?.explanation}
                 </p>
               </div>
 

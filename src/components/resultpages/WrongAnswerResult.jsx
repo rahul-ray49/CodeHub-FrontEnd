@@ -1,92 +1,55 @@
+import { XCircle, CheckCircle2, Clock, Database, RefreshCcw } from "lucide-react";
 
-
-
-function WrongAnswerResult({passedCases,totalCases,runtime,memory}){
-
-
-
-    return (
-       <div>
-        <div className="bg-[#2B1D1D] border border-red-500/20 rounded-xl p-4 sm:p-5 lg:p-6">
-
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-
-                <div className="text-4xl sm:text-5xl flex-shrink-0">
-                    ❌
-                </div>
-
-                <div>
-
-                    <h2 className="text-2xl sm:text-3xl font-bold text-red-500">
-                        Wrong Answer
-                    </h2>
-
-                    <p className="text-sm sm:text-base text-gray-300 mt-2 leading-6 ">
-                        Your solution failed on one or more hidden test cases.
-                    </p>
-
-                </div>
-
-            </div>
-
-        </div>
-
-         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
-
-                <div className="bg-[#1B2436] border border-slate-700 rounded-xl p-4 sm:p-5 text-center">
-
-                    <p className="text-gray-400 text-sm">
-                        Passed
-                    </p>
-
-                    <h2 className="text-xl sm:text-2xl font-bold text-white mt-2">
-                        {passedCases}/{totalCases}
-                    </h2>
-
-                </div>
-
-                <div className="bg-[#1B2436] border border-slate-700 rounded-xl  p-4 sm:p-5 text-center">
-
-                    <p className="text-gray-400 text-sm">
-                        Runtime
-                    </p>
-
-                    <h2 className="text-xl sm:text-2xl font-bold text-white mt-2 break-words">
-                        {runtime ?? "--"} ms
-                    </h2>
-
-                </div>
-
-                <div className="bg-[#1B2436] border border-slate-700 rounded-xl p-4 sm:p-5 text-center">
-
-                    <p className="text-gray-400 text-sm">
-                        Memory
-                    </p>
-
-                    <h2 className="text-xl text-2xl font-bold text-white mt-2 break-words">
-                        {memory ?? "--"} KB
-                    </h2>
-
-                </div>
-
-        </div>
-
-        <div className="mt-6 bg-red-500/10 border border-red-500/20 rounded-xl p-4 sm:p-5">
-
-            <h3 className="text-red-400 text-lg font-semibold sm:text-xl">
-                Some test cases failed
-            </h3>
-
-            <p className="text-gray-300 text-sm sm:text-base  mt-2 leading-6 sm:leading-7">
-                Your solution worked for some hidden test cases but did not
-                produce the expected output for all of them.
-                Review your logic and try again.
+function WrongAnswerResult({ passedCases, totalCases, runtime, memory }) {
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="bg-[#0f172a] border border-red-500/20 rounded-2xl p-6">
+        <div className="flex items-center gap-4">
+          <div className="w-14 h-14 rounded-2xl bg-red-500/10 flex items-center justify-center">
+            <XCircle size={32} className="text-red-400" />
+          </div>
+          <div>
+            <h2 className="text-2xl font-bold text-white">Wrong Answer</h2>
+            <p className="text-slate-400 text-sm mt-1">
+              Your solution produced incorrect results for some test cases.
             </p>
-
+          </div>
         </div>
+      </div>
 
+      {/* Metrics Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {[
+          { label: "Passed", value: `${passedCases}/${totalCases}`, icon: CheckCircle2 },
+          { label: "Runtime", value: runtime ? `${Number(runtime).toFixed(3)}ms` : "--", icon: Clock },
+          { label: "Memory", value: memory ? `${memory}KB` : "--", icon: Database },
+        ].map((item, idx) => (
+          <div key={idx} className="bg-[#0f172a] border border-slate-800 rounded-2xl p-5">
+            <div className="flex items-center gap-2 text-slate-500 mb-2">
+              <item.icon size={16} />
+              <span className="text-[10px] font-bold uppercase tracking-wider">{item?.label}</span>
+            </div>
+            <h3 className="text-xl font-bold text-white">{item?.value}</h3>
+          </div>
+        ))}
+      </div>
 
-       </div>
-    )
+      {/* Suggestions */}
+      <div className="bg-red-500/5 border border-red-500/10 rounded-2xl p-6 flex gap-4">
+        <div className="text-red-400 mt-1">
+          <RefreshCcw size={24} />
+        </div>
+        <div>
+          <h3 className="text-red-400 font-semibold text-lg">Review your logic</h3>
+          <p className="text-slate-400 text-sm leading-relaxed mt-1">
+            Ensure your algorithm correctly handles edge cases, boundary conditions, 
+            and data type limits. Double-check your logic against the problem constraints.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
 }
+
 export default WrongAnswerResult;

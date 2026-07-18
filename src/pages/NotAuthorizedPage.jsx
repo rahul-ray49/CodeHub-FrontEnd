@@ -1,58 +1,61 @@
-import { ShieldX, ArrowLeft, Home } from "lucide-react";
-import { Link } from "react-router-dom";
-
+import { ShieldAlert, ArrowLeft, Home } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import NavigationBar2 from "./NavigationBar2"
 const NotAuthorizedPage = () => {
-    return (
-        <div className="min-h-screen bg-[#0b1120] flex items-center justify-center px-4 sm:px-6 py-6">
-            <div className="w-full max-w-3xl mx-auto">
+  const navigate = useNavigate();
 
-                <div className="bg-gradient-to-br from-[#162454] to-[#12172d] border border-[#24345f] rounded-3xl p-6 sm:p-8 lg:p-12 text-center shadow-2xl">
-
-                    <div className="flex justify-center mb-8">
-                        <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-blue-600/20 border border-blue-500/30 flex items-center justify-center">
-                            <ShieldX size={50} className="w-10 h-10 sm:w-12 sm:h-12 text-red-400" />
-                        </div>
-                    </div>
-
-                    <p className="text-blue-400 text-sm sm:text-base font-semibold tracking-widest mb-3">
-                        ERROR 403
-                    </p>
-
-                    <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-5">
-                        Access Denied
-                    </h1>
-
-                    <p className="text-gray-400 text-sm sm:text-base lg:text-lg max-w-xl mx-auto leading-7 sm:leading-8">
-                        You are <span className="text-red-400 font-semibold">not authorized</span> to
-                        access this page. Please contact an administrator if you
-                        believe this is a mistake.
-                    </p>
-
-                    <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8 sm:mt-10">
-
-                        <Link
-                            to="/"
-                            className="w-full sm:w-auto justify-center flex items-center gap-2 bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-xl text-white font-semibold transition"
-                        >
-                            <Home size={18} />
-                            Go Home
-                        </Link>
-
-                        <button
-                            onClick={() => window.history.back()}
-                            className="w-full sm:w-auto justify-center flex items-center gap-2 border border-slate-600 hover:border-blue-500 hover:bg-slate-800 px-6 py-3 rounded-xl text-gray-300 transition"
-                        >
-                            <ArrowLeft size={18} />
-                            Go Back
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
+  return (
+    <>
+    <NavigationBar2/>
+    <div className="min-h-screen bg-[#0b1120] flex items-center justify-center p-6">
+      <div className="w-full max-w-sm bg-[#0f172a] border border-slate-800 rounded-3xl p-8 shadow-2xl">
+        
+        {/* Top Section: Icon with a subtle background hint */}
+        <div className="flex justify-center mb-8">
+          <div className="w-20 h-20 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center">
+            <ShieldAlert size={36} className="text-slate-500" strokeWidth={1.5} />
+          </div>
         </div>
-    );
+
+        {/* Text Section */}
+        <div className="text-center mb-8">
+          <h1 className="text-2xl font-bold text-white mb-3">Access Restricted</h1>
+          <p className="text-slate-400 text-sm leading-relaxed">
+            You do not have the necessary permissions to view this page. 
+            Please check your account role or contact support.
+          </p>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="flex flex-col gap-3">
+          <Link
+            to="/"
+            className="flex items-center justify-center gap-2 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-xl transition-all shadow-lg shadow-blue-900/10"
+          >
+            <Home size={18} />
+            Back to Dashboard
+          </Link>
+          
+          <button
+            onClick={() => navigate(-1)}
+            className="flex items-center justify-center gap-2 w-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium py-3 px-4 rounded-xl transition-all border border-slate-700"
+          >
+            <ArrowLeft size={18} />
+            Go Back
+          </button>
+        </div>
+
+        {/* Minimal Footer */}
+        <div className="mt-8 pt-6 border-t border-slate-800/50 text-center">
+          <p className="text-[10px] font-bold text-slate-600 uppercase tracking-[0.2em]">
+            Error Code: 403
+          </p>
+        </div>
+      </div>
+    </div>
+    </>
+
+  );
 };
 
 export default NotAuthorizedPage;

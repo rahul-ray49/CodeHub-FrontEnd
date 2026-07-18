@@ -23,6 +23,10 @@ import SubmissionDetails from './components/submissions/SubmissionDetails'
 import UserProfile from './pages/UserProfile'
 import AiAssistant from './pages/AiAssistant'
 import ProblemOfTheDayPage from './pages/ProblemOfTheDay'
+import AdminUpload from "./pages/AdminUpload";
+import UploadVideoModal from './components/video/UploadVideoModal'
+import ScrollToTop from './components/ScrollToTop'
+import UpdateProfilePage from './pages/UpdateProfilePage'
 
 function App() {
 
@@ -55,6 +59,7 @@ function App() {
 
   return (
     <>
+    <ScrollToTop />
      <Routes>
           <Route path="/" element={isAuthenticated?<LandingPage/>:<Navigate to="/signup"/>}></Route>
            <Route path="/login" element={isAuthenticated?<Navigate to="/"/>:<Login></Login>}></Route>
@@ -75,6 +80,9 @@ function App() {
            <Route path="/chat/ai" element={isAuthenticated?<AiAssistant></AiAssistant>:<Login></Login>}></Route>
            <Route path="/not-authorized" element={<NotAuthorizedPage/>}></Route>
            <Route path="/problem-of-the-day" element={isAuthenticated?<ProblemOfTheDayPage/>:<Login></Login>}></Route>
+           <Route path="/admin/video/upload" element={isAuthenticated && user?.role === "admin"? <AdminUpload />: (isAuthenticated ? <NotAuthorizedPage /> : <Login />) }/>
+           <Route path="/admin/video/upload/:problemId" element={ isAuthenticated && user?.role === "admin" ? <UploadVideoModal /> : (isAuthenticated ? <NotAuthorizedPage /> : <Login />)}/>
+            <Route path="/user/update-profile" element={isAuthenticated?<UpdateProfilePage></UpdateProfilePage>:<Login></Login>}></Route>
          </Routes>
     </>
   )

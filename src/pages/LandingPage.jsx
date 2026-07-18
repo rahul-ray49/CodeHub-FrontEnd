@@ -1,178 +1,118 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { logoutUser } from '../authSlice';
 import Footer from "../components/footer/Footer";
 import NavigationBar2 from "./NavigationBar2";
-import {BookOpen,BadgeCheck,History,CircleHelp,Bot} from "lucide-react";
-import {SquarePlus,FilePenLine,UserPlus,Flame} from "lucide-react";
-import { FaVideo } from "react-icons/fa";
+import { 
+  BookOpen, BadgeCheck, History, CircleHelp, Bot, SquarePlus, 
+  FilePenLine, Flame, CodeXml, BrainCircuit, BarChart3, ListChecks,
+  Video, Rocket, UserPlus 
+} from "lucide-react";
+
 const LandingPage = () => {
+  const { user } = useSelector((state) => state?.auth);
 
-    const {user}=useSelector((state)=>state.auth);
-    const dispatch=useDispatch();
+  const commonOptions = [
+    { icon: <ListChecks />, color: "from-sky-500 to-blue-600", routeTo: "/problemSection", heading: "Practice Problems", desc: "Master specific areas" },
+    { icon: <Flame />, color: "from-orange-500 to-red-600", routeTo: "/problem-of-the-day", heading: "Daily Challenge", desc: "Stay consistent" },
+    { icon: <History />, color: "from-pink-500 to-rose-600", routeTo: "/submission-history", heading: "Submissions", desc: "Review past attempts" },
+    { icon: <BadgeCheck />, color: "from-emerald-400 to-teal-500", routeTo: "/solved", heading: "Solved Problems", desc: "View all accepted solutions and track your completed challenges." },
+    { icon: <CircleHelp />, color: "from-amber-500 to-yellow-600", routeTo: "/help-page", heading: "Help Center", desc: "Get answers and support" },
+  ];
 
-    const handleLogout=()=>{
-         dispatch(logoutUser())
-    }
+  const adminOptions = [
+    { icon: <SquarePlus />, color: "from-green-500 to-emerald-600", routeTo: "/admin-panel", heading: "Create Problem", desc: "Add new coding problems, examples, constraints and test cases." },
+    { icon: <FilePenLine />, color: "from-sky-500 to-blue-600", routeTo: "/updateproblems", heading: "Update Problems", desc: "Edit existing problems, update statements and manage test cases." },
+    { icon: <UserPlus />, color: "from-orange-500 to-red-600", routeTo: "/admin-register", heading: "Register Admin", desc: "Create a new administrator account to manage platform settings." },
+    { icon: <Video />, color: "from-cyan-500 to-blue-600", routeTo: "/admin/video/upload", heading: "Video Solution", desc: "Upload detailed video explanations to help users understand logic." },
+  ];
 
-
-    const userOptions=[
-      {
-        icon:<BookOpen className="w-10 h-10 text-blue-500 mb-2"/>,
-        routeTo:"/problemSection",
-        heading:"Problem Section",
-        description:" Browse coding challenges and test your skills with curated problems."
-      },
-      {
-        icon:<Flame className="w-10 h-10 text-amber-400"/>,
-        routeTo:"/problem-of-the-day",
-        heading:"POTD",
-        description:"Challenge yourself with today's featured coding problem. Solve it to improve your problem-solving skills and stay consistent every day."
-      },
-      {
-        icon:<BadgeCheck className="w-10 h-10 text-emerald-400 mb-2"/>,
-        routeTo:"/solved",
-        heading:"Solved Problems",
-        description:" View all accepted solutions and track your completed challenges."
-      },
-      {
-        icon:<History className="w-10 h-10 text-violet-400 mb-2"/>,
-        routeTo:"/submission-history",
-        heading:"Submission History",
-        description:"View your previous submissions and review your coding journey."
-      },
-      {
-        icon:<CircleHelp className="w-10 h-10 text-amber-400 mb-2"/>,
-        routeTo:"/help-page",
-        heading:"Help Center",
-        description:"Learn how to write, format, and submit your solutions correctly on CodeHub before starting your coding journey."
-      },
-      {
-        icon:<Bot className="w-10 h-10 text-cyan-400 mb-2"/>,
-        routeTo:"/chat/ai",
-        heading:"AI Assistant",
-        description:"Chat with CodeHub AI to learn programming concepts, solve coding doubts, debug code, and prepare for technical interviews."
-      }
-    ]
-
-   const adminOptions = [
-  {
-    icon: <SquarePlus className="w-10 h-10 text-green-400 mb-2" />,
-    routeTo: "/admin-panel",
-    heading: "Create Problem",
-    description:
-      "Add new coding problems, examples, constraints and test cases.",
-  },
-  {
-    icon: <FilePenLine className="w-10 h-10 text-sky-400 mb-2" />,
-    routeTo: "/updateproblems",
-    heading: "Update Problems",
-    description:
-      "Edit existing problems, update statements and manage test cases.",
-  },
-  {
-    icon: <UserPlus className="w-10 h-10 text-orange-400 mb-2" />,
-    routeTo: "/admin-register",
-    heading: "Register Admin",
-    description:
-      "Create a new administrator account to manage problems, users, and platform settings.",
-  },
-  {
-  icon:<FaVideo className="w-10 h-10 text-cyan-400 mb-2"/>,
-  routeTo:"/upload/video",
-  heading:"Video Solution",
-  description:"Upload detailed video explanations for coding problems to help users understand the logic, approach, and implementation step by step."
-  },
-];
-
+  const displayOptions = user?.role === "admin" ? [...commonOptions, ...adminOptions] : commonOptions;
 
   return (
-    <div className="min-h-screen bg-[#0B1120] text-white">
-      
-      {/* Navbar */}
-      <NavigationBar2/>
+    <div className="min-h-screen bg-[#0B1120] text-slate-100">
+      <NavigationBar2 />
 
-      
-
-      <div className="max-w-7xl mx-auto px-4  sm:px-6 lg:px-8 sm:py-10 lg:py-12">
-
+      <main className="max-w-7xl mx-auto px-6 py-20">
         {/* Hero Section */}
-        <div className="relative overflow-hidden rounded-3xl border border-slate-800 bg-gradient-to-r from-blue-600/20 via-indigo-500/10 to-transparent p-6 sm:p-8 lg:p-10 mb-8 sm:mb-10 lg:mb-12">
+        <header className="mb-24 text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm font-medium mb-6">
+            <Rocket className="w-4 h-4" /> Next-Gen Coding Environment
+          </div>
+          <h1 className="text-6xl md:text-7xl font-black mb-8 tracking-tighter bg-gradient-to-b from-white to-slate-400 bg-clip-text text-transparent">
+            CodeHub: Practice Smarter.
+          </h1>
+          <p className="text-xl text-slate-400 max-w-2xl mx-auto mb-10">
+            Integrated AI assistance, real-time compilation, and comprehensive tracking to master Data Structures and Algorithms.
+          </p>
+        </header>
 
-          <div className="max-w-3xl">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 leading-tight">
-              Welcome to CodeHub 🚀
-            </h1>
-
-            <p className="text-slate-300 text-base sm:text-lg leading-relaxed mb-6 sm:mb-8">
-              Practice coding problems, improve problem-solving skills,
-              and prepare for interviews with real coding challenges.
+        {/* Why Choose CodeHub Section */}
+        <section className="mb-24 px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-extrabold mb-4 tracking-tight">
+              Everything you need to <span className="text-blue-500">Master DSA</span>
+            </h2>
+            <p className="text-slate-400 text-lg max-w-2xl mx-auto">
+              From practicing problems to deep-diving into video editorials, CodeHub is built to accelerate your learning.
             </p>
-
-            <Link
-              to="/problemSection"
-              className="inline-flex w-full sm:w-auto justify-center items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-xl font-semibold transition-colors"
-            >
-              Start Solving Problems
-            </Link>
           </div>
 
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              { icon: <BookOpen />, title: "Master Algorithms", desc: "Tackle a vast library of challenges designed for top-tier interviews.", color: "text-blue-400" },
+              { icon: <BrainCircuit />, title: "AI Analysis", desc: "Get real-time feedback on your code's time and space complexity.", color: "text-purple-400" },
+              { icon: <Video />, title: "Video Editorials", desc: "Stuck? Watch expert video explanations to grasp complex logic.", color: "text-emerald-400" },
+              { icon: <CircleHelp />, title: "Learn & Grow", desc: "Build resilience with guided solutions after you've tried your best.", color: "text-amber-400" }
+            ].map((item, idx) => (
+              <div key={idx} className="group relative bg-slate-900/50 border border-slate-800 p-8 rounded-3xl hover:border-slate-600 transition-all duration-300">
+                <div className={`mb-6 p-4 rounded-2xl bg-slate-800/50 inline-block ${item?.color}`}>
+                  {item?.icon}
+                </div>
+                <h3 className="text-xl font-bold text-white mb-3">{item?.title}</h3>
+                <p className="text-slate-400 text-sm leading-relaxed">{item?.desc}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Explore Section Header */}
+        <div className="text-center mb-16">
+          <div className="h-px w-24 bg-gradient-to-r from-transparent via-slate-700 to-transparent mx-auto mb-6" />
+          <h2 className="text-3xl font-bold text-white">Explore Features</h2>
+          <p className="text-slate-500 mt-2">Navigate through your personalized dashboard</p>
         </div>
 
-        {/* Navigation Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
+        {/* Feature Grid */}
+        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-24">
+          {displayOptions?.map((item, idx) => (
+            <Link key={idx} to={item?.routeTo} className="group p-8 rounded-3xl border border-slate-800 bg-slate-900/40 hover:bg-slate-900/60 hover:border-slate-700 transition-all duration-300">
+              <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${item?.color} flex items-center justify-center mb-6 shadow-lg shadow-black/20`}>
+                <div className="text-white">{item?.icon}</div>
+              </div>
+              <h2 className="text-xl font-bold mb-2">{item?.heading}</h2>
+              <p className="text-slate-400 text-sm leading-relaxed">{item?.desc}</p>
+            </Link>
+          ))}
+        </section>
 
-          {/* Problems */}
-           {
-            userOptions?.map((item)=>(
-              <Link key={item?.routeTo}
-            to={item?.routeTo}
-            className="group bg-[#111827] border border-slate-800 rounded-3xl p-6 sm:p-8 hover:border-blue-500 transition-all duration-300 hover:-translate-y-1"
-          >
-            
-             {item?.icon}
-            <h2 className="text-xl sm:text-2xl font-bold mb-3">
-              {item?.heading}
-            </h2>
-
-            <p className="text-slate-400 text-sm sm:text-base leading-relaxed">
-                  {item?.description}
-            </p>
+        {/* Help/AI Section */}
+        <section className="bg-slate-900/30 border border-slate-800 p-10 rounded-3xl flex flex-col md:flex-row items-center gap-10">
+          <div className="flex-1">
+            <h3 className="text-3xl font-bold mb-4">Need Help? Ask CodeHub AI</h3>
+            <p className="text-slate-400 mb-6">Supercharge your learning with our specialized coding assistant.</p>
+            <ul className="space-y-3">
+              {['Explain complex errors', 'Optimize your algorithms', 'Learn core concepts'].map((text, i) => (
+                <li key={i} className="flex items-center gap-3 text-slate-300"><BadgeCheck className="w-5 h-5 text-emerald-500" /> {text}</li>
+              ))}
+            </ul>
+          </div>
+          <Link to="/chat/ai" className="bg-white text-black px-8 py-4 rounded-xl font-bold hover:bg-slate-200 transition-transform hover:scale-105 flex items-center gap-2">
+            <Bot /> Start Chatting
           </Link>
-            ))
-           }
-          {user?.role === "admin" && (
-         
-            <>
-             {
-            adminOptions?.map((item)=>(
-              <Link key={item?.routeTo}
-            to={item?.routeTo}
-            className="group bg-[#111827] border border-slate-800 rounded-3xl p-6 sm:p-8 hover:border-blue-500 transition-all duration-300 hover:-translate-y-1"
-          >
-            
-             {item?.icon}
-            <h2 className="text-xl sm:text-2xl font-bold mb-3">
-              {item?.heading}
-            </h2>
+        </section>
+      </main>
 
-            <p className="text-slate-400 text-sm sm:text-base leading-relaxed">
-                  {item?.description}
-            </p>
-          </Link>
-            ))
-           }
-            </>
-
-        )}
-        </div>
-        
-
-      </div>
- 
-      <Footer/>
-
-
+      <Footer />
     </div>
   );
 };

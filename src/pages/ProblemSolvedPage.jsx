@@ -5,6 +5,8 @@ import { FaCheckCircle } from "react-icons/fa";
 import { BsCheck2Square } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 import { HiOutlineDocumentSearch } from "react-icons/hi";
+import { Check } from "lucide-react";
+import NavigationBar2 from "./NavigationBar2";
 
 function ProblemSolvedPage(){
 
@@ -52,11 +54,11 @@ function ProblemSolvedPage(){
 
            })
 
-           setTotalPages(response.data.totalPages);
-           setSolvedProblems(response.data.solvedProblems);
-           setTotalSolvedProblems(response.data.totalSolvedProblems);
-           setTotalProblems(response.data.totalProblems);
-           setNetSolvedProblems(response.data.netSolvedProblems);
+           setTotalPages(response?.data?.totalPages);
+           setSolvedProblems(response?.data?.solvedProblems);
+           setTotalSolvedProblems(response?.data?.totalSolvedProblems);
+           setTotalProblems(response?.data?.totalProblems);
+           setNetSolvedProblems(response?.data?.netSolvedProblems);
 
         }
         catch(err){
@@ -83,7 +85,7 @@ function ProblemSolvedPage(){
             return(
                 <>
 
-
+                 <NavigationBar2/>
                  <div className="min-h-screen bg-[#0B1120] text-white">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
 
@@ -102,22 +104,7 @@ function ProblemSolvedPage(){
 
                             </div>
 
-                            <button
-                                onClick={() => navigate("/")}
-                                className="
-                                    w-full
-                                    sm:w-auto
-                                    bg-blue-600
-                                    hover:bg-blue-700
-                                    transition
-                                    px-6
-                                    py-3
-                                    rounded-xl
-                                    font-semibold
-                                "
-                            >
-                                Return to Home
-                            </button>
+                            
 
                         </div>
 
@@ -126,11 +113,7 @@ function ProblemSolvedPage(){
 
                                 <div className="flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-6">
 
-                                    <div className=" h-16 w-16 rounded-xl bg-blue-600/20 flex items-center justify-center self-center sM:self-auto text-3xl">
-
-                                        ✅
-
-                                    </div>
+                                    <Check size={20} className="text-green-500 h-10 w-10"/>
 
                                     <div>
 
@@ -410,7 +393,7 @@ function ProblemSolvedPage(){
 
                                         <tbody>
                                             {
-                                                solvedProblems.length === 0 ? (
+                                                solvedProblems?.length === 0 ? (
                                                     <tr>
                                                         <td colSpan={5} className="px-4 py-12 sm:px-6 sm:py-16">
                                                             <div className="flex flex-col items-center text-center">

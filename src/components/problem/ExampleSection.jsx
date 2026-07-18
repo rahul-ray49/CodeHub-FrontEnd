@@ -1,16 +1,19 @@
-
-
 import ExampleCard from "./ExampleCard";
 
 const ExampleSection = ({ examples }) => {
+  if (!examples || examples.length === 0) return null;
+
   return (
-    <div className="bg-slate-900/80 border border-slate-700 rounded-xl p-4 sm:p-5 lg:p-6">
+    <div className="mb-10 animate-fade-in">
+      
+      <div className="flex items-center gap-3 mb-6 select-none">
+        <div className="w-1.5 h-6 bg-blue-500 rounded-full shadow-[0_0_8px_rgba(59,130,246,0.5)]"></div>
+        <h2 className="text-lg sm:text-xl font-bold text-white tracking-wide">
+          Examples
+        </h2>
+      </div>
 
-      <h2 className="text-lg sm:text-xl lg:text-2xl font-semibold text-white mb-4 sm:mb-5">
-        Examples
-      </h2>
-
-      <div className="space-y-4 sm:space-y-5">
+      <div className="space-y-6 sm:space-y-8">
         {examples?.map((example, index) => (
           <ExampleCard
             key={index}

@@ -1,20 +1,21 @@
 import { useEffect, useState } from 'react';
-import { NavLink } from 'react-router'; 
+import { NavLink, useNavigate } from 'react-router'; 
 import { useDispatch, useSelector } from 'react-redux';
 import axiosClient from '../utils/axiosClient';
 import { logoutUser } from '../authSlice';
-import NavigationBar from './NavigationBar';
-import { Search, ListFilter, ChevronLeft, ChevronRight, CheckCircle2, Trash2,Loader2 } from 'lucide-react';
+import { Search, ListFilter, ChevronLeft, ChevronRight, Video, Upload, Trash2,Loader2} from "lucide-react";
+import NavigationBar2 from './NavigationBar2';
 
-function ProblemListPage() {
+function AdminUpload() {
     const { user } = useSelector((state) => state.auth);
+    const navigate=useNavigate();
 
     const [loading, setLoading] = useState(false);
     const [problems, setProblems] = useState([]);
-    const [solvedProblemsIds, setSolvedProblemsIds] = useState([]);
+    const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+    const [selectedProblem, setSelectedProblem] = useState(null);
     const [deletingProblemId, setDeletingProblemId] = useState(null);
-
-
+ 
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [search, setSearch] = useState("");
@@ -27,16 +28,12 @@ function ProblemListPage() {
         fetchProblems();
     }, [page, search, difficulty, tag]);
 
-    useEffect(() => {
-        if (user) {
-            fetchSolvedProblems();
-        }
-    }, [user]);
+
 
     const fetchProblems = async () => {
         try {
             setLoading(true);
-            const response = await axiosClient.get("/problem/getAllProblem", {
+            const response = await axiosClient.get("/video/problems", {
                 params: {
                     page,
                     limit,
@@ -45,7 +42,7 @@ function ProblemListPage() {
                     tag
                 }
             });
-            setProblems(response?.data?.getProblem);
+            setProblems(response?.data?.problems);
             setTotalPages(response?.data?.totalPages);
         } catch (error) {
             console.log(error);
@@ -55,58 +52,54 @@ function ProblemListPage() {
         }
     };
 
-    const fetchSolvedProblems = async () => {
-        try {
-            const response = await axiosClient.get("/problem/ProblemSolvedByUser2");
-            setSolvedProblemsIds(response?.data?.solvedProblemsIds);
-        } catch (error) {
-            console.log(error);
-        }
-    };
+    
 
-    const deleteProblem = async (problemId) => {
-        const isConfirmed = window.confirm(
-            "Are you sure you want to delete this problem?"
-        );
+    const deleteVideo = async (problemId) => {
 
-        if (!isConfirmed) return;
+            const isConfirmed = window.confirm(
+                "Are you sure you want to delete this solution video?"
+            );
 
-        try {
-            setDeletingProblemId(problemId);
-            await axiosClient.delete(`/problem/delete/${problemId}`);
-            alert("Problem deleted successfully.");
-            if (problems.length === 1 && page > 1) {
-                await fetchSolvedProblems();
-                setPage((prev) => prev - 1);
-            } else {
-                await fetchProblems();
-                await fetchSolvedProblems();
+            if (!isConfirmed) return;
+
+            try {
+                setDeletingProblemId(problemId);
+
+                await axiosClient.delete(`/video/delete/${problemId}`);
+
+                alert("Video deleted successfully.");
+
+                fetchProblems();
+
+            } catch (error) {
+
+                console.log(error);
+
+                alert(
+                    error?.response?.data?.message ||
+                    "Failed to delete video."
+                );
+
             }
-        } catch (error) {
-            console.log(error);
-            alert(error?.response?.data?.message || "Problem could not be deleted.");
-        }
-        finally{
-            setDeletingProblemId(null);
-        }
-    };
+            finally{
+                setDeletingProblemId(null);
+            }
+
+        };
 
     return (
         <div className="min-h-screen bg-[#0b1120] text-slate-200 font-sans selection:bg-blue-500/30 selection:text-white">
-            <NavigationBar
-                user={user}
-                setSolvedProblemsIds={setSolvedProblemsIds}
-            />
+            <NavigationBar2/>
 
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
                 
                 {/* Header Section */}
                 <div className="mb-8">
                     <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-                        Problem Library
+                       Solution Videos
                     </h1>
                     <p className="text-slate-400 mt-2 text-sm sm:text-base">
-                        Explore, practice, and master data structures and algorithms.
+                        Upload, manage and delete solution videos for coding problems.
                     </p>
                 </div>
 
@@ -177,9 +170,9 @@ function ProblemListPage() {
                 {/* Problem List Area */}
                 <div className="bg-[#0f172a] border border-slate-800 rounded-2xl overflow-hidden shadow-xl min-h-[400px] flex flex-col">
                     
-                    {/* List Header (Hidden on small screens) */}
+                    {/* List Header */}
                     <div className="hidden sm:grid grid-cols-12 gap-4 px-6 py-4 border-b border-slate-800 bg-slate-900/50 text-xs font-semibold text-slate-400 uppercase tracking-wider">
-                        <div className="col-span-1 text-center">Status</div>
+                        <div className="col-span-1 text-center">Video</div>
                         <div className="col-span-5 lg:col-span-6">Problem Title</div>
                         <div className="col-span-2 text-center">Difficulty</div>
                         <div className="col-span-3 lg:col-span-2 text-center">Tag</div>
@@ -190,7 +183,7 @@ function ProblemListPage() {
                     {loading ? (
                         <div className="flex-1 flex flex-col justify-center items-center py-20">
                             <div className="w-10 h-10 border-4 border-slate-700 border-t-blue-500 rounded-full animate-spin"></div>
-                            <p className="mt-4 text-slate-400 text-sm">Fetching problems...</p>
+                            <p className="mt-4 text-slate-400 text-sm">Fetching video solutions...</p>
                         </div>
                     ) : problems?.length === 0 ? (
                         // Empty State
@@ -209,19 +202,21 @@ function ProblemListPage() {
                                 >
                                     {/* Status Indicator */}
                                     <div className="hidden sm:flex col-span-1 justify-center">
-                                        {solvedProblemsIds?.includes(problem?._id) ? (
-                                            <CheckCircle2 size={20} className="text-emerald-400" />
+                                        <div className="hidden sm:flex col-span-1 justify-center">
+                                        {problem?.hasVideo ? (
+                                            <Video size={18} className="text-blue-400" />
                                         ) : (
-                                            <div className="w-5 h-5 rounded-full border border-slate-600 group-hover:border-slate-500 transition-colors"></div>
+                                            <Video size={18} className="text-slate-600" />
                                         )}
+                                    </div>
                                     </div>
 
                                     {/* Mobile Only Status + Title */}
                                     <div className="col-span-1 sm:hidden flex items-center gap-3 mb-2">
-                                        {solvedProblemsIds?.includes(problem?._id) ? (
-                                            <CheckCircle2 size={18} className="text-emerald-400 flex-shrink-0" />
+                                        {problem?.hasVideo ? (
+                                            <Video size={18} className="text-blue-400 flex-shrink-0" />
                                         ) : (
-                                            <div className="w-4 h-4 rounded-full border border-slate-600 flex-shrink-0"></div>
+                                            <Video size={18} className="text-slate-600 flex-shrink-0" />
                                         )}
                                         <NavLink
                                             to={`/problem/${problem?._id}`}
@@ -258,12 +253,15 @@ function ProblemListPage() {
                                     {/* Admin Actions */}
                                     <div className="col-span-1 flex justify-end">
                                         {user?.role === "admin" && (
-                                            <button
-                                                onClick={() => deleteProblem(problem?._id)}
+                                            problem?.hasVideo ? (
+
+                                                <button
+                                                onClick={() => deleteVideo(problem?._id)}
+                                                disabled={deletingProblemId === problem?._id}
                                                 className="p-2 text-slate-500 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all"
-                                                title="Delete Problem"
+                                                title="Delete Video"
                                             >
-                                               {
+                                              {
                                                     deletingProblemId === problem?._id ? (
                                                         <>
                                                             <Loader2 className="w-4 h-4 animate-spin" />
@@ -277,6 +275,17 @@ function ProblemListPage() {
                                                     )
                                                 }
                                             </button>
+                                            ) : (
+
+                                                <button
+                                                    onClick={() =>navigate(`/admin/video/upload/${problem?._id}`)}
+                                                    className="flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-500/10 text-blue-400 border border-blue-500/20 hover:bg-blue-500/20 transition-all"
+                                                >
+                                                    <Upload size={16} />
+                                                    Upload
+                                                </button>
+
+                                            )
                                         )}
                                     </div>
                                 </div>
@@ -312,6 +321,7 @@ function ProblemListPage() {
 
             </main>
         </div>
+        
     );
 }
 
@@ -328,4 +338,4 @@ const getDifficultyBadgeColor = (difficulty) => {
     }
 };
 
-export default ProblemListPage;
+export default AdminUpload;

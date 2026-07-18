@@ -1,200 +1,101 @@
 import { useNavigate } from "react-router-dom";
+import { History, Inbox, ChevronRight, CheckCircle2, XCircle, AlertCircle, Clock, TerminalSquare } from "lucide-react";
 
+function SubmissionHistory({ submissionLoading, submissions }) {
+    const navigate = useNavigate();
 
-function SubmissionHistory({submissionLoading,submissions}){
+    // Helper for status styling
+    const getStatusStyle = (status) => {
+        switch (status) {
+            case "Accepted":
+                return "bg-emerald-500/10 text-emerald-400 border-emerald-500/20";
+            case "Wrong Answer":
+                return "bg-red-500/10 text-red-400 border-red-500/20";
+            case "Compilation Error":
+                return "bg-red-500/10 text-red-400 border-red-500/20";
+            case "Runtime Error":
+                return "bg-red-500/10 text-red-400 border-red-500/20";
+            case "Time Limit Exceeded":
+                return "bg-red-500/10 text-red-400 border-red-500/20";
+            default:
+                return "bg-slate-800 text-slate-400 border-slate-700";
+        }
+    };
 
-    const navigate=useNavigate();
-
-
-
-     if (submissionLoading) {
+    if (submissionLoading) {
         return (
-            <div className="flex flex-col items-center justify-center py-20">
-                <div className="h-10 w-10 rounded-full border-4 border-blue-500 border-t-transparent animate-spin"></div>
+            <div className="flex flex-col items-center justify-center py-24">
+                <div className="w-10 h-10 border-4 border-slate-700 border-t-blue-500 rounded-full animate-spin"></div>
+                <p className="mt-4 text-slate-400 font-medium">Fetching your submission history...</p>
+            </div>
+        );
+    }
 
-                <p className="mt-5 text-gray-400 text-lg">
-                    Loading your submissions...
+    if (!submissions || submissions?.length === 0) {
+        return (
+            <div className="flex flex-col items-center justify-center py-20 px-4 text-center">
+                <div className="w-20 h-20 bg-slate-800/50 rounded-full flex items-center justify-center mb-6 border border-slate-700">
+                    <Inbox size={40} className="text-slate-600" />
+                </div>
+                <h2 className="text-xl font-bold text-white mb-2">No Submissions Yet</h2>
+                <p className="text-slate-400 max-w-sm">
+                    You haven't submitted any solutions for this problem. Start coding to see your history appear here.
                 </p>
             </div>
         );
     }
 
-     if (submissions.length === 0) {
-        return (
-            <div className="flex items-center justify-center py-16">
-                <div className="w-full max-w-2xl rounded-2xl border border-slate-700 bg-[#141B2D] p-6 sm:p-10 text-center">
-
-                    <div className="text-5xl sm:text-6xl mb-5">
-                        📄
-                    </div>
-
-                    <h2 className="text-xl sm:text-2xl font-bold text-white">
-                        No Submissions Yet
-                    </h2>
-
-                    <p className="mt-3 text-sm sm:text-base text-gray-400 leading-6 sm:leading-7">
-                        Looks like you haven't submitted this problem yet.
-                        Once you submit your solution, your complete submission
-                        history will appear here.
-                    </p>
-
-                </div>
-            </div>
-        );
-    }
-
-
     return (
-
-         <div className="overflow-x-auto rounded-xl border border-slate-700 shadow-lg">
-
-            <table className="w-full min-w-[900px]">
-
-                <thead className="bg-[#18223B]">
-
-                    <tr>
-
-                        <th className="px-4 sm:px-6 py-3 sm:py-4 text-left text-sm font-semibold text-gray-300">
-                            Status
-                        </th>
-
-                        <th className="px-4 sm:px-6 py-3 sm:py-4 text-left text-sm font-semibold text-gray-300">
-                            Language
-                        </th>
-
-                        <th className="px-4 sm:px-6 py-3 sm:py-4 text-left text-sm font-semibold text-gray-300">
-                            Runtime
-                        </th>
-
-                        <th className="px-4 sm:px-6 py-3 sm:py-4 text-left text-sm font-semibold text-gray-300">
-                            Memory
-                        </th>
-
-                        <th className="px-4 sm:px-6 py-3 sm:py-4 text-left text-sm font-semibold text-gray-300">
-                            Test Cases
-                        </th>
-
-                        <th className="px-4 sm:px-6 py-3 sm:py-4 text-left text-sm font-semibold text-gray-300">
-                            Submitted
-                        </th>
-
-                        <th className="px-4 sm:px-6 py-3 sm:py-4 text-left text-sm font-semibold text-gray-300">
-                            Action
-                        </th>
-
-                    </tr>
-
-                </thead>
-
-                
-
-                    <tbody>
-
+        <div className="bg-[#0f172a] border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
+            <div className="overflow-x-auto">
+                <table className="w-full min-w-[800px] text-left border-collapse">
+                    <thead className="bg-slate-900/50 border-b border-slate-800">
+                        <tr>
+                            <th className="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Status</th>
+                            <th className="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Language</th>
+                            <th className="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Runtime</th>
+                            <th className="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Memory</th>
+                            <th className="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Tests</th>
+                            <th className="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Submitted</th>
+                            <th className="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-800/50">
                         {submissions?.map((submission) => (
-
-                            <tr
-                                key={submission?._id}
-                                className="border-t border-slate-700 hover:bg-[#18223B] transition-colors duration-200"
-                            >
-
-                                {/* Status */}
-
-                                <td className="px-4 sm:px-6 py-3 sm:py-4">
-
-                                    <span
-                                        className={`px-3 py-1 text-center rounded-full text-xs sm:text-sm font-medium whitespace-nowrap
-                                        ${
-                                            submission?.status === "Accepted"
-                                                ? " text-green-400"
-
-                                            : submission?.status === "Wrong Answer"
-                                                ? " text-red-400"
-
-                                            : submission?.status === "Compilation Error"
-                                                ? " text-yellow-400"
-
-                                            : submission?.status === "Runtime Error"
-                                                ? " text-orange-400"
-
-                                            : submission?.status === "Time Limit Exceeded"
-                                                ? " text-purple-400"
-
-                                            : " text-gray-400"
-                                        }`}
-                                    >
+                            <tr key={submission?._id} className="hover:bg-slate-800/30 transition-colors duration-200">
+                                <td className="px-6 py-4">
+                                    <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold border ${getStatusStyle(submission?.status)}`}>
                                         {submission?.status}
                                     </span>
-
                                 </td>
-
-                                {/* Language */}
-
-                                <td className="px-4 sm:px-6 py-3 sm:py-4 text-gray-300 whitespace-nowrap">
-
-                                    {submission?.language}
-
+                                <td className="px-6 py-4 text-sm font-mono text-slate-300 capitalize">{submission?.language}</td>
+                                <td className="px-6 py-4 text-sm text-slate-400">
+                                    {submission?.runtime > 0 ? `${Number(submission?.runtime).toFixed(3)}ms` : "--"}
                                 </td>
-
-                                {/* Runtime */}
-
-                                <td className="px-4 sm:px-6 py-3 sm:py-4 text-gray-300 whitespace-nowrap">
-
-                                    {submission?.runtime > 0
-                                        ? `${submission?.runtime} ms`
-                                        : "--"}
-
+                                <td className="px-6 py-4 text-sm text-slate-400">
+                                    {submission?.memory > 0 ? `${submission?.memory}KB` : "--"}
                                 </td>
-
-                                {/* Memory */}
-
-                                <td className="px-4 sm:px-6 py-3 sm:py-4 text-gray-300 whitespace-nowrap">
-
-                                    {submission?.memory > 0
-                                        ? `${submission?.memory} KB`
-                                        : "--"}
-
-                                </td>
-
-                                {/* Test Cases */}
-
-                                <td className="px-4 sm:px-6 py-3 sm:py-4 text-gray-300">
-
+                                <td className="px-6 py-4 text-sm font-semibold text-slate-300">
                                     {submission?.testCasesPassed} / {submission?.testCasesTotal}
-
                                 </td>
-
-                                {/* Submitted At */}
-
-                                <td className="px-4 sm:px-6 py-3 sm:py-4 text-gray-300 whitespace-nowrap">
-
-                                    {new Date(submission?.createdAt).toLocaleString()}
-
+                                <td className="px-6 py-4 text-sm text-slate-400">
+                                    {new Date(submission?.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                                 </td>
-
-                                {/* Action */}
-
-                                <td className="px-4 sm:px-6 py-3 sm:py-4">
-
+                                <td className="px-6 py-4 text-right">
                                     <button
-                                        className="text-blue-400 hover:text-blue-300 font-medium transition-colors cursor-pointer whitespace-nowrap"
-                                        onClick={()=>navigate(`/submission-details/${submission?._id}`)}
+                                        onClick={() => navigate(`/submission-details/${submission?._id}`)}
+                                        className="inline-flex cursor-pointer items-center gap-1.5 text-sm font-bold text-blue-400 hover:text-blue-300 transition-colors"
                                     >
-                                        View Code
+                                        View <ChevronRight size={16} />
                                     </button>
-
                                 </td>
-
                             </tr>
-
                         ))}
-
                     </tbody>
-
-              
-
-            </table>
-
-    </div>
-    )
+                </table>
+            </div>
+        </div>
+    );
 }
+
 export default SubmissionHistory;

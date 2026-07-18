@@ -155,6 +155,8 @@ import { useState } from "react";
               const onSubmit = async (data) => {
                 try {
                   setLoading(true);
+                    console.log("onSubmit called");
+                    console.log(data);
                   await axiosClient.post(
                     "/problem/create",
                     data
@@ -166,6 +168,7 @@ import { useState } from "react";
 
                   navigate("/");
                 } catch (error) {
+                  console.log(error);
                   alert(
                     error.response?.data?.message ||
                       "Problem not Created"
@@ -355,11 +358,12 @@ import { useState } from "react";
 
                               <div className="space-y-3">
 
-                                <input
+                                <textarea
                                   {...register(
                                     `visibleTestCases.${index}.input`
                                   )}
                                   placeholder="Input"
+                                  rows={2}
                                   className="w-full text-sm sm:text-base px-4 py-3 rounded-xl bg-slate-900 border border-slate-700"
                                 />
 
@@ -431,11 +435,12 @@ import { useState } from "react";
 
                               <div className="space-y-3">
 
-                                <input
+                                <textarea
                                   {...register(
                                     `hiddenTestCases.${index}.input`
                                   )}
                                   placeholder="Input"
+                                  rows={2}
                                   className="w-full text-sm sm:text-base px-4 py-3 rounded-xl bg-slate-900 border border-slate-700"
                                 />
 
@@ -578,4 +583,3 @@ import { useState } from "react";
 }
 
 export default AdminPanel;
-

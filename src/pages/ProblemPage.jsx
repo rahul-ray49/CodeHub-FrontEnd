@@ -2,8 +2,7 @@ import ProblemHeader from "../components/problem/ProblemHeader";
 import ProblemDescription from "../components/problem/ProblemDescription";
 import ExampleSection from "../components/problem/ExampleSection";
 import { useParams } from 'react-router-dom';
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import axiosClient from "../utils/axiosClient";
 import Page404 from "./Page404";
 import Editor from "@monaco-editor/react";
@@ -22,15 +21,18 @@ import EmptyResult from "../components/emptyResult/EmptyResult";
 import { useSelector } from "react-redux";
 import SolutionWarning from "../components/solution/SolutionWarning";
 import AiAnalysisPanel from "../components/AI/AiAnalysisPanel";
+import { 
+    FileText, BookOpen, Lightbulb, History, 
+    Code2, Terminal, CheckCircle2, Sparkles, 
+    Play, Send, TerminalSquare, ChevronDown,RotateCcw
+} from "lucide-react";
+import Editorial from "../components/editorial/Editorial";
 
 const ProblemPage = () => {
+    const user = useSelector((state) => state.auth.user);
+    const userId = user._id;
 
-   const user=useSelector((state)=>state.auth.user);
-   const userId=user._id;
-
-
-
-    const {problemId}=useParams();
+    const { problemId } = useParams();
     const [loading, setLoading] = useState(true);
     const [problem, setProblem] = useState(null);
     const [activeLeftTab, setActiveLeftTab] = useState("description");
@@ -39,835 +41,584 @@ const ProblemPage = () => {
     const [languageCodes, setLanguageCodes] = useState({});
     const [runResult, setRunResult] = useState(null);
     const [runLoading, setRunLoading] = useState(false);
-    const [submitLoading,setSubmitLoading] = useState(false);
-    const [submitResult,setSubmitResult] = useState(null);
-    const [submissions,setSubmissionsData]=useState([]);
-    const [submissionLoading,setSubmissionLoading]=useState(false);
+    const [submitLoading, setSubmitLoading] = useState(false);
+    const [submitResult, setSubmitResult] = useState(null);
+    const [submissions, setSubmissionsData] = useState([]);
+    const [submissionLoading, setSubmissionLoading] = useState(false);
     const [runClicked, setRunClicked] = useState(false);
     const [submitClicked, setSubmitClicked] = useState(false);
     const [showSolution, setShowSolution] = useState(false);
     const [analysis, setAnalysis] = useState(null);
     const [analysisLoading, setAnalysisLoading] = useState(false);
+    const [editorial, setEditorial] = useState(null);
+    const [editorialLoading, setEditorialLoading] = useState(false);
 
-    const getStorageKey = (userId,problemId, language) => {
-            return `code-${userId}-${problemId}-${language}`;
-        };
+    const getStorageKey = (userId, problemId, language) => {
+        return `code-${userId}-${problemId}-${language}`;
+    };
 
-    const rightTabs = ["code","testcase","result"];
-
-
+    const rightTabs = ["code", "testcase", "result"];
 
     const getMonacoLanguage = (language) => {
+        switch (language) {
+            case "c++": return "cpp";
+            case "javascript": return "javascript";
+            case "java": return "java";
+            default: return "javascript";
+        }
+    };
 
-            switch(language){
-
-                case "c++":
-                return "cpp";
-
-                case "javascript":
-                return "javascript";
-
-                case "java":
-                return "java";
-
-                default:
-                return "javascript";
-                }
-    }
-               
-  
-    const activeColor="cursor-pointer px-4 sm:px-5 py-2 rounded-xl text-white font-medium bg-gradient-to-r from-blue-600 to-blue-600 transition-colors duration-300 ease-out";
-
-            useEffect(() => {
-
-                const fetchProblem = async () => {
-
-                    try {
-
-                        const response = await axiosClient.get(
-                            `/problem/problemById/${problemId}`
-                        );
-
-                        setProblem(response.data.problem);
-
-                    } catch(error) {
-
-                        console.log(error);
-                        alert(error?.response?.data?.message || "Error fetching problem data");
-
-                    } finally {
-
-                        setLoading(false);
-
-                    }
-                }
-
-                fetchProblem();
-
-         }, [problemId]);
-
-           
-
-               useEffect(() => {
-
-                    if (!problem) return;
-
-                    const initialCodes = {};
-
-                    problem?.startCode?.forEach((item) => {
-
-                         const savedCode = localStorage.getItem(
-                            getStorageKey(userId,problemId, item.language)
-                        );
-                        
-                        initialCodes[item.language] = savedCode||item.initialCode;
-                    });
-
-                    setLanguageCodes(initialCodes);
-
-            }, [problem]);
-
-
-              useEffect(()=>{
-                    if(activeLeftTab==='submissions'){
-                        getSubmissions();
-                    }
-
-                },[activeLeftTab])
-
-
-
-
-
-
-           
-               if (loading) {
-                return (
-                    <div className="min-h-screen flex justify-center items-center bg-slate-900/80">
-                    <span className="loading loading-spinner loading-lg"></span>
-                    </div>
-                     );
-           }
-
- 
-            
-              if (!problem) {
-                return (
-                    <Page404></Page404>
+    useEffect(() => {
+        const fetchProblem = async () => {
+            try {
+                const response = await axiosClient.get(
+                    `/problem/problemById/${problemId}`
                 );
+                setProblem(response?.data?.problem);
+            } catch (error) {
+                console.log(error);
+                alert(error?.response?.data?.message || "Error fetching problem data");
+            } finally {
+                setLoading(false);
             }
-              
-
-
-
-
-
-
-
-            const handleRun = async () => {
-
-                        try {
-
-                            setRunLoading(true);
-
-                            const response = await axiosClient.post(
-                            `/submission/run/${problemId}`,
-                            {
-                                code: languageCodes[selectedLanguage],
-                                language: selectedLanguage
-                            }
-                            );
-
-                            console.log(response.data);
-                            setRunClicked(true);
-                            setRunResult(response.data);
-                            setActiveRightTab("testcase");
-
-                        }
-                        catch(err){
-
-                            console.log(err);
-                            alert(err?.response?.data?.message || "Internal server Error or no code has been provided");
-                            setSubmitResult(null);
-                            setRunResult(null);
-                            setActiveRightTab("testcase");
-
-                        }
-                        finally{
-
-                            setRunLoading(false);
-
-                        }
-
-                };
-              
-            
-                const handleSubmit = async()=>{
-
-                        try{
-
-                            setSubmitLoading(true);
-
-                            const response = await axiosClient.post(
-                            `/submission/submit/${problemId}`,
-                            {
-                                code: languageCodes[selectedLanguage],
-                                language: selectedLanguage
-                            }
-                            );
-
-                            setSubmitResult(response.data);
-                            console.log(response.data);
-                            setSubmitClicked(true);
-                            setActiveRightTab("result");
-
-                        }
-                        catch(err){
-
-                            console.log(err);
-                            alert(err?.response?.data?.message || "Internal server Error or no code has been provided");
-                            setRunResult(null);
-                            setSubmitResult(null);
-                            setActiveRightTab("result");
-
-                        }
-                        finally{
-
-                            setSubmitLoading(false);
-
-                        }
-
-                    }
-
-
-
-
-                    const getStatusColor = (resultType) => {
-
-                        switch(resultType){
-
-                            case "Accepted":
-                                return "text-green-500";
-
-                            case "Wrong Answer":
-                                return "text-red-500";
-
-                            case "Compilation Error":
-                                return "text-orange-500";
-
-                            case "Runtime Error":
-                                return "text-purple-500";
-
-                            case "Time Limit Exceeded":
-                                return "text-yellow-400";
-
-                            default:
-                                return "text-white";
-                        }
-
-                    }
-
-                    const getStatusIcon = (resultType) => {
-
-                            switch(resultType){
-
-                                case "Accepted":
-                                    return "✅";
-
-                                case "Wrong Answer":
-                                    return "❌";
-
-                                case "Compilation Error":
-                                    return "🟠";
-
-                                case "Runtime Error":
-                                    return "⚠️";
-
-                                case "Time Limit Exceeded":
-                                    return "⏳";
-
-                                default:
-                                    return "";
-                            }
-
-                        }
-
-
-
-                        const getSubmissions = async () => {
-                                try {
-                                    setSubmissionLoading(true);
-
-                                    const res = await axiosClient.get(`/history/submittedProblem/${problemId}`);
-                                    if(!res.data.success) return;
-
-                                    setSubmissionsData(res.data.submissions);
-
-                                } catch (err) {
-                                    console.log(err);
-                                    alert(err?.response?.data?.message || 'Failed to fetch submission history.....');
-                                } finally {
-                                    setSubmissionLoading(false);
-                                }
-                            };
-
-
-                            const handleAnalyzeBug = async () => {
-
-                                       if (analysisLoading) return;
-
-                                       if (!languageCodes[selectedLanguage]?.trim()) {
-                                            alert("Please write some code before analyzing.");
-                                            return;
-                                        }
-
-                                        try {
-
-                                            setAnalysisLoading(true);
-
-                                            const response = await axiosClient.post(
-                                                `/ai/analyze/${problemId}`,
-                                                {
-                                                    code: languageCodes[selectedLanguage],
-                                                    language: selectedLanguage,
-                                                    runResult
-                                                }
-                                            );
-
-                                            console.log(response.data);
-
-                                            setAnalysis(response.data.analysis);
-
-                                            setActiveRightTab("ai");
-
-                                        } catch (err) {
-
-                                            console.log(err);
-
-                                            alert(
-                                                err?.response?.data?.message ||
-                                                "Failed to analyze code."
-                                            );
-
-                                        } finally {
-
-                                            setAnalysisLoading(false);
-
-                                        }
-
-                                    };
-
-
-                            
-                          
-
-
-                return (
-
-                       
-                        <div className="min-h-screen  overflow-x-hidden px-3 sm:px-4 lg:px-6 pb-6 bg-slate-900/80">
-
-                            <NavigationBar2/>
-
-                            <div className="max-w-8xl mx-auto">
-
-                            <div className="flex flex-col xl:flex-row gap-6 min-h-[calc(100vh-80px)]">
-
-                                {/* LEFT PANEL */}
-                                
-
-                                <div className="w-full xl:w-1/2 h-[calc(100vh-50px)] border-2 border border-slate-700 rounded-lg p-4 flex flex-col">
-
-                               
-
-                                    {/* Tabs */}
-
-                                    <div className="bg-slate-900/80 border border-slate-700 rounded-xl p-3 flex items-center gap-2 overflow-x-auto whitespace-nowrap scrollbar-hide mb-4">
-
-                                        <button  className={`px-5 py-2.5 rounded-xl font-medium transition-all duration-200 cursor-pointer flex-shrink-0 ${activeLeftTab==="description"&&(activeColor)}`}
-                                        onClick={() => setActiveLeftTab("description")}
-                                        >
-                                        Description
-                                        </button>
-
-                                        <button  className={`px-5 py-2.5 rounded-xl font-medium transition-all duration-200 cursor-pointer flex-shrink-0 ${activeLeftTab==="editorial"&&(activeColor)}`}
-                                        onClick={() => setActiveLeftTab("editorial")}
-                                        >
-                                        Editorial
-                                        </button>
-
-                                        <button   className={`px-5 py-2.5 rounded-xl font-medium transition-all duration-200 cursor-pointer flex-shrink-0 ${activeLeftTab==="solutions"&&(activeColor)}`}
-                                        onClick={() => setActiveLeftTab("solutions")}
-                                        >
-                                        Solutions
-                                        </button>
-
-                                        <button   className={`px-5 py-2.5 rounded-xl font-medium transition-all duration-200 cursor-pointer flex-shrink-0 ${activeLeftTab==="submissions"&&(activeColor)}`}
-                                        onClick={() => {
-                                            setActiveLeftTab("submissions");
-                                        }}
-                                        >
-                                        Submissions
-                                        </button>
-
-
-                                    </div>
-
-                                    {/* Content */}
-
-
-                                    <div className="flex-1 min-h-0 overflow-y-auto pr-2">
-
-
-
-                                    {activeLeftTab === "description" && (
-                                           <>
-                                                <ProblemHeader problem={problem} />
-
-                                                <ProblemDescription
-                                                description={problem?.description}
-                                                />
-
-                                                <ExampleSection
-                                                examples={problem?.visibleTestCases}
-                                                />
-                                            </>
-                                           )}
-
-                                        {activeLeftTab === "solutions" && (
-                                            !showSolution ?(
-
-                                                 <SolutionWarning
-                                                        onReveal={() => setShowSolution(true)}
-                                                    />
-
-                                            ) : (
-                                            
-                                           <div className="p-2 space-y-8">
-
-                                                {problem?.referenceSolution?.map((sol) => (
-
-                                                    <div key={sol?.language}>
-
-                                                        <h3 className="inline-block px-3 py-1 mb-4 rounded-lg bg-slate-800 border border-slate-700 text-blue-400 font-semibold text-2xl uppercase tracking-wide">
-                                                            {sol?.language}
-                                                        </h3>
-
-                                                        <div className="overflow-x-auto hide-scrollbar rounded-lg">
-
-                                                            <pre className="whitespace-pre p-4 text-sm">
-                                                                {sol?.completeCode}
-                                                            </pre>
-
-                                                        </div>
-
-                                                    </div>
-
-                                                ))}
-
-                                            </div>
-                                            )
-                                            
-                                            )}
-                                         
-
-                                         {activeLeftTab === "editorial" && (
-                                                <div>
-                                                    Editorial Coming Soon
-                                                </div>
-                                            )}
-
-
-                                            {activeLeftTab === "submissions" && (
-                                                <div className="overflow-x-auto">
-                                                <SubmissionHistory
-                                                    submissionLoading={submissionLoading}
-                                                    submissions={submissions}
-                                                />
-                                                </div>
-                                            )}
-                                            
-
-                                        </div>
-
-
-                                    </div>
-
-
-
-
-
-                            
-
-                                {/* RIGHT PANEL */}
-
-                                    <div className="w-full xl:w-1/2 h-[calc(100vh-50px)] min-h-0">
-
-                                       <div className="h-full bg-slate-900/80 border border-slate-700 rounded-xl  flex flex-col overflow-hidden">
-
-                                            {/* Top Tabs */}
-
-                                             
-
-                                                {/* Buttons */}
-                                                 <div className="bg-slate-900/80 border border-slate-700 rounded-xl py-3 px-5 flex items-center gap-2 overflow-x-auto whitespace-nowrap gap-2 scrollbar-hide mb-4">
-
-                                                        <button  className={`px-5 py-2.5 rounded-xl font-medium transition-all duration-200 cursor-pointer flex-shrink-0 ${activeRightTab==="code"&&(activeColor)}`}
-                                                        onClick={() => setActiveRightTab("code")}
-                                                        >
-                                                        Code{"</>"}
-                                                        </button>
-
-                                                        <button  className={`px-5 py-2.5 rounded-xl font-medium transition-all duration-200 cursor-pointer flex-shrink-0 ${activeRightTab==="testcase"&&(activeColor)}`}
-                                                        onClick={() => setActiveRightTab("testcase")}
-                                                        >
-                                                        TestCase
-                                                        </button>
-
-                                                        <button   className={`px-5 py-2.5 rounded-xl font-medium transition-all duration-200 cursor-pointer flex-shrink-0 ${activeRightTab==="result"&&(activeColor)}`}
-                                                        onClick={() => setActiveRightTab("result")}
-                                                        >
-                                                        Result
-                                                        </button>
-
-                                                        <button
-                                                        className={`px-5 py-2.5 rounded-xl font-medium transition-all duration-200 cursor-pointer flex-shrink-0 ${
-                                                            activeRightTab === "ai" && activeColor
-                                                        }`}
-                                                        onClick={() => setActiveRightTab("ai")}
-                                                    >
-                                                        AI Analysis
-                                                    </button>
-
-                                               </div>
-
-
-                                             
-
-                                            {/* Content Area */}
-
-                                        <div className="flex-1 min-h-0 overflow-y-auto ">
-
-                                            <div className="text-slate-400 px-3 ">
-
-                                                        {activeRightTab === "code" && (
-
-                                                            <div>
-
-                                                                <select
-                                                                    value={selectedLanguage}
-                                                                    onChange={(e) => setSelectedLanguage(e.target.value)}
-                                                                    className="
-                                                                    w-full sm:w-auto
-                                                                    bg-slate-800
-                                                                    border border-slate-700
-                                                                    rounded-lg
-                                                                    px-3 py-2
-                                                                    text-slate-200
-                                                                    outline-none
-                                                                    "
-                                                                >
-                                                                    {problem?.startCode?.map((item) => (
-                                                                    <option
-                                                                        key={item?.language}
-                                                                        value={item?.language}
-                                                                    >
-                                                                        {item?.language}
-                                                                    </option>
-                                                                    ))}
-                                                                </select>
-                                                                <div className="flex-1 mt-2">
-
-                                                                <Editor className="mt-2 p-2 rounded-2xl" height={window.innerWidth < 768 ? "50vh" : "65vh"}
-                                                                language={getMonacoLanguage(selectedLanguage)} 
-                                                                value={languageCodes[selectedLanguage] || ""}
-                                                                onChange={(value) => {
-
-                                                                    const updatedCode = value || "";
-
-                                                                setLanguageCodes((prev) => ({
-                                                                    ...prev,
-                                                                    [selectedLanguage]: updatedCode
-                                                                }));
-
-                                                                localStorage.setItem(
-                                                                    getStorageKey(userId,problemId, selectedLanguage),
-                                                                    updatedCode
-                                                                );
-
-                                                                }}
-                                                                 theme="hc-black"
-                                                                  options={{padding:{
-                                                                    top:20,
-                                                                    bottom:20
-                                                                  }}}
-                                                                    />
-                                                                  </div>  
-                                                            </div>
-                                                        )}
-
-
-                                                        {activeRightTab === "testcase" &&
-                                                            !runClicked &&(
-                                                                <EmptyResult />
-                                                            )}
-
-
-                                                {activeRightTab === "testcase" && runResult && (
-
-
-                                                        <div className="bg-slate-900 border border-slate-700 rounded-xl">
-
-                                                            <div className="flex justify-between items-center px-5 py-4 border-b border-slate-700">
-
-                                                                <h2 className="text-lg font-semibold text-white">
-                                                                    Result
-                                                                </h2>
-
-                                                                <span className={`
-                                                                    px-3 py-1 rounded-lg text-sm font-medium
-                                                                    ${
-                                                                        runResult.resultType==="Accepted"
-                                                                        ? "bg-green-500/20 text-green-400"
-                                                                        : "bg-red-500/20 text-red-400"
-                                                                    }
-                                                                `}>
-
-                                                                {runResult.resultType}
-
-                                                               </span>
-
-                                                            </div>
-
-                                                     
-
-
-                                                        <div className="p-5">
-                                                             {/* Compilation Error */}
-
-                                                            {
-                                                                 
-
-                                                                runResult.resultType==="Compilation Error" && (
-
-                                                                    <CompilationErrorTestcase compileOutput={runResult.compileOutput}/>
-
-                                                                )
-                                                            }
-
-                                                              {/*Runtime Error*/}
-
-
-
-                                                            {
-                                                                runResult.resultType==="Runtime Error" && (
-
-                                                               <RuntimeErrorTestcase runtimeOutput={runResult.runtimeOutput}/>
-
-                                                                )
-                                                            }
-
-                                                            {/* Accepted + Wrong Answer */}
-
-
-                                                            {
-                                                                (runResult.resultType==="Accepted" || runResult.resultType==="Wrong Answer")&& (
-
-                                                                <AcceptedORWrongAnswerTestcase runResult={runResult}/>
-
-                                                                )
-                                                            }
-
-                                                        </div>
-                                                                                                                        
-                                                       
-
-                                                    </div>
-
-                                                        )}
-
-                                                        {activeRightTab === "result" &&
-                                                            !submitClicked && (
-                                                                <EmptyResult />
-                                                            )}
-
-
-
-                                                    {activeRightTab === "result" && submitResult && (
-
-                                                       <div className="h-full p-4 sm:p-6 text-white overflow-y-auto">
-
-                                                            <div>
-
-                                                                {submitResult.resultType === "Accepted" && (
-                                                                    <AcceptedResult
-                                                                        passedCases={submitResult.passedCases}
-                                                                        totalCases={submitResult.totalCases}
-                                                                        runtime={submitResult.runtime}
-                                                                        memory={submitResult.memory}
-                                                                    />
-
-                                                                )}
-
-                                                                {submitResult.resultType === "Wrong Answer" && (
-                                                                    <WrongAnswerResult 
-                                                                        passedCases={submitResult.passedCases}
-                                                                        totalCases={submitResult.totalCases}
-                                                                        runtime={submitResult.runtime}
-                                                                        memory={submitResult.memory}
-                                                                        />
-                                                                )}
-
-                                                                {submitResult.resultType === "Compilation Error" && (
-                                                                    <CompilationErrorResult
-                                                                        passedCases={submitResult.passedCases}
-                                                                        totalCases={submitResult.totalCases}
-                                                                        compileOutput={submitResult.compileOutput}
-                                                                    
-                                                                    />
-                                                                )}
-
-                                                                {submitResult.resultType === "Runtime Error" && (
-                                                                   <RuntimeErrorResult
-                                                                        passedCases={submitResult.passedCases}
-                                                                        totalCases={submitResult.totalCases}
-                                                                        runtimeOutput={submitResult.runtimeOutput}
-                                                                   />
-                                                                )}
-
-                                                                {submitResult.resultType === "Time Limit Exceeded" && (
-                                                                    <TLEResult
-                                                                        passedCases={submitResult.passedCases}
-                                                                        totalCases={submitResult.totalCases}
-                                                                    />
-                                                                )}
-
-                                                            </div>
-
-                                                       </div>
-                                                                    
-                                                    )
-
-                                                      
-                                                        
-                                                }
-
-                                                {activeRightTab === "ai" && (
-
-                                                       <AiAnalysisPanel
-                                                        analysis={analysis}
-                                                        loading={analysisLoading}
-                                                    />
-
-                                                    )}
-
-                                            </div>
-
-                                          </div>
-
-                                            {/* Bottom Action Bar */}
-
-                                            <div className="border-t border-slate-700 p-4">
-
-                                                <div className="flex flex-col sm:flex-row gap-4 justify-between">
-
-                                                        <button
-                                                        className="w-full sm:w-auto px-4 py-2 rounded-lg bg-slate-800 text-slate-300 cursor-pointer "
-                                                        >
-                                                        Console
-                                                        </button>
-
-                                                         <div className="flex flex-col sm:flex-row gap-3">
-
-                                                            <button
-                                                            className="
-                                                            w-full sm:w-auto
-                                                            px-4 py-2
-                                                            rounded-lg
-                                                            bg-slate-800
-                                                            text-slate-200
-                                                            cursor-pointer
-                                                            "
-                                                            disabled={runLoading}
-                                                            onClick={()=>handleRun()}
-                                                            >
-                                                            {runLoading && (
-                                                                <span className="loading loading-spinner loading-xs"></span>
-                                                            )}
-                                                             {runLoading ? "Running..." : "Run"}
-                                                            </button>
-
-                                                         <button
-                                                            onClick={handleSubmit}
-                                                            disabled={submitLoading}
-                                                            className="
-                                                                w-full sm:w-auto
-                                                                px-4 py-2
-                                                                rounded-lg
-                                                                bg-green-600
-                                                                text-white
-                                                                font-medium
-                                                                text-center
-                                                                flex
-                                                                justify-center items-center gap-2
-                                                                cursor-pointer
-                                                            "
-                                                            >
-                                                            {submitLoading && (
-                                                                <span className="loading loading-spinner loading-xs"></span>
-                                                            )}
-
-                                                            {submitLoading ? "Submitting..." : "Submit"}
-                                                          </button>
-
-                                                          <button
-                                                               onClick={handleAnalyzeBug}
-                                                               disabled={analysisLoading}
-                                                               className="
-                                                                    w-full sm:w-auto
-                                                                    px-4 py-2
-                                                                    rounded-lg
-                                                                    bg-blue-600
-                                                                    hover:bg-blue-700
-                                                                    text-white
-                                                                    font-medium
-                                                                    flex items-center
-                                                                    justify-center
-                                                                    gap-2
-                                                                    disabled:opacity-50
-                                                                    cursor-pointer
-                                                                "
-                                                            >
-                                                                
-                                                            {analysisLoading && (
-                                                                <span className="loading loading-spinner loading-xs"></span>
-                                                            )}
-
-                                                            {
-                                                                analysisLoading
-                                                                    ? "Analyzing..."
-                                                                    : "Analyze Code"
-                                                            }
-
-                                                            </button>
-
-                                                        </div>
-
-                                                    </div>
-                                               
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-                              </div>
-
-                            </div>
-
-                        </div>
-                        
+        }
+        fetchProblem();
+    }, [problemId]);
+
+    useEffect(() => {
+        if (!problem) return;
+        const initialCodes = {};
+        problem?.startCode?.forEach((item) => {
+            const savedCode = localStorage.getItem(
+                getStorageKey(userId, problemId, item.language)
+            );
+            initialCodes[item.language] = savedCode || item.initialCode;
+        });
+        setLanguageCodes(initialCodes);
+    }, [problem]);
+
+    useEffect(() => {
+        if (activeLeftTab === 'submissions') {
+            getSubmissions();
+        }
+        else{
+            if(activeLeftTab === 'editorial'){
+                fetchEditorial();
+            }
+        }
+    }, [activeLeftTab]);
+
+    if (loading) {
+        return (
+            <>
+            <NavigationBar2/>
+            <div className="min-h-screen flex flex-col justify-center items-center bg-[#0b1120]">
+                <div className="w-12 h-12 border-4 border-slate-700 border-t-blue-500 rounded-full animate-spin mb-4"></div>
+                <p className="text-slate-400 font-medium">Setting up workspace...</p>
+            </div>
+            </>
+        );
+    }
+
+    if (!problem) {
+        return <Page404 />;
+    }
+
+    const handleRun = async () => {
+        try {
+            setRunLoading(true);
+            const response = await axiosClient.post(
+                `/submission/run/${problemId}`,
+                {
+                    code: languageCodes[selectedLanguage],
+                    language: selectedLanguage
+                }
+            );
+            setRunClicked(true);
+            setRunResult(response?.data);
+            setActiveRightTab("testcase");
+        } catch (err) {
+            console.log(err);
+            alert(err?.response?.data?.message || "Internal server Error or no code has been provided");
+            setSubmitResult(null);
+            setRunResult(null);
+            setActiveRightTab("testcase");
+        } finally {
+            setRunLoading(false);
+        }
+    };
+
+    const handleSubmit = async () => {
+        try {
+            setSubmitLoading(true);
+            const response = await axiosClient.post(
+                `/submission/submit/${problemId}`,
+                {
+                    code: languageCodes[selectedLanguage],
+                    language: selectedLanguage
+                }
+            );
+            setSubmitResult(response?.data);
+            setSubmitClicked(true);
+            setActiveRightTab("result");
+        } catch (err) {
+            console.log(err);
+            alert(err?.response?.data?.message || "Internal server Error or no code has been provided");
+            setRunResult(null);
+            setSubmitResult(null);
+            setActiveRightTab("result");
+        } finally {
+            setSubmitLoading(false);
+        }
+    }
+
+    const getSubmissions = async () => {
+        try {
+            setSubmissionLoading(true);
+            const res = await axiosClient.get(`/history/submittedProblem/${problemId}`);
+            if (!res.data.success) return;
+            setSubmissionsData(res?.data?.submissions);
+        } catch (err) {
+            console.log(err);
+            alert(err?.response?.data?.message || 'Failed to fetch submission history.....');
+        } finally {
+            setSubmissionLoading(false);
+        }
+    };
+
+    const handleAnalyzeBug = async () => {
+        if (analysisLoading) return;
+        if (!languageCodes[selectedLanguage]?.trim()) {
+            alert("Please write some code before analyzing.");
+            return;
+        }
+        try {
+            setAnalysisLoading(true);
+            const response = await axiosClient.post(
+                `/ai/analyze/${problemId}`,
+                {
+                    code: languageCodes[selectedLanguage],
+                    language: selectedLanguage,
+                    runResult
+                }
+            );
+            setAnalysis(response?.data?.analysis);
+            setActiveRightTab("ai");
+        } catch (err) {
+            console.log(err);
+            alert(err?.response?.data?.message || "Failed to analyze code.");
+        } finally {
+            setAnalysisLoading(false);
+        }
+    };
+
+
+  const fetchEditorial = async () => {
+        try {
+            setEditorialLoading(true);
+
+            const { data } = await axiosClient.get(`/problem/video/${problemId}`);
+
+            if (data?.success) {
+                setEditorial(data?.video);
+            } else {
+                setEditorial(null);
+            }
+
+        } catch (error) {
+            console.error("Error fetching editorial:", error);
+            setEditorial(null);
+        } finally {
+            setEditorialLoading(false);
+        }
+    };
+
+
+    const handleReset = () => {
+                if (!problem || !problem.startCode) return;
+                
+                const initialForLang = problem.startCode.find(
+                    (item) => item.language === selectedLanguage
                 );
+                
+                if (initialForLang) {
+                    const codeToReset = initialForLang.initialCode;
+                    
+                    setLanguageCodes((prev) => ({
+                        ...prev,
+                        [selectedLanguage]: codeToReset
+                    }));
+                    
+                    localStorage.removeItem(getStorageKey(userId, problemId, selectedLanguage));
+                }
+            };
+
+    return (
+        <div className="min-h-screen flex flex-col bg-[#0b1120] text-slate-300 font-sans selection:bg-blue-500/30">
+            <NavigationBar2 />
+
+            <div className="flex-1 max-w-[1920px] w-full mx-auto p-3 sm:p-4 lg:p-5">
+                <div className="flex flex-col xl:flex-row gap-4 h-auto xl:h-[calc(100vh-100px)]">
+
+                    {/* LEFT PANEL */}
+                    <div className="w-full xl:w-1/2 flex flex-col bg-[#0f172a] border border-slate-800 rounded-2xl shadow-xl overflow-hidden h-[60vh] xl:h-full">
+                        
+                        {/* Left Tabs Header */}
+                        <div className="flex items-center px-2 pt-2 bg-slate-900/50 border-b border-slate-800 overflow-x-auto hide-scrollbar">
+                            {[
+                                { id: "description", label: "Description", icon: FileText },
+                                { id: "editorial", label: "Editorial", icon: BookOpen },
+                                { id: "solutions", label: "Solutions", icon: Lightbulb },
+                                { id: "submissions", label: "Submissions", icon: History }
+                            ].map((tab) => (
+                                <button
+                                    key={tab?.id}
+                                    onClick={() => setActiveLeftTab(tab?.id)}
+                                    className={`flex items-center gap-2 px-4 py-3 text-sm font-medium transition-all border-b-2 whitespace-nowrap ${
+                                        activeLeftTab === tab?.id 
+                                        ? "border-blue-500 text-white bg-slate-800/50 rounded-t-lg" 
+                                        : "border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-800/30 rounded-t-lg"
+                                    }`}
+                                >
+                                    <tab.icon size={16} className={activeLeftTab === tab?.id ? "text-blue-400" : "text-slate-500"} />
+                                    {tab?.label}
+                                </button>
+                            ))}
+                        </div>
+
+                        {/* Left Content Area */}
+                        <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar p-5">
+                            {activeLeftTab === "description" && (
+                                <div className="space-y-6">
+                                    <ProblemHeader problem={problem} />
+                                    <ProblemDescription description={problem?.description} />
+                                    <ExampleSection examples={problem?.visibleTestCases} />
+                                </div>
+                            )}
+
+                            {activeLeftTab === "solutions" && (
+                                !showSolution ? (
+                                    <SolutionWarning onReveal={() => setShowSolution(true)} />
+                                ) : (
+                                    <div className="space-y-8 animate-fade-in">
+                                        {problem?.referenceSolution?.map((sol) => (
+                                            <div key={sol?.language} className="bg-slate-900/50 border border-slate-800 rounded-xl overflow-hidden">
+                                                <div className="bg-slate-900 px-4 py-2 border-b border-slate-800 flex items-center">
+                                                    <span className="text-blue-400 font-mono text-sm font-semibold uppercase">{sol?.language}</span>
+                                                </div>
+                                                <div className="p-4 overflow-x-auto hide-scrollbar">
+                                                    <pre className="text-sm text-slate-300 font-mono leading-relaxed">
+                                                        {sol?.completeCode}
+                                                    </pre>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )
+                            )}
+
+                           {activeLeftTab === "editorial" && (
+                                    editorialLoading ? (
+                                        <div className="flex items-center justify-center h-full text-blue-500">
+                                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+                                        </div>
+                                    ) : (
+                                        <Editorial editorialData={editorial} editorialLoading={editorialLoading} problemId={problemId}/>
+                                    )
+                                )}
+
+                            {activeLeftTab === "submissions" && (
+                                <div className="overflow-x-auto">
+                                    <SubmissionHistory
+                                        submissionLoading={submissionLoading}
+                                        submissions={submissions}
+                                    />
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+
+                    {/* RIGHT PANEL */}
+                    <div className="w-full xl:w-1/2 flex flex-col bg-[#0f172a] border border-slate-800 rounded-2xl shadow-xl overflow-hidden h-[80vh] xl:h-full">
+                        
+                        {/* Right Tabs Header */}
+                        <div className="flex items-center justify-between px-2 pt-2 bg-slate-900/50 border-b border-slate-800 overflow-x-auto hide-scrollbar">
+                            <div className="flex gap-1">
+                                {[
+                                    { id: "code", label: "Code", icon: Code2 },
+                                    { id: "testcase", label: "Testcases", icon: Terminal },
+                                    { id: "result", label: "Result", icon: CheckCircle2 },
+                                    { id: "ai", label: "AI Analysis", icon: Sparkles }
+                                ].map((tab) => (
+                                    <button
+                                        key={tab?.id}
+                                        onClick={() => setActiveRightTab(tab?.id)}
+                                        className={`flex items-center gap-2 px-4 py-3 text-sm font-medium transition-all border-b-2 whitespace-nowrap ${
+                                            activeRightTab === tab?.id 
+                                            ? "border-blue-500 text-white bg-slate-800/50 rounded-t-lg" 
+                                            : "border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-800/30 rounded-t-lg"
+                                        }`}
+                                    >
+                                        <tab.icon size={16} className={
+                                            activeRightTab === tab?.id 
+                                            ? (tab?.id === 'ai' ? 'text-purple-400' : 'text-blue-400') 
+                                            : 'text-slate-500'
+                                        } />
+                                        <span className={tab?.id === 'ai' && activeRightTab === tab?.id ? 'bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-blue-400 font-bold' : ''}>
+                                            {tab?.label}
+                                        </span>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Right Content Area */}
+                        <div className="flex-1 min-h-0 flex flex-col">
+                            {activeRightTab === "code" && (
+                                <div className="flex flex-col h-full">
+                                
+                                    <div className="flex items-center bg-black border-b border-slate-800 px-4 py-2">
+                                        <div className="relative">
+                                            <select
+                                                value={selectedLanguage}
+                                                onChange={(e) => setSelectedLanguage(e.target.value)}
+                                                className="appearance-none bg-black hover:bg-slate-900 border border-slate-700 text-slate-300 text-xs font-mono rounded-md pl-3 pr-8 py-1.5 focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer transition-colors"
+                                            >
+                                                {problem?.startCode?.map((item) => (
+                                                    <option key={item?.language} value={item?.language}>
+                                                        {item?.language}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                            <ChevronDown size={14} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                                        </div>
+                                    </div>
+
+                                    {/* Editor Container */}
+                                    <div className="flex-1 relative">
+                                        <Editor 
+                                            height="100%"
+                                            language={getMonacoLanguage(selectedLanguage)}
+                                            value={languageCodes[selectedLanguage] || ""}
+                                            onChange={(value) => {
+                                                const updatedCode = value || "";
+                                                setLanguageCodes((prev) => ({
+                                                    ...prev,
+                                                    [selectedLanguage]: updatedCode
+                                                }));
+                                                localStorage.setItem(
+                                                    getStorageKey(userId, problemId, selectedLanguage),
+                                                    updatedCode
+                                                );
+                                            }}
+                                            theme="hc-black"
+                                            options={{
+                                                automaticLayout: true,
+
+                                                minimap: {
+                                                    enabled: false,
+                                                },
+
+                                                fontSize: 14,
+                                                lineHeight: 22,
+                                                fontFamily: "'JetBrains Mono', monospace",
+                                                fontLigatures: true,
+
+                                                smoothScrolling: true,
+                                                cursorBlinking: "smooth",
+                                                cursorSmoothCaretAnimation: "on",
+
+                                                scrollBeyondLastLine: false,
+
+                                                padding: {
+                                                    top: 18,
+                                                    bottom: 18,
+                                                },
+
+                                                lineNumbers: "on",
+                                                lineNumbersMinChars: 3,
+
+                                                glyphMargin: false,
+                                                folding: true,
+
+                                                renderLineHighlight: "gutter",
+
+                                                renderWhitespace: "selection",
+
+                                                guides: {
+                                                    indentation: false,
+                                                    bracketPairs: false,
+                                                    highlightActiveIndentation: false,
+                                                },
+
+                                                bracketPairColorization: {
+                                                    enabled: false,
+                                                },
+
+                                                matchBrackets: "near",
+
+                                                occurrencesHighlight: "singleFile",
+                                                selectionHighlight: true,
+
+                                                overviewRulerBorder: false,
+
+                                                scrollbar: {
+                                                    verticalScrollbarSize: 6,
+                                                    horizontalScrollbarSize: 6,
+                                                    useShadows: false,
+                                                },
+
+                                                roundedSelection: true,
+
+                                                wordWrap: "off",
+
+                                                contextmenu: true,
+
+                                                mouseWheelZoom: true,
+                                                }}
+                                        />
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Testcase Tab */}
+                            <div className="flex-1 overflow-y-auto custom-scrollbar">
+                                {activeRightTab === "testcase" && !runClicked && <EmptyResult />}
+                                
+                                {activeRightTab === "testcase" && runResult && (
+                                    <div className="p-4 sm:p-5">
+                                        <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden mb-4">
+                                            <div className="flex justify-between items-center px-5 py-3.5 border-b border-slate-800 bg-slate-900/50">
+                                                <h2 className="text-sm font-semibold text-slate-300 flex items-center gap-2">
+                                                    <TerminalSquare size={16} className="text-slate-500" /> Execution Result
+                                                </h2>
+                                                <span className={`px-3 py-1 rounded-md text-xs font-bold tracking-wide border
+                                                    ${runResult?.resultType === "Accepted" ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" : "bg-red-500/10 text-red-400 border-red-500/20"}
+                                                `}>
+                                                    {runResult?.resultType}
+                                                </span>
+                                            </div>
+                                            
+                                            <div className="p-5">
+                                                {runResult?.resultType === "Compilation Error" && (
+                                                    <CompilationErrorTestcase compileOutput={runResult?.compileOutput} />
+                                                )}
+                                                {runResult?.resultType === "Runtime Error" && (
+                                                    <RuntimeErrorTestcase runtimeOutput={runResult?.runtimeOutput} />
+                                                )}
+                                                {(runResult?.resultType === "Accepted" || runResult?.resultType === "Wrong Answer") && (
+                                                    <AcceptedORWrongAnswerTestcase runResult={runResult} />
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Result Tab */}
+                                {activeRightTab === "result" && !submitClicked && <EmptyResult />}
+                                
+                                {activeRightTab === "result" && submitResult && (
+                                    <div className="p-4 sm:p-6 animate-fade-in">
+                                        {submitResult?.resultType === "Accepted" && (
+                                            <AcceptedResult
+                                                passedCases={submitResult?.passedCases}
+                                                totalCases={submitResult?.totalCases}
+                                                runtime={submitResult?.runtime}
+                                                memory={submitResult?.memory}
+                                            />
+                                        )}
+                                        {submitResult?.resultType === "Wrong Answer" && (
+                                            <WrongAnswerResult
+                                                passedCases={submitResult?.passedCases}
+                                                totalCases={submitResult?.totalCases}
+                                                runtime={submitResult?.runtime}
+                                                memory={submitResult?.memory}
+                                            />
+                                        )}
+                                        {submitResult?.resultType === "Compilation Error" && (
+                                            <CompilationErrorResult
+                                                passedCases={submitResult?.passedCases}
+                                                totalCases={submitResult?.totalCases}
+                                                compileOutput={submitResult?.compileOutput}
+                                            />
+                                        )}
+                                        {submitResult?.resultType === "Runtime Error" && (
+                                            <RuntimeErrorResult
+                                                passedCases={submitResult?.passedCases}
+                                                totalCases={submitResult?.totalCases}
+                                                runtimeOutput={submitResult?.runtimeOutput}
+                                            />
+                                        )}
+                                        {submitResult?.resultType === "Time Limit Exceeded" && (
+                                            <TLEResult
+                                                passedCases={submitResult?.passedCases}
+                                                totalCases={submitResult?.totalCases}
+                                            />
+                                        )}
+                                    </div>
+                                )}
+
+                                {/* AI Analysis Tab */}
+                                {activeRightTab === "ai" && (
+                                    <div className="p-4 h-full">
+                                        <AiAnalysisPanel
+                                            analysis={analysis}
+                                            loading={analysisLoading}
+                                        />
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Bottom Action Bar */}
+                        <div className="bg-slate-900 border-t border-slate-800 p-3 sm:px-5 flex flex-col sm:flex-row justify-between items-center gap-3">
+                            
+                            <button className="w-full sm:w-auto px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-colors flex items-center justify-center gap-2">
+                                <TerminalSquare size={16} /> Console
+                            </button>
+
+                            <button 
+                                onClick={handleReset}
+                                className="cursor-pointer px-4 py-2 rounded-lg text-sm font-medium text-amber-400 hover:text-amber-300 hover:bg-amber-900/20 transition-colors flex items-center justify-center gap-2"
+                            >
+                               <RotateCcw size={14} /> Reset Code
+                            </button>
+
+                            <div className="flex w-full sm:w-auto gap-3">
+                                <button
+                                    onClick={handleAnalyzeBug}
+                                    disabled={analysisLoading}
+                                    className="flex-1 cursor-pointer sm:flex-none flex items-center justify-center gap-2 px-5 py-2 rounded-lg text-sm font-bold text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 transition-all shadow-md hover:shadow-purple-500/20 disabled:opacity-50"
+                                >
+                                    {analysisLoading ? <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span> : <Sparkles size={16} />}
+                                    {analysisLoading ? "Analyzing..." : "AI Analyze"}
+                                </button>
+
+                                <button
+                                    onClick={handleRun}
+                                    disabled={runLoading}
+                                    className="flex-1 cursor-pointer sm:flex-none flex items-center justify-center gap-2 px-5 py-2 rounded-lg text-sm font-bold text-slate-200 bg-slate-700 hover:bg-slate-600 border border-slate-600 transition-colors disabled:opacity-50"
+                                >
+                                    {runLoading ? <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span> : <Play size={16} />}
+                                    {runLoading ? "Running" : "Run"}
+                                </button>
+
+                                <button
+                                    onClick={handleSubmit}
+                                    disabled={submitLoading}
+                                    className="flex-1 cursor-pointer sm:flex-none flex items-center justify-center gap-2 px-6 py-2 rounded-lg text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-500 transition-all shadow-[0_0_15px_rgba(5,150,105,0.2)] hover:shadow-[0_0_20px_rgba(5,150,105,0.4)] disabled:opacity-50"
+                                >
+                                    {submitLoading ? <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span> : <Send size={16} />}
+                                    {submitLoading ? "Submitting" : "Submit"}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
 };
 
 export default ProblemPage;
