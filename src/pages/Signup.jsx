@@ -32,18 +32,20 @@ function Signup() {
   const onSubmit = async (data) => {
     const result = await dispatch(registerUser(data));
     if (result.type === "auth/register/fulfilled") {
-      navigate("/verify-email");
+      navigate("/verify-email",{
+        state: {
+        emailId:data.emailId
+    }
+      });
     }
   };
 
   return (
     <div className="min-h-screen bg-[#0B1120] flex items-center justify-center p-6">
-      {/* Increased max-w-4xl and rounded corners */}
       <div className="w-full max-w-4xl flex flex-col lg:flex-row bg-[#0f172a] rounded-3xl border border-slate-800 shadow-2xl overflow-hidden min-h-[500px]">
         
-        {/* Left Side: Branding */}
         <div className="hidden lg:flex flex-1 bg-slate-900/80 p-12 flex-col justify-between text-white">
-          <div className="flex items-center gap-2 text-2xl font-bold">
+          <div className="flex items-center gap-2 text-2xl font-bold text-blue-500">
             <Code2 size={32} /> CodeHub
           </div>
           <div>
@@ -52,7 +54,6 @@ function Signup() {
           </div>
         </div>
 
-        {/* Right Side: Form */}
         <div className="flex-1 p-10 sm:p-12 flex flex-col justify-center w-full">
           <div className="max-w-sm w-full mx-auto">
             

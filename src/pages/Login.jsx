@@ -31,7 +31,6 @@ function Login() {
     <div className="min-h-screen bg-[#0B1120] flex items-center justify-center p-4">
       <div className="w-full max-w-4xl flex flex-col lg:flex-row bg-[#0f172a] rounded-3xl border border-slate-800 shadow-2xl overflow-hidden min-h-[500px]">
         
-        {/* Left Side: Branding */}
         <div className="hidden lg:flex flex-1 bg-slate-900/80 p-12 flex-col justify-between text-white">
           <div>
             <div className="flex items-center gap-2 text-2xl font-bold">
@@ -45,10 +44,10 @@ function Login() {
         </div>
 
         <div className="flex-1 p-8 sm:p-12 flex flex-col justify-center w-full">
-          <div className="max-w-sm w-full mx-auto">
+          <div className="max-w-sm w-full mx-auto text-blue-500">
             
-            <div className="lg:hidden flex items-center gap-2 text-xl font-bold text-white mb-8">
-              <Code2 size={28} /> CodeHub
+            <div className="lg:hidden flex items-center gap-2 text-xl font-bold  mb-8 text-blue-500">
+              <Code2 size={28} className='text-blue-500' /> CodeHub
             </div>
             
             <div className="mb-8">
