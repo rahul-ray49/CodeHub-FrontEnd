@@ -30,6 +30,9 @@ import UpdateProfilePage from './pages/UpdateProfilePage'
 
 function App() {
 
+  const state = useSelector((state) => state);
+
+  console.log("Redux State:", state);
   const {isAuthenticated,user,loading}=useSelector((state)=>state.auth);
   const dispatch=useDispatch();
 
