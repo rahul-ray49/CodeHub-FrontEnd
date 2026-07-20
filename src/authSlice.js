@@ -63,6 +63,14 @@ const authSlice = createSlice({
     signupcredentialserror:null
   },
   reducers: {
+    logoutLocal: (state) => {
+        state.user = null;
+        state.isAuthenticated = false;
+        state.loading = false;
+        state.error = null;
+        state.logincredentialserror = null;
+        state.signupcredentialserror = null;
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -144,3 +152,4 @@ const authSlice = createSlice({
 });
 
 export default authSlice.reducer;
+export const { logoutLocal } = authSlice.actions;
