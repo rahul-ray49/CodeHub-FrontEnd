@@ -64,7 +64,7 @@ function App() {
     <>
     <ScrollToTop />
      <Routes>
-          <Route path="/" element={isAuthenticated?<LandingPage/>:<Navigate to="/signup"/>}></Route>
+          <Route path="/" element={isAuthenticated?<LandingPage/>:<Navigate to="/login"/>}></Route>
            <Route path="/login" element={isAuthenticated?<Navigate to="/"/>:<Login></Login>}></Route>
            <Route path="/signup" element={isAuthenticated?<Navigate to="/"/>:<Signup></Signup>}></Route>
            <Route path="/verify-email" element={<VerifyEmailNotice />}/>
