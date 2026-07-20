@@ -1,6 +1,6 @@
 import axios from "axios"
-import store from "../store/store"
-import { logoutLocal } from "../authSlice";
+//import store from "../store/store"
+//import { logoutLocal } from "../authSlice";
 
 
 const axiosClient =  axios.create({
@@ -29,11 +29,11 @@ axiosClient.interceptors.response.use(
 
              
 
-                store.dispatch(logoutLocal());
+                //store.dispatch(logoutLocal());
 
-                if (window.location.pathname !== "/login") {
-                    window.location.replace("/login");
-                }
+                // if (window.location.pathname !== "/login") {
+                //     window.location.replace("/login");
+                // }
 
             
         }
