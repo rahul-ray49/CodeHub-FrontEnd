@@ -5,6 +5,7 @@ import axiosClient from "../utils/axiosClient";
 import { useNavigate, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import NavigationBar2 from "./NavigationBar2";
 
       const problemSchema = z.object({
         title: z.string().min(1, "Title is required"),
@@ -180,6 +181,7 @@ function UpdateProblem() {
 
              return (
                 <>
+                <NavigationBar2/>
                 {loading ? (
                     <div className="fixed inset-0 z-50 bg-[#0b1120]/90 backdrop-blur-md flex items-center justify-center">
                         <div className="flex flex-col items-center">

@@ -112,6 +112,9 @@ function NavigationBar2() {
           <NavLink to="/" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-2.5 text-sm text-slate-300 hover:bg-slate-800 rounded-lg">Home</NavLink>
           <NavLink to="/problemSection" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-2.5 text-sm text-slate-300 hover:bg-slate-800 rounded-lg">Problems</NavLink>
           <NavLink to="/profile/me" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-2.5 text-sm text-slate-300 hover:bg-slate-800 rounded-lg">Profile</NavLink>
+          <NavLink to="/solved" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-2.5 text-sm text-slate-300 hover:bg-slate-800 rounded-lg">solved</NavLink>
+          <NavLink to="/submission-history" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-2.5 text-sm text-slate-300 hover:bg-slate-800 rounded-lg">submissions</NavLink>
+          <NavLink to="/help-page" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-2.5 text-sm text-slate-300 hover:bg-slate-800 rounded-lg">help</NavLink>
           <div className="h-px bg-slate-800 my-1"></div>
           <button onClick={handleLogout} className="w-full text-left px-4 py-2.5 text-sm text-red-400 hover:bg-red-500/10 rounded-lg">Logout</button>
         </div>

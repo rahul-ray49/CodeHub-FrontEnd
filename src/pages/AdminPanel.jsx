@@ -5,6 +5,7 @@ import axiosClient from "../utils/axiosClient";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import NavigationBar2 from "./NavigationBar2";
 
       const problemSchema = z.object({
         title: z.string().min(1, "Title is required"),
@@ -179,6 +180,8 @@ import { useState } from "react";
               };
 
              return (
+                    <>
+                    <NavigationBar2/>
                     <div className="min-h-screen bg-slate-950 text-slate-100 overflow-x-hidden">
                       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
                       
@@ -579,6 +582,7 @@ import { useState } from "react";
                         </form>
                       </div>
                     </div>
+                    </>
 );
 }
 

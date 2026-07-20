@@ -16,7 +16,7 @@ function NavigationBar({ user, setSolvedProblemsIds }) {
     };
 
     return (
-        <nav className="sticky top-0 z-50 bg-[#0b1120]/80 backdrop-blur-lg border-b border-slate-800">
+        <nav className="sticky top-0 z-50 bg-[#0b1120]/80 backdrop-blur-lg border-b border-slate-800 relative">
             <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16">
                     
@@ -118,8 +118,13 @@ function NavigationBar({ user, setSolvedProblemsIds }) {
             </div>
 
             {menuOpen && (
-                <div className="md:hidden bg-[#0f172a] border-b border-slate-800 p-4 space-y-2">
+                <div className="absolute top-full right-4 mt-2 w-64 bg-[#0f172a] border border-slate-800 rounded-xl shadow-2xl p-2 md:hidden z-50">
                     <NavLink to="/" onClick={() => setMenuOpen(false)} className="block px-4 py-3 text-slate-300 hover:bg-slate-800 rounded-lg">Home</NavLink>
+                    <NavLink to="/problemSection" onClick={() => setMenuOpen(false)} className="block px-4 py-3 text-slate-300 hover:bg-slate-800 rounded-lg">problems</NavLink>
+                    <NavLink to="/solved" onClick={() => setMenuOpen(false)} className="block px-4 py-3 text-slate-300 hover:bg-slate-800 rounded-lg">solved</NavLink>
+                    <NavLink to="/submission-history" onClick={() => setMenuOpen(false)} className="block px-4 py-3 text-slate-300 hover:bg-slate-800 rounded-lg">submissions</NavLink>
+                    <NavLink to="/problem-of-the-day" onClick={() => setMenuOpen(false)} className="block px-4 py-3 text-slate-300 hover:bg-slate-800 rounded-lg">potd</NavLink>
+                    <NavLink to="/help-page" onClick={() => setMenuOpen(false)} className="block px-4 py-3 text-slate-300 hover:bg-slate-800 rounded-lg">help</NavLink>
                     <NavLink to="/problemSection" onClick={() => setMenuOpen(false)} className="block px-4 py-3 text-slate-300 hover:bg-slate-800 rounded-lg">Problems</NavLink>
                     <button onClick={handleLogout} className="w-full text-left px-4 py-3 text-red-400 hover:bg-red-500/10 rounded-lg">Logout</button>
                 </div>
