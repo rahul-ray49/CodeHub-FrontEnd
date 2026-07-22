@@ -1,7 +1,7 @@
 import ExampleCard from "./ExampleCard";
 
 const ExampleSection = ({ examples }) => {
-  if (!examples || examples.length === 0) return null;
+  if (!examples || examples?.length === 0) return null;
 
   return (
     <div className="mb-10 animate-fade-in">

@@ -168,7 +168,7 @@ function UpdateProblem() {
                     "Problem updated successfully!"
                   );
 
-                  // navigate("/");
+                  navigate("/");
                 } catch (error) {
                   alert(
                     error.response?.data?.message ||

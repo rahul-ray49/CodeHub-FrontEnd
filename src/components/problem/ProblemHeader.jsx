@@ -15,26 +15,26 @@ export default function ProblemHeader({ problem }) {
     return (
         <div className="mb-6 pb-6 border-b border-slate-800/80">
             <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mb-5">
-                {problem.problemNumber}. {problem.title}
+                {problem?.problemNumber}. {problem?.title}
             </h1>
             
             <div className="flex flex-wrap items-center gap-3">
-                <span className={`px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wider border ${getDifficultyColor(problem.difficulty)}`}>
-                    {problem.difficulty}
+                <span className={`px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wider border ${getDifficultyColor(problem?.difficulty)}`}>
+                    {problem?.difficulty}
                 </span>
 
-                {problem.tags && (
+                {problem?.tags && (
                     <div className="flex items-center gap-1.5 bg-blue-500/10 border border-blue-500/20 px-3 py-1 rounded-md text-blue-400">
                         <Tag size={14} />
                         <span className="capitalize text-xs font-medium tracking-wide">
-                            {problem.tags}
+                            {problem?.tags}
                         </span>
                     </div>
                 )}
 
                 <div className="flex items-center gap-1.5 bg-slate-800/80 border border-slate-700 px-3 py-1 rounded-md text-yellow-400 text-xs font-semibold">
                     <Trophy size={14} />
-                    <span>{problem.score || "0"} Points</span>
+                    <span>{problem?.score || "0"} Points</span>
                 </div>
             </div>
         </div>

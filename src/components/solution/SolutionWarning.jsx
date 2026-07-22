@@ -4,17 +4,14 @@ const SolutionWarning = ({ onReveal }) => {
     return (
         <div className="flex items-center justify-center min-h-[400px] px-4">
             <div className="w-full max-w-lg rounded-3xl border border-slate-800 bg-[#0f172a] shadow-2xl p-8 relative overflow-hidden">
-                {/* Subtle Background Glow */}
                 <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/5 rounded-full blur-3xl -mr-16 -mt-16"></div>
 
-                {/* Icon Section */}
                 <div className="flex justify-center mb-6">
                     <div className="w-16 h-16 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center shadow-inner">
                         <Lightbulb className="h-8 w-8 text-amber-400" strokeWidth={1.5} />
                     </div>
                 </div>
 
-                {/* Content */}
                 <div className="text-center space-y-3">
                     <h2 className="text-2xl font-bold text-white tracking-tight">
                         Challenge yourself first
