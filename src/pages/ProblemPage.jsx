@@ -37,7 +37,7 @@ const ProblemPage = () => {
     const [problem, setProblem] = useState(null);
     const [activeLeftTab, setActiveLeftTab] = useState("description");
     const [activeRightTab, setActiveRightTab] = useState("code");
-    const [selectedLanguage, setSelectedLanguage] = useState("javascript");
+    const [selectedLanguage, setSelectedLanguage] = useState("c++");
     const [languageCodes, setLanguageCodes] = useState({});
     const [runResult, setRunResult] = useState(null);
     const [runLoading, setRunLoading] = useState(false);
